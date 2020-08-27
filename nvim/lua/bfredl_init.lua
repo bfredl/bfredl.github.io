@@ -13,6 +13,8 @@ function _snippets_setup()
   s.snippets = {
     _global = {
       todob = "TODO(bfredl) :";
+      todou = "TODO(upstream) :";
+      todon = "TODO(neovim) :";
     };
     lua = {
       fun = [[function $1($2)
