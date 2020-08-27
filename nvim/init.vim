@@ -9,7 +9,7 @@ let g:_b_version = s:a.major.'.'.s:a.minor
 set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newconf,\ %{g:_b_version})
 
 if !get(g:, "bfredl_preinit")
-  " TODO(upstream): nvim_get_runtime_file should allow you to find a directory
+  " TODO(neovim): nvim_get_runtime_file should allow you to find a directory
   " directly
   let &rtp = &rtp.','.fnamemodify(nvim_get_runtime_file("submod/packer.nvim/LICENSE", 0)[0], ':p:h')
   let g:bfredl_preinit = v:true
