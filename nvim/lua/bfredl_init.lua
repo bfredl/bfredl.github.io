@@ -1,4 +1,4 @@
-_G._init_loaded = true
+_G._bfredl_loaded = true
 
 require'packer'.startup(function ()
 end)
