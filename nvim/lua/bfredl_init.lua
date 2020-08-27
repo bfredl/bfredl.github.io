@@ -1,7 +1,7 @@
 _G._bfredl_loaded = true
 
 require'packer'.startup(function ()
-    use 'norcalli/snippets.nvim'
+  use 'norcalli/snippets.nvim'
 end)
 
 function _snippets_setup()
@@ -10,6 +10,11 @@ function _snippets_setup()
   s.snippets = {
     _global = {
       todob = "TODO(bfredl) :";
-    }
+    };
+    lua = {
+      fun = [[function $1($2)
+  $0
+end]];
+    };
   }
 end
