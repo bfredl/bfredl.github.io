@@ -10,9 +10,11 @@ let g:_b_version = s:a.major.'.'.s:a.minor
 " when built from non-master branch, show branchname
 set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newconf,\ %{g:_b_version})
 
+" TODO(bfredl): one logic please for detecting conflicting mappings
+
 let g:mapleader = ","
 " TODO(bfredl): better mappings, works for now
-noremap <leader>l <cmd>source $MYVIMRC<cr>
+noremap <leader>u <cmd>source $MYVIMRC<cr>
 " TODO(bfredl): jump to open window if already exist
 noremap <Leader>v <cmd>split $MYVIMRC<CR>
 noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]<CR>
