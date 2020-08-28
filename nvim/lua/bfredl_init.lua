@@ -13,6 +13,7 @@ function _snippets_setup()
       todou = "TODO(upstream):";
       todon = "TODO(neovim):";
       f = "FIXME:";
+      re = "return"; -- TODO(bfredl): redundant, integrate snippets with ibus-chords properly
     };
     lua = {
       fun = [[function $1($2)

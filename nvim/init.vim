@@ -1,6 +1,7 @@
 set hidden
 set title
 set number
+set mouse=a
 
 " TODO(bfredl): make title a lua function, probably
 let s:a = api_info().version
@@ -12,7 +13,9 @@ set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newcon
 let g:mapleader = ","
 " TODO(bfredl): better mappings, works for now
 noremap <leader>l <cmd>source $MYVIMRC<cr>
+" TODO(bfredl): jump to open window if already exist
 noremap <Leader>v <cmd>split $MYVIMRC<CR>
+noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]<CR>
 augroup vimrc
   au!
   au BufWritePost $MYVIMRC source $MYVIMRC
