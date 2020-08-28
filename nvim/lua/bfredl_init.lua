@@ -9,9 +9,10 @@ function _snippets_setup()
   s.use_suggested_mappings()
   s.snippets = {
     _global = {
-      todob = "TODO(bfredl) :";
-      todou = "TODO(upstream) :";
-      todon = "TODO(neovim) :";
+      todob = "TODO(bfredl):";
+      todou = "TODO(upstream):";
+      todon = "TODO(neovim):";
+      f = "FIXME:";
     };
     lua = {
       fun = [[function $1($2)

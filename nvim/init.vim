@@ -11,7 +11,13 @@ set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newcon
 
 let g:mapleader = ","
 " TODO(bfredl): better mappings, works for now
-map <leader>l <cmd>source $MYVIMRC<cr>
+noremap <leader>l <cmd>source $MYVIMRC<cr>
+noremap <Leader>v <cmd>split $MYVIMRC<CR>
+augroup vimrc
+  au!
+  au BufWritePost $MYVIMRC source $MYVIMRC
+  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]." source $MYVIMRC"
+augroup END
 
 if !get(g:, "bfredl_preinit")
   " TODO(neovim): nvim_get_runtime_file should allow you to find a directory
