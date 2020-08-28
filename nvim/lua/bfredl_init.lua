@@ -6,7 +6,10 @@ local h = _G._bfredl
 
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
+
   use '~/dev/nvim-miniyank'
+  use '~/dev/nvim-bufmngr'
+  use '~/dev/nvim-luadev'
 end)
 
 function h.snippets_setup()
