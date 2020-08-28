@@ -2,6 +2,7 @@ local first_run = not _G._bfredl_vimenter
 
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
+  use '~/dev/nvim-miniyank'
 end)
 
 function _snippets_setup()

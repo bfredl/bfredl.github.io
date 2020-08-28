@@ -22,6 +22,18 @@ augroup vimrc
   exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]." source $MYVIMRC"
 augroup END
 
+" TODO(bfredl): formally associate the mappings with the plugin
+map p <Plug>(miniyank-autoput)
+map P <Plug>(miniyank-autoPut)
+map <Leader>t <Plug>(miniyank-startput)
+map <Leader>T <Plug>(miniyank-startPut)
+map <Plug>ch:.p <Plug>(miniyank-cycle)
+map <Plug>ch:ao <Plug>(miniyank-cycleback)
+map <Leader>C <Plug>(miniyank-cycle)
+map <Leader>b <Plug>(miniyank-toblock)
+map <Leader>l <Plug>(miniyank-toline)
+map <Leader>k <Plug>(miniyank-tochar)
+
 if !get(g:, "bfredl_preinit")
   " TODO(neovim): nvim_get_runtime_file should allow you to find a directory
   " directly
