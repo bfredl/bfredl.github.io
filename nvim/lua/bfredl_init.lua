@@ -6,10 +6,7 @@ end)
 
 function _snippets_setup()
   local s = require'snippets'
-  if first_run then
-    -- TODO(bfredl): this fails on `not first_run`, check why
-    s.use_suggested_mappings()
-  end
+  s.use_suggested_mappings()
   s.snippets = {
     _global = {
       todob = "TODO(bfredl) :";
