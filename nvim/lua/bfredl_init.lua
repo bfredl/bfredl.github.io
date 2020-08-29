@@ -3,6 +3,7 @@ if first_run then
   _G._bfredl = {}
 end
 local h = _G._bfredl
+local a = vim.api
 
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
@@ -37,12 +38,21 @@ end]];
 end
 
 
-function h.vimenter()
+function h.vimenter(startup)
   h.snippets_setup()
+  if startup then
+    if a.nvim__fork_serve then
+      _G.prepfork = true
+       a.nvim__fork_serve()
+      _G.postfork = true
+       -- because reasons
+       a.nvim__stupid_test()
+    end
+  end
 end
 
 if first_run then
-  vim.cmd [[autocmd VimEnter * lua _G._bfredl.vimenter()]]
+  vim.cmd [[autocmd VimEnter * lua _G._bfredl.vimenter(true)]]
 else
-  h.vimenter()
+  h.vimenter(false)
 end
