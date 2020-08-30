@@ -4,8 +4,12 @@ if first_run then
 end
 local h = _G._bfredl
 local a = vim.api
+local v = vim.cmd
 _G._b = _G._bfredl -- for convenience
 _G._a = vim.api -- S H O R T C U T to the API:s
+
+-- test
+v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
@@ -14,6 +18,7 @@ require'packer'.startup(function ()
   use '~/dev/nvim-miniyank'
   use '~/dev/nvim-bufmngr'
   use '~/dev/nvim-luadev'
+  use '~/dev/ibus-chords'
 end)
 
 function h.snippets_setup()
@@ -44,7 +49,22 @@ function h.xcolor()
  local out = io.popen("xcolor"):read("*a")
  return vim.trim(out)
 end
-vim.cmd 'imap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
+v 'inoremap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
+
+function h.f(args)
+  local b = a.nvim_create_buf(false, true)
+  if args.text then
+    a.nvim_buf_set_lines(b, 0, -1, true, {args.text})
+  end
+  local w = a.nvim_open_win(b, false, {
+    relative="editor";
+    width=30;
+    height=1;
+    row=2;
+    col=2;
+    style="minimal";
+  })
+end
 
 function h.vimenter(startup)
   h.snippets_setup()
