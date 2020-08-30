@@ -2,7 +2,10 @@ set hidden
 set title
 set number
 set mouse=a
+
 set termguicolors
+hi Normal guibg=#1a2c41
+" #223341
 
 " TODO(bfredl): make title a lua function, probably
 let s:a = api_info().version
