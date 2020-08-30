@@ -4,9 +4,12 @@ if first_run then
 end
 local h = _G._bfredl
 local a = vim.api
+_G._b = _G._bfredl -- for convenience
+_G._a = vim.api -- S H O R T C U T to the API:s
 
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
+  use 'norcalli/nvim-colorizer.lua'
 
   use '~/dev/nvim-miniyank'
   use '~/dev/nvim-bufmngr'
@@ -37,6 +40,11 @@ end]];
   }
 end
 
+function h.xcolor()
+ local out = io.popen("xcolor"):read("*a")
+ return vim.trim(out)
+end
+vim.cmd 'imap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
 
 function h.vimenter(startup)
   h.snippets_setup()
