@@ -1,8 +1,10 @@
+" options: basic {{{
 set hidden
 set title
 set number
 set mouse=a
-
+" }}}
+" color scheme {{{
 set termguicolors
 hi Normal guibg=#1a2c41
 hi NormalFloat guibg=#0088ff
@@ -11,17 +13,19 @@ hi Po guibg=#0088ff
 set winblend=20
 set pumblend=15
 " #223341
-
+" }}}
+" options: title {{{
 " TODO(bfredl): make title a lua function, probably
 let s:a = api_info().version
 let g:_b_version = s:a.major.'.'.s:a.minor
 " TODO(bfredl): show ASAN vs RelWithDebInfo
 " when built from non-master branch, show branchname
 set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newconf,\ %{g:_b_version})
-
+" }}}
 " TODO(bfredl): one logic please for detecting conflicting mappings
 
 let g:mapleader = ","
+" mappings: vimrc {{{
 " TODO(bfredl): better mappings, works for now
 noremap <leader>u <cmd>source $MYVIMRC<cr>
 " TODO(bfredl): jump to open window if already exist
@@ -32,7 +36,13 @@ augroup vimrc
   au BufWritePost $MYVIMRC source $MYVIMRC
   exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]." source $MYVIMRC"
 augroup END
-
+" }}}
+" mappings: windows {{{
+noremap <Leader>o <C-W>o
+noremap <Plug>ch:hc <C-W>w
+noremap <Plug>CH:hc <C-W>W
+" }}}
+" mappings: miniyank {{{
 " TODO(bfredl): formally associate the mappings with the plugin
 map p <Plug>(miniyank-autoput)
 map P <Plug>(miniyank-autoPut)
@@ -44,7 +54,8 @@ map <Leader>C <Plug>(miniyank-cycle)
 map <Leader>b <Plug>(miniyank-toblock)
 map <Leader>l <Plug>(miniyank-toline)
 map <Leader>k <Plug>(miniyank-tochar)
-
+" }}}
+" LOGIC: preinit/lua {{{
 if !get(g:, "bfredl_preinit")
   " TODO(neovim): nvim_get_runtime_file should allow you to find a directory
   " directly
@@ -53,3 +64,4 @@ if !get(g:, "bfredl_preinit")
 end
 
 lua dofile(vim.api.nvim_get_runtime_file("lua/bfredl_init.lua", 0)[1])
+" }}}
