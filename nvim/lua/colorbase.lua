@@ -1,16 +1,18 @@
 -- borrowed from norcallis lua pile
-local function highlight(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
+local h = {}
+local function h.hi(group, o)
   local parts = {group}
-  if guifg then table.insert(parts, "guifg=#"..guifg) end
-  if guibg then table.insert(parts, "guibg=#"..guibg) end
-  if ctermfg then table.insert(parts, "ctermfg="..ctermfg) end
-  if ctermbg then table.insert(parts, "ctermbg="..ctermbg) end
-  if attr then
+  if o.default then table.insert(parts, "defoult")
+  if o.fg then table.insert(parts, "guifg=#"..o.fg) end
+  if o.bg then table.insert(parts, "guibg=#"..o.bg) end
+  if o.ctermfg then table.insert(parts, "ctermfg="..o.ctermfg) end
+  if o.ctermbg then table.insert(parts, "ctermbg="..o.ctermbg) end
+  if o.attr then
     table.insert(parts, "gui="..attr)
     table.insert(parts, "cterm="..attr)
   end
-  if guisp then table.insert(parts, "guisp=#"..guisp) end
+  if o.sp then table.insert(parts, "guisp=#"..sp) end
 
-  -- nvim.ex.highlight(parts)
-  vim.api.nvim_command('highlight '..table.concat(parts, ' '))
+  -- nvim.api.nvim_sett_highlig()(name, parts)
+  vim.cmd ('highlight '..table.concat(parts, ' '))
 end

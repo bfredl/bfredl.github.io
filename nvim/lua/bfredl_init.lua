@@ -1,7 +1,9 @@
+-- locgic: first_run {{{
 local first_run = not _G._bfredl
 if first_run then
   _G._bfredl = {}
 end
+-- }}}
 local h = _G._bfredl
 local a = vim.api
 local v = vim.cmd
