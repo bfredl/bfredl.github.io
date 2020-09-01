@@ -4,3 +4,4 @@
 [submodule "pres/remark"]
 	path = docs/pres/remark
 	url = https://github.com/gnab/remark
+	ignore = dirty
