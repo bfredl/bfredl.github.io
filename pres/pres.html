@@ -30,6 +30,8 @@ class: center, middle
 1. Whoami?
 2. Neovim: 0.4: grids and floats
 3. Neovim 0.5: tree-sitter and LSP
+4. The neovim community: the good and the would-be-better
+5. what is neovim, really?
 
 ---
 
@@ -52,6 +54,58 @@ floaty screen shots
 ---
 
 goneovim screen shots of different font size
+
+---
+
+# community
+
+Formalizing the unformalized:
+ - member of `github.com/neovim` org, get 1 free membership badge
+ - triage, can edit labels and milestones
+ - write, can actually push stuff
+
+or, limited access to `neovim/xx.nvim` repo.
+
+---
+
+# the uncanney valley
+
+- Nvim has good `runtime/lua` etc
+- a large cataloge of good/bad/ugly third-party plugins (show the "related projects" horrorshow)
+- the "excluded middle": standardized interfaces _between_ plugins (incl UI:s which just are plugins, anyway)
+- "frameworks" used by plugins (no dependency mgmt)
+
+---
+
+# the uncanney valley: how to fix it
+
+- interfaces defined by *reference implementations* in `neovim/` and `nvim-lua/`
+- `nvim-lua/*` as a sandbox for WIP interfaces, promote to `neovim/*` (or runtime already) when done
+- example:
+  - `norcalli/snippets.lua` should at least be promoted to `nvim-lua/`
+  - a subset of the API should be standardized as the "official" snippets API.
+  - user can swap in a different snippets implementation
+
+- "strong defaults" and "flexibility/extensibility", **choose two**.
+- `runtime/lsp` provides "out of the box" experience, but you can override any callback
+
+---
+
+# Can has package dependencies?
+
+Similarily, Nvim could "adopt" one package manager (packer.nvim, or something else).
+- define the "standard" for plugin dependencies once for all
+- should be easy for all other active packagers to adopt
+- "design by commitee" does NOT work when the comitee is over 9000 plugin developers
+- Nvim core team should decide on one "good enough" solution for 0.5 (ofc discussion with large community, but we need to set the foot down)
+- being shipped with Neovim 0.5 enough to bootstrap community momentum.
+- can revisit before 1.0 (if misstakes be made)
+
+- build system already uses luarocks, share it to lua plugins
+```lua
+ local cjson = vim.require'cjson' -- prompt user to install binary dep if needed
+```
+
 
     </textarea>
     <script src="remark.min.js">
