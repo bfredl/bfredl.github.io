@@ -38,6 +38,15 @@ class: center, middle
 # Introduction
 
 ---
+# Neovim 0.4
+
+- lua "stdlib" initial attempts
+- luv event loop
+- multigrid
+- floats
+-
+
+---
 
 # Grids
 
@@ -49,11 +58,51 @@ this allows some nice stuff, such as the float and the different font size.
 
 ---
 
+- "Uis are just plugins like any other" @justinmk
+- Thesis: a text editor should not be a window manager, pty master, etc. (unix way)
+- Anti-thesis: a pty is just a pair of pipes and a weird low-res graphics protocol.
+- Synthesis: more grids for everyone
+
+---
+
+- (INFOGA? low-res graphics using unicode blocks?)
+
+---
+
 floaty screen shots
 
 ---
 
 goneovim screen shots of different font size
+
+---
+
+
+Neovim is now half an tmux (and I did this completely by accident. We did not even think about it when w did floats. float win + term buf just work, as buffers and windows are orthogonal)
+
+- A text window is a grid
+- The pum is a grid
+- The extra info next to the pum is also a grid
+- The cmdline is a grid
+- Messages is a grid
+- Libvterm lives in a grid
+- So we get term apps for free, like fzf
+- A nested neovim worker is a grid (containing more grids, babooshka)
+- Decorations can be grids (the christmas lights are already on)
+- Lsp hover info is a grid
+- Html panes are not really grids, but we can mold them in the same form
+- A big clock is a grid
+- Jupyter is a grid
+- Lua output is a grid (and so on and so on)
+
+---
+
+# Neovim 0.5
+
+- `on_bytes` and buffer ranges (extmarks)
+- builtin LSP (@norcalli)
+- tree-sitter syntax highlighting (@vigoux)
+- framework for lua plugins (@tjdevries, @norcalli)
 
 ---
 
@@ -81,8 +130,8 @@ or, limited access to `neovim/xx.nvim` repo.
 
 - interfaces defined by *reference implementations* in `neovim/` and `nvim-lua/`
 - `nvim-lua/*` as a sandbox for WIP interfaces, promote to `neovim/*` (or runtime already) when done
-- example:
-  - `norcalli/snippets.lua` should at least be promoted to `nvim-lua/`
+- example: (not about snippets only, please `:%s/snippets/\=v:lua.yourplugin()/`)
+  - `norcalli/snippets.lua` should be promoted to `nvim-lua/` (IMNSHO)
   - a subset of the API should be standardized as the "official" snippets API.
   - user can swap in a different snippets implementation
 
@@ -105,6 +154,19 @@ Similarily, Nvim could "adopt" one package manager (packer.nvim, or something el
 ```lua
  local cjson = vim.require'cjson' -- prompt user to install binary dep if needed
 ```
+
+
+---
+
+# "can you describe Neovim in a short sentence?"
+
+but what is Neovim about, really? :confused_emoji:
+
+**Hot take**: stealing/borrowing the best ideas from other text editors and giving something back
+
+---
+
+Also: about community
 
 
     </textarea>
