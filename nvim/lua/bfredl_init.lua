@@ -109,8 +109,14 @@ function h.f(args)
     -- TODO: actually reconfigure the existing window
     a.nvim_win_close(args.update, false)
   end
-  return w
+
+  local ret
+  if args.fn then
+    ret = a.nvim__buf_do(b, args.fn)
+  end
+  return ret or w
 end
+_G.f = h.f -- HAIII
 
 function h.vimenter(startup)
   h.snippets_setup()
