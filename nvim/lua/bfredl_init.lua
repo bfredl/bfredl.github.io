@@ -56,16 +56,25 @@ v 'inoremap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
 function h.f(args)
   local b = a.nvim_create_buf(false, true)
   if args.text then
-    a.nvim_buf_set_lines(b, 0, -1, true, {args.text})
+    local text
+    if type(args.text) == "string" then
+      text = vim.split(text, '\n', true)
+    else
+      text = args.text
+    end
+    a.nvim_buf_set_lines(b, 0, -1, true, text)
   end
   local w = a.nvim_open_win(b, false, {
     relative="editor";
-    width=30;
-    height=1;
-    row=2;
-    col=2;
-    style="minimal";
+    width=args.w or 30;
+    height=args.h or 1;
+    row=args.r or 2;
+    col=args.c or 5;
+    style=args.style or "minimal";
   })
+  if args.blend then
+    a.nvim_win_set_option(w, 'winblend', args.blend)
+  end
 end
 
 function h.vimenter(startup)
