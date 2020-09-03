@@ -80,10 +80,19 @@ function h.f(args)
     end
     a.nvim_buf_set_lines(b, 0, -1, true, text)
   end
-  local w = a.nvim_open_win(b, false, {
+
+  local width=args.w or 30;
+  local height=args.h or 1;
+  if args.center == true or args.center == "r" then
+    args.r = (vim.o.lines - height) / 2
+  end
+  if args.center == true or args.center == "c" then
+    args.c = (vim.o.columns - width) / 2
+  end
+  local w = a.nvim_open_win(b, args.enter, {
     relative="editor";
-    width=args.w or 30;
-    height=args.h or 1;
+    width=width;
+    height=height;
     row=args.r or 2;
     col=args.c or 5;
     style=args.style or "minimal";
