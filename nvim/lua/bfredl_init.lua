@@ -70,6 +70,8 @@ end
 
 function h.vimenter(startup)
   h.snippets_setup()
+  -- TODO(bfredl): can the reload?
+  require'bfredl_hl'.defaults()
   if startup then
     if a.nvim__fork_serve then
       _G.prepfork = true
