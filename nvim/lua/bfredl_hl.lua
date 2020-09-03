@@ -24,16 +24,16 @@ h.colors = {
 local c = h.colors
 
 h.basetheme = {
-	LineNr = {fg=c.cyan};
+  LineNr = {fg=c.cyan};
 }
 
 function h.setall(theme)
-	for k,v in pairs(h.basetheme) do
-		h.def_hi(k,v)
-	end
+  for k,v in pairs(h.basetheme) do
+    h.def_hi(k,v)
+  end
 end
 
 function h.defaults()
-	h.setall(h.basetheme)
+  h.setall(h.basetheme)
 end
 return h
