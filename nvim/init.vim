@@ -36,6 +36,7 @@ augroup vimrc
   au BufWritePost $MYVIMRC source $MYVIMRC
   exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]." source $MYVIMRC"
 augroup END
+command! IS au InsertLeave <buffer> nested write
 " }}}
 " mappings: windows {{{
 noremap <Leader>o <C-W>o
