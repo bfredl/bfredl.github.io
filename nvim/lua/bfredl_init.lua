@@ -7,8 +7,17 @@ end
 local h = _G._bfredl
 local a = vim.api
 local v = vim.cmd
-_G._b = _G._bfredl -- for convenience
-_G._a = vim.api -- S H O R T C U T to the API:s
+
+_G.b = _G._bfredl -- for convenience
+-- TODO(bfredl):: _G.h should be shorthand for the currently edited/reloaded .lua module
+_G.h = _G._bfredl
+_G.a = vim.api -- S H O R T C U T to the API:s
+
+h.counter = h.counter or 0
+function h.id()
+  h.counter = h.counter + 1
+  return h.counter
+end
 
 -- test
 v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
@@ -75,7 +84,20 @@ function h.f(args)
   if args.blend then
     a.nvim_win_set_option(w, 'winblend', args.blend)
   end
+  if args.bg then
+      print("heee", args.bg[1])
+    local bg
+    if string.sub(args.bg, 1, 1) == "#" then
+      bg = "XXTMP"..h.id()
+      print("håå", bg)
+      require'bfredl_hl'.def_hi(bg, {bg=args.bg})
+    else
+      bg = args.bg
+    end
+    a.nvim_win_set_option(w, 'winhl', 'Normal:'..bg)
+  end
 end
+
 
 function h.vimenter(startup)
   h.snippets_setup()
