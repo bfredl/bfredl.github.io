@@ -8,6 +8,11 @@ local h = _G._bfredl
 local a = vim.api
 local v = vim.cmd
 
+function h.exec(block)
+  a.nvim_exec(block, false)
+end
+local exec = h.exec
+
 _G.b = _G._bfredl -- for convenience
 -- TODO(bfredl):: _G.h should be shorthand for the currently edited/reloaded .lua module
 _G.h = _G._bfredl
@@ -62,6 +67,8 @@ function h.xcolor()
 end
 v 'inoremap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
 
+h.toclose = h.toclose or {}
+
 function h.f(args)
   local b = a.nvim_create_buf(false, true)
   if args.text then
@@ -85,19 +92,25 @@ function h.f(args)
     a.nvim_win_set_option(w, 'winblend', args.blend)
   end
   if args.bg then
-      print("heee", args.bg[1])
     local bg
     if string.sub(args.bg, 1, 1) == "#" then
+      -- TODO(bfredl):be smart and reuse hl ids.
       bg = "XXTMP"..h.id()
-      print("håå", bg)
       require'bfredl_hl'.def_hi(bg, {bg=args.bg})
     else
       bg = args.bg
     end
     a.nvim_win_set_option(w, 'winhl', 'Normal:'..bg)
   end
+  if args.chold then
+    table.insert(h.toclose, w)
+  end
+  if args.update and a.nvim_win_is_valid(args.update) then
+    -- TODO: actually reconfigure the existing window
+    a.nvim_win_close(args.update, false)
+  end
+  return w
 end
-
 
 function h.vimenter(startup)
   h.snippets_setup()
@@ -112,6 +125,19 @@ function h.vimenter(startup)
        a.nvim__stupid_test()
     end
   end
+end
+
+exec [[
+  augroup bfredlua
+    au CursorHold * lua _bfredl.cursorhold()
+  augroup END
+]]
+
+function h.cursorhold()
+  for _, w in ipairs(h.toclose) do
+    if a.nvim_win_is_valid(w) then a.nvim_win_close(w, false) end
+  end
+  h.toclose = {}
 end
 
 if first_run then

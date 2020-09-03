@@ -3,6 +3,7 @@ set hidden
 set title
 set number
 set mouse=a
+set updatetime=1666
 " }}}
 " color scheme {{{
 set termguicolors
