@@ -103,7 +103,7 @@ function h.f(args)
     a.nvim_win_set_option(w, 'winhl', 'Normal:'..bg)
   end
   if args.chold then
-    table.insert(h.toclose, w)
+    h.toclose[w] = true
   end
   if args.update and a.nvim_win_is_valid(args.update) then
     -- TODO: actually reconfigure the existing window
@@ -134,10 +134,14 @@ exec [[
 ]]
 
 function h.cursorhold()
-  for _, w in ipairs(h.toclose) do
-    if a.nvim_win_is_valid(w) then a.nvim_win_close(w, false) end
+  for w, k in pairs(h.toclose) do
+    if not a.nvim_win_is_valid(w) then
+      h.toclose[w] = nil
+    elseif k and a.nvim_get_current_win() ~= w then
+      a.nvim_win_close(w, false)
+      h.toclose[w] = nil
+    end
   end
-  h.toclose = {}
 end
 
 if first_run then
