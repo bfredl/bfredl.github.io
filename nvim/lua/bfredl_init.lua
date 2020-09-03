@@ -70,6 +70,13 @@ v 'inoremap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
 h.toclose = h.toclose or {}
 
 function h.f(args)
+  local b,w, oc
+  if args.update and a.nvim_win_is_valid(args.update) then
+    w = args.update
+    b = a.nvim_win_get_buf(w)
+    oc = a.nvim_win_get_config(w)
+  end
+
   local b = a.nvim_create_buf(false, true)
   if args.text then
     local text
@@ -81,22 +88,30 @@ function h.f(args)
     a.nvim_buf_set_lines(b, 0, -1, true, text)
   end
 
-  local width=args.w or 30;
-  local height=args.h or 1;
+  local width=args.w or (oc and oc.width) or 30;
+  local height=args.h or (oc and oc.height) or 1;
   if args.center == true or args.center == "r" then
     args.r = (vim.o.lines - height) / 2
   end
   if args.center == true or args.center == "c" then
     args.c = (vim.o.columns - width) / 2
   end
-  local w = a.nvim_open_win(b, args.enter, {
+  local config = {
     relative="editor";
     width=width;
     height=height;
     row=args.r or 2;
     col=args.c or 5;
     style=args.style or "minimal";
-  })
+  }
+  if w then
+    a.nvim_win_set_config(w, config)
+    if args.enter then
+      a.nvim_set_current_win(w)
+    end
+  else
+    w = a.nvim_open_win(b, args.enter, config)
+  end
   if args.blend then
     a.nvim_win_set_option(w, 'winblend', args.blend)
   end
@@ -114,9 +129,8 @@ function h.f(args)
   if args.chold then
     h.toclose[w] = true
   end
-  if args.update and a.nvim_win_is_valid(args.update) then
-    -- TODO: actually reconfigure the existing window
-    a.nvim_win_close(args.update, false)
+  if args.replace and a.nvim_win_is_valid(args.replace) then
+    a.nvim_win_close(args.replace, false)
   end
 
   local ret
