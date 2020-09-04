@@ -21,11 +21,16 @@ end
 h.colors = {
   darkblue = "#1a2c41";
   midblue = "#232081";
+  cyanish = "#0088ff";
   cyan = "#1188ee";
+  violet = "#8800ff";
 }
 local c = h.colors
 
 h.basetheme = {
+  Normal = {bg=c.darkblue};
+  NormalFloat = {bg=c.darkblue};
+  Pmenu = {bg=c.violet};
   LineNr = {fg=c.cyan};
   MsgArea = {bg=c.midblue, blend=11};
 }
