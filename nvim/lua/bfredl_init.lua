@@ -81,7 +81,7 @@ function h.f(args)
   if args.text then
     local text
     if type(args.text) == "string" then
-      text = vim.split(text, '\n', true)
+      text = vim.split(args.text, '\n', true)
     else
       text = args.text
     end
@@ -103,6 +103,7 @@ function h.f(args)
     row=args.r or 2;
     col=args.c or 5;
     style=args.style or "minimal";
+    focusable=args.focusable;
   }
   if w then
     a.nvim_win_set_config(w, config)
