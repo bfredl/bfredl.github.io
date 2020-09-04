@@ -10,7 +10,6 @@ set termguicolors
 hi Normal guibg=#1a2c41
 hi NormalFloat guibg=#0088ff
 hi Pmenu guibg=#8800ff
-hi Po guibg=#0088ff
 set winblend=20
 set pumblend=15
 " #223341

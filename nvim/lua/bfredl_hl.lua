@@ -11,7 +11,8 @@ function h.def_hi(group, o)
     table.insert(parts, "gui="..attr)
     table.insert(parts, "cterm="..attr)
   end
-  if o.sp then table.insert(parts, "guisp="..sp) end
+  if o.sp then table.insert(parts, "guisp="..o.sp) end
+  if o.blend then table.insert(parts, "blend="..o.blend) end
 
   -- nvim.api.nvim_sett_highlig()(name, parts)
   vim.cmd ('highlight '..table.concat(parts, ' '))
@@ -19,12 +20,14 @@ end
 
 h.colors = {
   darkblue = "#1a2c41";
+  midblue = "#232081";
   cyan = "#1188ee";
 }
 local c = h.colors
 
 h.basetheme = {
   LineNr = {fg=c.cyan};
+  MsgArea = {bg=c.midblue, blend=11};
 }
 
 function h.setall(theme)
@@ -36,4 +39,6 @@ end
 function h.defaults()
   h.setall(h.basetheme)
 end
+
+-- h.defaults()
 return h
