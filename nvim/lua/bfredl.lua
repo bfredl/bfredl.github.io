@@ -5,15 +5,56 @@ if first_run then
 end
 -- }}}
 local h = _G.bfredl
-local a = vim.api
 local v = vim.cmd
+--- util {{{
+--
+function h.unprefix(str, pre, to)
+  local res = nil
+  if vim.startswith(str, pre) then
+    local val = string.sub(str, string.len(pre)+1)
+    if to then
+      return to(val)
+    else
+      return val
+    end
+  end
+  return nil
+end
+
+-- }}}
+-- API shortcuts {{{
+
+h.a = {}
+h.buf, h.win, h.tabpage = {}, {}, {}
+local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
+_G.a, _G.buf, _G.win, _G.tabpage = h.a, h.buf, h.win, h.tabpage
+
+for k,v in pairs(vim.api) do
+  a[k] = v
+  h.unprefix(k, 'nvim_', function (x)
+    a[x] = v
+    h.unprefix(x, 'buf_', function (m)
+      buf[m] = v
+    end)
+    h.unprefix(x, 'win_', function (m)
+      win[m] = v
+    end)
+    h.unprefix(x, 'tabpage_', function (m)
+      tabpage[m] = v
+    end)
+    h.unprefix(x, '_buf_', function (m)
+      buf['_'..m] = v
+    end)
+  end)
+end
+-- }}}
 
 -- TODO(bfredl): can the reload?
 h.colors = require'bfredl.colors'
 local colors = h.colors
 
 function h.exec(block)
-  a.nvim_exec(block, false)
+  a.exec(block, false)
 end
 local exec = h.exec
 
@@ -76,10 +117,10 @@ h.toclose = h.toclose or {}
 
 function h.f(args)
   local b,w, oc
-  if args.update and a.nvim_win_is_valid(args.update) then
+  if args.update and win.is_valid(args.update) then
     w = args.update
-    b = a.nvim_win_get_buf(w)
-    oc = a.nvim_win_get_config(w)
+    b = win.get_buf(w)
+    oc = win.get_config(w)
   end
 
   local b = a.nvim_create_buf(false, true)
@@ -111,7 +152,7 @@ function h.f(args)
     focusable=args.focusable;
   }
   if w then
-    a.nvim_win_set_config(w, config)
+    win.set_config(w, config)
     if args.enter then
       a.nvim_set_current_win(w)
     end
@@ -119,7 +160,7 @@ function h.f(args)
     w = a.nvim_open_win(b, args.enter, config)
   end
   if args.blend then
-    a.nvim_win_set_option(w, 'winblend', args.blend)
+    win.set_option(w, 'winblend', args.blend)
   end
   if args.bg then
     local bg
@@ -130,18 +171,18 @@ function h.f(args)
     else
       bg = args.bg
     end
-    a.nvim_win_set_option(w, 'winhl', 'Normal:'..bg)
+    win.set_option(w, 'winhl', 'Normal:'..bg)
   end
   if args.chold then
     h.toclose[w] = true
   end
-  if args.replace and a.nvim_win_is_valid(args.replace) then
-    a.nvim_win_close(args.replace, false)
+  if args.replace and win.is_valid(args.replace) then
+    win.close(args.replace, false)
   end
 
   local ret
   if args.fn then
-    ret = a.nvim__buf_do(b, args.fn)
+    ret = buf._do(b, args.fn)
   end
   return ret or w
 end
@@ -151,12 +192,12 @@ function h.vimenter(startup)
   h.snippets_setup()
   colors.defaults()
   if startup then
-    if a.nvim__fork_serve then
+    if a._fork_serve then
       _G.prepfork = true
-       a.nvim__fork_serve()
+       a._fork_serve()
       _G.postfork = true
        -- because reasons
-       a.nvim__stupid_test()
+       a._stupid_test()
     end
   end
 end
@@ -169,17 +210,17 @@ exec [[
 
 function h.cursorhold()
   for w, k in pairs(h.toclose) do
-    if not a.nvim_win_is_valid(w) then
+    if not win.is_valid(w) then
       h.toclose[w] = nil
-    elseif k and a.nvim_get_current_win() ~= w then
-      a.nvim_win_close(w, false)
+    elseif k and a.get_current_win() ~= w then
+      win.close(w, false)
       h.toclose[w] = nil
     end
   end
 end
 
 if first_run then
-  vim.cmd [[autocmd VimEnter * lua _G.bfredl.vimenter(true)]]
+  v [[autocmd VimEnter * lua _G.bfredl.vimenter(true)]]
 else
   h.vimenter(false)
 end
