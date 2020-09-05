@@ -181,10 +181,17 @@ function h.f(args)
   end
 
   local ret
-  if args.fn then
-    ret = buf._do(b, args.fn)
-  end
-  return ret or w
+  return buf._do(b, function()
+    local ret
+    if args.term then
+      vim.fn.termopen(args.term)
+    end
+    -- already curwin/curbuf but be nice
+    if args.fn then
+      ret = args.fn(b,w)
+    end
+    return ret or w
+  end)
 end
 _G.f = h.f -- HAIII
 
