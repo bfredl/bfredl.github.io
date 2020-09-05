@@ -18,16 +18,19 @@ end)
 
 s:slide("toc", function()
   m.header 'Table of contents'
-  sf {r=3, text=[[
-- whois @bfredl                           .
+  sf {r=3, blend=0, bg="#113366", text=[[
+- whois @bfredl ?                         .
+
 - Neovim 0.4: what works
   - grids
   - and more grids
+
 - Neovim 0.5: a vision
   - ftplugin 2.0: LSP and tree-sitter
   - dependency management
-  - the general X:Y problem
-- Final remarks]]}
+  - the general X:Y problem]], fn=function()
+    a.buf_add_highlight(0, 0, "Orangj", 0, 8, 15)
+  end}
 
 end)
 
@@ -38,6 +41,7 @@ s:slide("bfredl", function()
 - Neovim contributor since 2014
   - plan was to "do" pynvim only
   - but got addicted to C coding
+
 - Fall 2020: 50% Neovim "employee"
   - 0.5 release manager (with justinmk, jamessan)
   - residental madman in charge]]}
@@ -193,6 +197,7 @@ _G.s = s
 
 -- into hack
 vim.cmd [[hi String guifg=#ddaaDD]]
+vim.cmd [[hi Orangj guifg=#ef8008 gui=bold]]
 vim.cmd [[command! -nargs=1 M lua s:show '<args>']]
 vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr> ]]
 vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr> ]]
