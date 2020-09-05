@@ -120,7 +120,7 @@ end)
 s:slide("bfred2", function()
   m.header "@bfredl's autumn 2020"
 
-  sf {r=3, text=[[- Doing the Work 50% on Neovim quasi-officially                     .
+  sf {r=3, blend=0, bg="#002030", fg="#ff9932", text=[[- Doing the Work 50% on Neovim quasi-officially                 .
 - Deliver Neovim 0.5-RC in time for christmas
    - TODO: shiny christmas lights
 
@@ -130,7 +130,7 @@ s:slide("bfred2", function()
 - Find the right person for each of my crazy ideas
 
 - zig-lang plugin host (as @smolck has taken over Neovim.jl)
-  - but achshully smolck will do that as well ]]}
+  - but achshully smolck will do that as well ]], }
 end)
 
 s:slide("deps", function()
