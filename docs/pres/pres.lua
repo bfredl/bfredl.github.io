@@ -97,13 +97,14 @@ end)
 s:slide("neo5", function()
   m.header 'Neovim 0.5'
   sf {r=3, text=[[
-- planned 2020 Christmas release! :sparkles:        .
+- planned 2020 Christmas release! :sparkles:                    .
 - or at least usable RC :]
 
 - builtin LSP (@tjdevries, @h-michael, @norcalli)
 - tree-sitter syntax highlighting (@vigoux)
   - Architext :+100:
 - `:smile` and `:nyancat` (promise)
+- fork server? (or unexec(), but even emacs wants to not do that)
 
 probably for 0.6 (but let's see)
 
@@ -190,6 +191,8 @@ end)
 s:show (s.cur or "intro")
 _G.s = s
 
+-- into hack
+vim.cmd [[hi String guifg=#ddaaDD]]
 vim.cmd [[command! -nargs=1 M lua s:show '<args>']]
 vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr> ]]
 vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr> ]]
