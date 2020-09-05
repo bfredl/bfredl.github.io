@@ -140,8 +140,8 @@ function h.f(args)
     b = a.nvim_create_buf(false, true)
   end
   local firstline = ""
+  local text
   if args.text then
-    local text
     if type(args.text) == "string" then
       text = vim.split(args.text, '\n', true)
     else
@@ -165,7 +165,15 @@ function h.f(args)
       width = 10
     end
   end
-  local height=args.h or (oc and oc.height) or 1;
+  if width < 1 then width = 1 end
+  local height=args.h or (oc and oc.height)
+  if not height then
+    if text then
+      height = #text
+    else
+      height = 1
+    end
+  end
   if args.center == true or args.center == "r" then
     args.r = (p_rows - height) / 2
   end

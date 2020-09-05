@@ -45,11 +45,14 @@ m.Show = {}
 local Show = m.Show
 Show.__index = Show
 
-function m.make_show(name)
+function m.make_show(name, state)
   local self = setmetatable({}, Show)
   self.name = name
   self.slides = {}
   self.order = {}
+  if state then
+    self.cur = state.cur
+  end
   return self
 end
 
@@ -62,8 +65,10 @@ function Show:slide(key, fn)
 end
 
 function Show:show(id)
+  cls()
   id = id or self.order[1]
   self.slides[id]()
+  self.cur = id
 end
 
 return m

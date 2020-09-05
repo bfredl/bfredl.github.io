@@ -29,7 +29,7 @@ local c = h.colors
 
 h.basetheme = {
   Normal = {bg=c.darkblue};
-  NormalFloat = {bg=c.darkblue};
+  NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};
   LineNr = {fg=c.cyan};
   MsgArea = {bg=c.midblue, blend=11};
