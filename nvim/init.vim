@@ -4,6 +4,8 @@ set title
 set number
 set smartcase
 set ignorecase
+set expandtab
+set sw=2 ts=2 sts=2
 set incsearch
 set mouse=a
 set updatetime=1666
@@ -55,6 +57,14 @@ map <Leader>C <Plug>(miniyank-cycle)
 map <Leader>b <Plug>(miniyank-toblock)
 map <Leader>l <Plug>(miniyank-toline)
 map <Leader>k <Plug>(miniyank-tochar)
+" }}}
+" mappings: NL {{{
+function! NLuaBindings()
+	nmap <buffer> <Plug>ch:un <Plug>(Luadev-RunLine)
+	nmap <buffer> <Plug>ch:ud <Plug>(Luadev-RunWord)
+	vmap <buffer> <Plug>ch:un <Plug>(Luadev-Run)
+	imap <buffer> <Plug>ch:.u <Plug>(Luadev-Complete)
+endfunction
 " }}}
 " LOGIC: preinit/lua {{{
 if !get(g:, "bfredl_preinit")

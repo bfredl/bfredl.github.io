@@ -1,8 +1,12 @@
-local h = require'bfredl.moonwatch'
+--local h = require'bfredl.moonwatch'
+local m = dofile'/home/bjorn/config2/nvim/lua/bfredl/moonwatch.lua'
+_G.m = m
+local a = bfredl.a
 
-local sf = h.float
+local sf = m.float
 _G.sf = sf
 
-h.cls()
-sf {r=3, center='c', text="graj", blend=50}
-sf {r=20, center='c', text="möö", blend=30, bg="#33FF00"}
+m.prepare()
+m.cls()
+sf {r=3, text="graj", blend=50}
+sf {r=5, text="möö", blend=30, bg="#33FF00"}

@@ -1,20 +1,39 @@
 _G._moonwatch = _G._moonwatch or {}
-local h = _G._moonwatch
+local m = _G._moonwatch
 local b = _G.bfredl
+local sbuf, stage
 
-h.ephemeral = {}
+m.ephemeral = m.ephemeral or {}
 
-function h.float(args)
-  h.ephemeral[b.f(args)] = true
+function m.float(args)
+  m.prepare()
+  if not args.relative then
+    args.win = stage
+  end
+  m.ephemeral[b.f(args)] = true
 end
 
-function h.cls()
-  for w,_ in pairs(h.ephemeral) do
+function m.cls()
+  for w,_ in pairs(m.ephemeral) do
     if win.is_valid(w) then
       win.close(w, false)
     end
-    h.ephemeral[w] = nil
+    m.ephemeral[w] = nil
   end
 end
+_G.cls = m.cls -- FIXME
 
-return h
+function m.prepare()
+  if not m.stage then
+    local save = a.get_current_win()
+    m.sbuf = a.create_buf(true, true)
+    a.buf_set_name(m.sbuf, "[stage]")
+    m.stage = b.f{buf=m.sbuf, enter=true}
+    a.win_set_buf(m.stage, m.sbuf)
+    vim.cmd [[wincmd H]]
+    a.set_current_win(save)
+  end
+  stage, sbuf = m.stage, m.sbuf
+end
+
+return m

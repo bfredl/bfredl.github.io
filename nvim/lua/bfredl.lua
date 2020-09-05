@@ -69,10 +69,19 @@ local exec = h.exec
 h.colors = require'bfredl.colors'
 local colors = h.colors
 --- }}}
-
+-- them basic bindings {{{
 -- test
 v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 
+-- TODO(bfredl): reload all the filetypes when reloading bfredl.lua
+v [[
+  augroup bfredlft
+    au FileType lua noremap <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>
+    au FileType lua noremap <Plug>ch:un <cmd>update<cr><cmd>luafile %<cr>
+  augroup END
+]]
+
+-- }}}
  -- packages {{{
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
@@ -125,8 +134,11 @@ function h.f(args)
     b = win.get_buf(w)
     oc = win.get_config(w)
   end
-
-  local b = a.nvim_create_buf(false, true)
+  if args.buf and buf.is_valid(args.buf) then
+    b = args.buf
+  else
+    b = a.nvim_create_buf(false, true)
+  end
   if args.text then
     local text
     if type(args.text) == "string" then
@@ -145,8 +157,17 @@ function h.f(args)
   if args.center == true or args.center == "c" then
     args.c = (vim.o.columns - width) / 2
   end
+	local relative = args.relative
+  if not relative then
+		if args.win then
+			relative = 'win'
+    else
+      relative = 'editor'
+    end
+	end
   local config = {
-    relative="editor";
+    relative=relative;
+    win=args.win;
     width=width;
     height=height;
     row=args.r or 2;
