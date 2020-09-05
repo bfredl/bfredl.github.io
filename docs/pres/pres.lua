@@ -94,6 +94,35 @@ s:slide("grids", function()
     keycast(true)
   end}
 end)
+
+
+s:slide("deps", function()
+  m.header 'dependency management'
+  sf {r=3, text=[[
+  - Problem: there not one good standard for dependencies                         .
+
+  - idea: just use luarocks for deps (even .vim code)
+  - package versioning and neo/vim version in the same syntem
+  - A user dotfiles repo is just another plugin.
+
+
+  - TJ is Doing The Work (someday soon)
+  - Neovim 0.5:]]}
+  sf {r=14, c=10, bg="#114477", ft="lua", text=[[
+local snippets = vim.require {'norcalli/snippets.nvim', commit="f7f4e43"}
+local plenary = vim.require 'nvim-lua/plenary.nvim'
+local foobar = vim.require {'someone/foobar', version="0.7+"}
+
+local bfredl = vim.require {'bfredl/bfredl.github.io', subdir='nvim'}
+-- ^ Now you can bfredl.moonwatch.show() without my other madness]]}
+  sf {r=23, text=[[
+  - streach goal: collab with Vim9                                               .]]}
+
+-- notes: you should be able to just use
+
+end)
+
+
 s:show (s.cur or "intro")
 _G.s = s
 

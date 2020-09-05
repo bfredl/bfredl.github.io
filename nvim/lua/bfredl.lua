@@ -237,6 +237,9 @@ function h.f(args)
     if args.term then
       vim.fn.termopen(args.term)
     end
+    if args.ft then
+      v ([[set ft=]]..args.ft)
+    end
     -- already curwin/curbuf but be nice
     if args.fn then
       ret = args.fn(b,w)
