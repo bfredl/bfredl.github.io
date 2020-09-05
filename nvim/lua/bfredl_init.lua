@@ -30,6 +30,7 @@ v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
+  use 'vim-conf-live/pres.vim'
 
   use '~/dev/nvim-miniyank'
   use '~/dev/nvim-bufmngr'

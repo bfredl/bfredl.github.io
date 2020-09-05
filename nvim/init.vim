@@ -2,6 +2,9 @@
 set hidden
 set title
 set number
+set smartcase
+set ignorecase
+set incsearch
 set mouse=a
 set updatetime=1666
 " }}}
