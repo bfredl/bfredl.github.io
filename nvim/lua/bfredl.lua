@@ -1,12 +1,17 @@
--- locgic: first_run {{{
+-- logic: first_run, setup module and _G {{{
 local first_run = not _G.bfredl
 if first_run then
   _G.bfredl = {}
 end
--- }}}
 local h = _G.bfredl
-local v = vim.cmd
---- util {{{
+_G.b = _G.bfredl -- for convenience
+
+-- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
+_G.h = _G.bfredl
+
+
+-- }}}
+-- util {{{
 --
 function h.unprefix(str, pre, to)
   local res = nil
@@ -21,6 +26,11 @@ function h.unprefix(str, pre, to)
   return nil
 end
 
+h.counter = h.counter or 0
+function h.id()
+  h.counter = h.counter + 1
+  return h.counter
+end
 -- }}}
 -- API shortcuts {{{
 
@@ -47,31 +57,23 @@ for k,v in pairs(vim.api) do
     end)
   end)
 end
--- }}}
 
--- TODO(bfredl): can the reload?
-h.colors = require'bfredl.colors'
-local colors = h.colors
-
+local v = vim.cmd
 function h.exec(block)
   a.exec(block, false)
 end
 local exec = h.exec
-
-_G.b = _G.bfredl -- for convenience
--- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
-_G.h = _G.bfredl
-_G.a = vim.api -- S H O R T C U T to the API:s
-
-h.counter = h.counter or 0
-function h.id()
-  h.counter = h.counter + 1
-  return h.counter
-end
+-- }}}
+-- colors {{{
+-- TODO(bfredl): can the reload?
+h.colors = require'bfredl.colors'
+local colors = h.colors
+--- }}}
 
 -- test
 v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 
+ -- packages {{{
 require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
@@ -82,8 +84,8 @@ require'packer'.startup(function ()
   use '~/dev/nvim-luadev'
   use '~/dev/ibus-chords'
 end)
-
-function h.snippets_setup()
+-- }}}
+function h.snippets_setup() -- {{{
   local s = require'snippets'
   s.use_suggested_mappings()
   s.snippets = {
@@ -105,14 +107,15 @@ end]];
       vp = "(void *)";
     };
   }
-end
-
+end -- }}}
+-- xcolor {{{
 function h.xcolor()
  local out = io.popen("xcolor"):read("*a")
  return vim.trim(out)
 end
 v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
-
+-- }}}
+-- floaty stuff {{{
 h.toclose = h.toclose or {}
 
 function h.f(args)
@@ -194,8 +197,8 @@ function h.f(args)
   end)
 end
 _G.f = h.f -- HAIII
-
-function h.vimenter(startup)
+-- }}}
+function h.vimenter(startup) -- {{{
   h.snippets_setup()
   colors.defaults()
   if startup then
@@ -207,8 +210,8 @@ function h.vimenter(startup)
        a._stupid_test()
     end
   end
-end
-
+end -- }}}
+-- autocmds {{{
 exec [[
   augroup bfredlua
     au CursorHold * lua _G.bfredl.cursorhold()
@@ -225,9 +228,11 @@ function h.cursorhold()
     end
   end
 end
-
+-- }}}
+-- logic {{{
 if first_run then
   v [[autocmd VimEnter * lua _G.bfredl.vimenter(true)]]
 else
   h.vimenter(false)
 end
+-- }}}

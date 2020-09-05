@@ -30,7 +30,7 @@ let g:mapleader = ","
 noremap <leader>u <cmd>source $MYVIMRC<cr>
 " TODO(bfredl): jump to open window if already exist
 noremap <Leader>v <cmd>split $MYVIMRC<CR>
-noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]<CR>
+noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]<CR>
 augroup vimrc
   au!
   au BufWritePost $MYVIMRC source $MYVIMRC
