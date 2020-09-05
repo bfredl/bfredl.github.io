@@ -52,7 +52,7 @@ s:slide("neo4", function()
   - @andreypopp and the luv maintainers
 - ext_multigrid (GSOC 2019 @coditiva née @utkarshme)
 - nvim_open_win(), 'winblend' (floats, @bfredl :)
--  nvim_get_context, nvim_load_context (multi-proc, @abdelhakeem)]]}
+- nvim_get_context, nvim_load_context (multi-proc, @abdelhakeem)]]}
 
 end)
 
