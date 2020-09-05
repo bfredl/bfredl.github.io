@@ -139,6 +139,7 @@ function h.f(args)
   else
     b = a.nvim_create_buf(false, true)
   end
+  local firstline = ""
   if args.text then
     local text
     if type(args.text) == "string" then
@@ -146,16 +147,30 @@ function h.f(args)
     else
       text = args.text
     end
+    firstline = text[1] or ""
     a.nvim_buf_set_lines(b, 0, -1, true, text)
   end
 
-  local width=args.w or (oc and oc.width) or 30;
+  local p_rows, p_cols = vim.o.lines-1, vim.o.columns
+  if args.win then
+    p_rows = win.get_height(args.win)
+    p_cols = win.get_width(args.win)
+  end
+
+  local width=args.w or (oc and oc.width)
+  if not width then
+    if firstline then
+      width = a.strwidth(firstline)
+    else
+      width = 10
+    end
+  end
   local height=args.h or (oc and oc.height) or 1;
   if args.center == true or args.center == "r" then
-    args.r = (vim.o.lines - height) / 2
+    args.r = (p_rows - height) / 2
   end
   if args.center == true or args.center == "c" then
-    args.c = (vim.o.columns - width) / 2
+    args.c = (p_cols - width) / 2
   end
 	local relative = args.relative
   if not relative then
@@ -207,6 +222,10 @@ function h.f(args)
   local ret
   return buf._do(b, function()
     local ret
+    if args.cat then
+      if args.term then error('FY!') end
+      args.term = {'cat', vim.fn.expand(args.cat, ':p')}
+    end
     if args.term then
       vim.fn.termopen(args.term)
     end

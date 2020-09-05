@@ -10,6 +10,7 @@ function m.float(args)
   if not args.relative then
     args.win = stage
   end
+  args.focusable = args.focusable or false
   m.ephemeral[b.f(args)] = true
 end
 
@@ -34,6 +35,35 @@ function m.prepare()
     a.set_current_win(save)
   end
   stage, sbuf = m.stage, m.sbuf
+end
+
+function m.header(text)
+  m.float {r=1, center='c', text=text}
+end
+
+m.Show = {}
+local Show = m.Show
+Show.__index = Show
+
+function m.make_show(name)
+  local self = setmetatable({}, Show)
+  self.name = name
+  self.slides = {}
+  self.order = {}
+  return self
+end
+
+function Show:slide(key, fn)
+  if self.slides[key] then
+    error("duplicate "..key)
+  end
+  self.slides[key] = fn
+  table.insert(self.order, key)
+end
+
+function Show:show(id)
+  id = id or self.order[1]
+  self.slides[id]()
 end
 
 return m
