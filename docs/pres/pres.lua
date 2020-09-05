@@ -124,8 +124,8 @@ s:slide("bfred2", function()
 - Deliver Neovim 0.5-RC in time for christmas
    - TODO: shiny christmas lights
 
-- less coding, more code reviewu
-   -  so many people are coding already
+- less coding, more code review
+   -  so many people are coding already :DD
 
 - Find the right person for each of my crazy ideas
 
