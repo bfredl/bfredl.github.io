@@ -196,6 +196,7 @@ s:show (s.cur or "intro")
 _G.s = s
 
 -- into hack
+-- hack
 vim.cmd [[hi String guifg=#ddaaDD]]
 vim.cmd [[hi Orangj guifg=#ef8008 gui=bold]]
 vim.cmd [[command! -nargs=1 M lua s:show '<args>']]
