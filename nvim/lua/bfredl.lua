@@ -1,21 +1,25 @@
 -- locgic: first_run {{{
-local first_run = not _G._bfredl
+local first_run = not _G.bfredl
 if first_run then
-  _G._bfredl = {}
+  _G.bfredl = {}
 end
 -- }}}
-local h = _G._bfredl
+local h = _G.bfredl
 local a = vim.api
 local v = vim.cmd
+
+-- TODO(bfredl): can the reload?
+h.colors = require'bfredl.colors'
+local colors = h.colors
 
 function h.exec(block)
   a.nvim_exec(block, false)
 end
 local exec = h.exec
 
-_G.b = _G._bfredl -- for convenience
--- TODO(bfredl):: _G.h should be shorthand for the currently edited/reloaded .lua module
-_G.h = _G._bfredl
+_G.b = _G.bfredl -- for convenience
+-- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
+_G.h = _G.bfredl
 _G.a = vim.api -- S H O R T C U T to the API:s
 
 h.counter = h.counter or 0
@@ -66,7 +70,7 @@ function h.xcolor()
  local out = io.popen("xcolor"):read("*a")
  return vim.trim(out)
 end
-v 'inoremap <F3> <c-r>=v:lua._bfredl.xcolor()<cr>'
+v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
 
 h.toclose = h.toclose or {}
 
@@ -122,7 +126,7 @@ function h.f(args)
     if string.sub(args.bg, 1, 1) == "#" then
       -- TODO(bfredl):be smart and reuse hl ids.
       bg = "XXTMP"..h.id()
-      require'bfredl_hl'.def_hi(bg, {bg=args.bg})
+      colors.def_hi(bg, {bg=args.bg})
     else
       bg = args.bg
     end
@@ -145,8 +149,7 @@ _G.f = h.f -- HAIII
 
 function h.vimenter(startup)
   h.snippets_setup()
-  -- TODO(bfredl): can the reload?
-  require'bfredl_hl'.defaults()
+  colors.defaults()
   if startup then
     if a.nvim__fork_serve then
       _G.prepfork = true
@@ -160,7 +163,7 @@ end
 
 exec [[
   augroup bfredlua
-    au CursorHold * lua _bfredl.cursorhold()
+    au CursorHold * lua _G.bfredl.cursorhold()
   augroup END
 ]]
 
@@ -176,7 +179,7 @@ function h.cursorhold()
 end
 
 if first_run then
-  vim.cmd [[autocmd VimEnter * lua _G._bfredl.vimenter(true)]]
+  vim.cmd [[autocmd VimEnter * lua _G.bfredl.vimenter(true)]]
 else
   h.vimenter(false)
 end

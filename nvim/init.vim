@@ -34,7 +34,7 @@ noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl_init.lua",
 augroup vimrc
   au!
   au BufWritePost $MYVIMRC source $MYVIMRC
-  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl_init.lua", 0)[0]." source $MYVIMRC"
+  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]." source $MYVIMRC"
 augroup END
 command! IS au InsertLeave <buffer> nested write
 " }}}
@@ -64,5 +64,5 @@ if !get(g:, "bfredl_preinit")
   let g:bfredl_preinit = v:true
 end
 
-lua dofile(vim.api.nvim_get_runtime_file("lua/bfredl_init.lua", 0)[1])
+lua dofile(vim.api.nvim_get_runtime_file("lua/bfredl.lua", 0)[1])
 " }}}
