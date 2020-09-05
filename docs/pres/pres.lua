@@ -41,9 +41,27 @@ s:slide("bfredl", function()
 - Fall 2020: 50% Neovim "employee"
   - 0.5 release manager (with justinmk, jamessan)
   - residental madman in charge]]}
+end)
+
+s:slide("neo4", function()
+  m.header 'Neovim 0.4'
+  sf {r=3, text=[[
+- was releaseed on XX (patch 0.4.4 on YY)
+- luv event loop (lua code can async io directly)
+  - @andreypopp and the luv maintainers
+- ext_multigrid (GSOC 2019 @coditiva née @utkarshme)
+- nvim_open_win(), 'winblend' (floats, @bfredl :)
+- MORE]]}
 
 end)
 
+s:slide("multigrid", function()
+  m.header 'ext_multigrid/floats'
+  sf {r=3, text=[[
+- These slides are built using floats :]]}
+
+  sf {c=10, r=5, w=80, h=30, cat="smile2.cat", blend=10, bg="#330033"}
+end)
 
 s:show (s.cur or "intro")
 _G.s = s
