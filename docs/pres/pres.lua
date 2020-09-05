@@ -51,17 +51,52 @@ s:slide("neo4", function()
   - @andreypopp and the luv maintainers
 - ext_multigrid (GSOC 2019 @coditiva née @utkarshme)
 - nvim_open_win(), 'winblend' (floats, @bfredl :)
+bfredl
 - MORE]]}
 
 end)
 
 s:slide("multigrid", function()
   m.header 'ext_multigrid/floats'
-  sf {r=3, text=[[
-- These slides are built using floats :]]}
+  sf {r=3, text=[[- These slides are built using floats :)]]}
 
   sf {c=10, r=5, w=80, h=30, cat="smile2.cat", blend=10, bg="#330033"}
 end)
 
+s:slide("multigrid2", function()
+  m.header 'ext_multigrid/floats'
+  sf {r=3, text=[[- I accidentially a tmux with pseudo-transparent floats
+- and I am not even ashamed
+- These slides are built using floats]]}
+
+  sf {c=10, r=7, w=9000, h=20, blend=50, bg="#330033"}
+end)
+
+s:slide("grids", function()
+  m.header 'what is a grid?'
+  sf {r=3, text=[[- An ordinary window is a grid
+- The pum is a grid
+  - The extra info next to the pum is also a grid
+- The cmdline is a grid
+- Messages is a grid
+- Libvterm lives in a grid
+  - So we get term apps for free, like fzf
+- A nested neovim worker is a grid (containing more grids, babooshka)
+  - Decorations (virt text) could be grids? 
+- Lsp hover info is a grid.
+- Html panes are not grids, but external UI can mix and match
+- A big clock is a grid
+- Jupyter (IPython repl) is a grid
+- Lua output is a grid (and so on and so on)
+]]}
+
+  sf {c=vim.o.columns, r=3, w=40, h=30, blend=50, bg="#330033", fn=function()
+    keycast(true)
+  end}
+end)
 s:show (s.cur or "intro")
 _G.s = s
+
+vim.cmd [[command! -nargs=1 M lua s:show '<args>']]
+vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr> ]]
+vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr> ]]

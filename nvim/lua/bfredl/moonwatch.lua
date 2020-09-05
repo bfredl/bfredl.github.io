@@ -28,7 +28,7 @@ function m.prepare()
   if not m.stage then
     local save = a.get_current_win()
     m.sbuf = a.create_buf(true, true)
-    a.buf_set_name(m.sbuf, "[stage]")
+    a.buf_set_name(m.sbuf, "[Moonwatch]")
     m.stage = b.f{buf=m.sbuf, enter=true}
     a.win_set_buf(m.stage, m.sbuf)
     vim.cmd [[wincmd H]]
@@ -50,6 +50,7 @@ function m.make_show(name, state)
   self.name = name
   self.slides = {}
   self.order = {}
+  self.unorder = {}
   if state then
     self.cur = state.cur
   end
@@ -62,6 +63,7 @@ function Show:slide(key, fn)
   end
   self.slides[key] = fn
   table.insert(self.order, key)
+  self.unorder[key] = #self.order
 end
 
 function Show:show(id)
@@ -69,6 +71,13 @@ function Show:show(id)
   id = id or self.order[1]
   self.slides[id]()
   self.cur = id
+end
+
+function Show:mov(d)
+  local num = self.unorder[self.cur]
+  if num and self.order[num+d] then
+    self:show(self.order[num+d])
+  end
 end
 
 return m
