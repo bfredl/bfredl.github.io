@@ -19,7 +19,7 @@ end)
 s:slide("toc", function()
   m.header 'Table of contents'
   sf {r=3, text=[[
-- whois @bfredl         .
+- whois @bfredl                           .
 - Neovim 0.4: what works
   - grids
   - and more grids
@@ -46,13 +46,13 @@ end)
 s:slide("neo4", function()
   m.header 'Neovim 0.4'
   sf {r=3, text=[[
-- was releaseed on XX (patch 0.4.4 on YY)
+- was releaseed on sep 16 2019 (patch 0.4.4 on Aug 5 2020)            .
+
 - luv event loop (lua code can async io directly)
   - @andreypopp and the luv maintainers
 - ext_multigrid (GSOC 2019 @coditiva née @utkarshme)
 - nvim_open_win(), 'winblend' (floats, @bfredl :)
-bfredl
-- MORE]]}
+-  nvim_get_context, nvim_load_context (multi-proc, @abdelhakeem)]]}
 
 end)
 
@@ -95,6 +95,29 @@ s:slide("grids", function()
   end}
 end)
 
+s:slide("neo5", function()
+  m.header 'Neovim 0.5'
+  sf {r=3, text=[[
+- planned 2020 Christmas release! :sparkles:        .
+- or at least usable RC :]
+
+- builtin LSP (@tjdevries, @h-michael, @norcalli)
+- tree-sitter syntax highlighting (@vigoux)
+  - Architext :+100`
+- `:smile` and `:nyancat` (promise)
+
+probably for 0.6 (but let's see)
+
+- remote TUI (GSOC 2019 @hlpr98 )
+- ui.c refactor (burning all bridges)
+- rewrite ui_compositor.c to a real compositor
+- revive rplugins ]], fn=function()
+
+  a.buf_add_highlight(0, 0, "Title", 0, 15, 33)
+  a.buf_add_highlight(0, 0, "MoreMsg", 0, 34, 45)
+ end}
+
+end)
 
 s:slide("deps", function()
   m.header 'dependency management'
@@ -117,9 +140,36 @@ local bfredl = vim.require {'bfredl/bfredl.github.io', subdir='nvim'}
 -- ^ Now you can bfredl.moonwatch.show() without my other madness]]}
   sf {r=23, text=[[
   - streach goal: collab with Vim9                                               .]]}
+end)
 
+s:slide("xy", function()
+  m.header 'X:Y problem'
+
+  sf {r=3, text=[[
+- what LSP protocol does is solve one X:Y                                . 
+  - X = editor, Y = compiler/analyzer
+- I want Nvim 0.5 to do this for common plugin patterns
+
+- example: snippets
+ - @bfredl original vision: just ship noralli/snippets.nvim in 0.5 binary
+ - more realistic: formalize a _baseline_ snippets API
+  - X = deoppett, snippets.nvim, Y = LSP, dotfiles, treesitter, etc
+  - still a ref impl in neovim/runtime ?
+
+- exapmle: package management (previous slide :)
+  - :packadd does _something_, but not deps
+
+- example: fuzzy finder / action menu
+  - unite/denite
+  - telescope
+  - vim-clap
+]]}
 -- notes: you should be able to just use
+end)
 
+s:slide("ending", function()
+  m.header 'QUESTIONS? '
+  sf {r=4, w=97, h=30, cat="fire_cut.cat", blend=10}
 end)
 
 
