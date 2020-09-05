@@ -115,7 +115,22 @@ probably for 0.6 (but let's see)
   a.buf_add_highlight(0, 0, "Title", 0, 15, 33)
   a.buf_add_highlight(0, 0, "MoreMsg", 0, 34, 45)
  end}
+end)
 
+s:slide("bfred2", function()
+  m.header "@bfredl's autumn 2020"
+
+  sf {r=3, text=[[- Doing the Work 50% on Neovim quasi-officially                     .
+- Deliver Neovim 0.5-RC in time for christmas
+   - TODO: shiny christmas lights
+
+- less coding, more code reviewu
+   -  so many people are coding already
+
+- Find the right person for each of my crazy ideas
+
+- zig-lang plugin host (as @smolck has taken over Neovim.jl)
+  - but achshully smolck will do that as well ]]}
 end)
 
 s:slide("deps", function()
