@@ -102,7 +102,7 @@ s:slide("neo5", function()
 
 - builtin LSP (@tjdevries, @h-michael, @norcalli)
 - tree-sitter syntax highlighting (@vigoux)
-  - Architext :+100`
+  - Architext :+100:
 - `:smile` and `:nyancat` (promise)
 
 probably for 0.6 (but let's see)
