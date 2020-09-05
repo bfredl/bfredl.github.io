@@ -74,21 +74,20 @@ end)
 
 s:slide("grids", function()
   m.header 'what is a grid?'
-  sf {r=3, text=[[- An ordinary window is a grid
+  sf {r=3, text=[[- An ordinary window is a grid                                 .
 - The pum is a grid
   - The extra info next to the pum is also a grid
 - The cmdline is a grid
 - Messages is a grid
 - Libvterm lives in a grid
   - So we get term apps for free, like fzf
-- A nested neovim worker is a grid (containing more grids, babooshka)
+- A nested neovim worker is a grid (containing more grids)
   - Decorations (virt text) could be grids? 
 - Lsp hover info is a grid.
 - Html panes are not grids, but external UI can mix and match
 - A big clock is a grid
 - Jupyter (IPython repl) is a grid
-- Lua output is a grid (and so on and so on)
-]]}
+- Lua output is a grid (and so on and so on)]]}
 
   sf {c=vim.o.columns, r=3, w=40, h=30, blend=50, bg="#330033", fn=function()
     keycast(true)
