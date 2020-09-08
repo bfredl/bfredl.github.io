@@ -1,0 +1,40 @@
+BUGSS:
+  - [x] pum is WRONG in right vsplit
+  - [ ] float will clobber msgsep if float touches bottom of screen
+
+FEATURES:
+  - [ ] universal winhl
+  - [ ] setl guifont
+  - [ ] RUNTIME:
+    - [ ] lua lib for output buffer/ansi parsing
+
+UNRELATED:
+  - [x] remove ui_options breakage in terminal/tui_spec.lua
+
+UNNECESSARY REDRAWS:
+  - [x] nvim_command
+  - [x] debug_sign specific redraw entry points (just mark for later redraw!)
+
+MINOR QUIBBLES:
+  - [x] check remaining invalid default_grid.Rows!
+  - [x] delete ui_has() in ui_line() and ui_grid_cursor_goto() (already done in float PR?)
+  - [x] related: simplify grid adjustment. i e row_offset in screen.c only, NOT ui.c!(extract from float PR!)
+  - [ ] rename DEFAULT_GRID_HANDLE
+  - [-] delete grid_assign_handle (float PR??)
+  - [ ] Screen:_handle_win_pos indent.
+  - [x] grid_puts_line_flush move `grid` to start
+  - [ ] join: if (schar_cmp(grid->chars[off], sc) || grid->attrs[off] != attr) {
+  - [ ] line_offset/line_wraps type + use malloc(sizeof(*array)) !
+  - [ ] also malloc(sizeof(*linebuf_char)
+  - [x] define SCREEN_GRID_INIT?
+  - [x] check the mess around win_alloc_lines and win_free_lsize
+  - [x] delet screen_valid already
+  - [x] screenalloc, screenclear, screenclear2: DO SOMETHING
+
+Whatever
+  - [ ]
+
+A MORE MAJOR QUIBBLE:
+  - [ ] refactor all the shit around screenalloc and ui_refresh
+
+

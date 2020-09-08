@@ -1,0 +1,52 @@
+random:
+- Anything from FOUR-REVISION!
+
+FIxxa:
+- merge palette color passthrouh [done]
+- nvim_buf_set_highlight > sign/linehl in priority
+- nvim_buf_attach: document on_detach!
+- cnoremap <expr> <right> pumvisible() ? "<down>" : "<right>"
+  needs to use p_wcm.
+- nvim_buf_get_offset(0, line) shouldn't flush if "line" is the locked line!
+- z= crash with ext_messages
+- "visual NDEBUG" in release builds
+  - unprintable unicode will be replaced by replacement char
+  -  invalid attribute will be replaced with shiny red (indication of error, but does not stop you from using the editor)
+
+
+wörk:
+ - tree-sitter!
+ - lua regex api
+ - lua rpc (like luv -> channel)
+ - lua direct access to terminal emulator (feed bytes both ways)
+ - extmarks revision
+  - nvim_buf_clear_namespace with row,col ranges
+  - get/set_text(start,end,mode)
+ - byte based updates
+  - test ~, gu gU
+
+vvlua:
+ - call v:lua.nvim_lsp#pyls.setup({})
+ - or v:lua#nvim_lsp#pyls.setup({})
+ - or v:lua.require'nvim_lsp'.pyls.setup({}), LOL
+
+Review:
+- --remote
+- remote TUI
+
+UI:
+- bufhl higher priority than sign linehl!
+- Float borders
+- float: sticky, show/hide
+- float setpos should behave like an extmark
+- modal terminal
+- ext_multigrid: make new areas after grid_resize invalid (just like grid_scroll)
+- ext_statusline!
+- hl_group_set for subscribed groups!
+- win_viewport[topline, buffer cursor, etc]
+- API function [grid, row, col] -> [winid, line, colnr] for UI-side hover!
+
+OPTIONS:
+- new win-buf pair must not be copied from a style=minimal float!
+- nvim_buf_set_option('winopt') for set "next value to copy" ?
+

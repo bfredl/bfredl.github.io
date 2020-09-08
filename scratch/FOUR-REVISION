@@ -1,0 +1,43 @@
+CRASHES:
+  - [x] VimResized #10002
+
+GLITCHES:
+  - [ ] float will clobber msgsep if float touches bottom of screen
+  - [x] nvim_win_close cmdline-window #10087
+  - [ ] validate_cursor() more often #9857
+  - [x] missing float clear #9699
+  - [x] winblend over doublewidth
+  - [x] winblend + style='minimal' EOB glitch
+  - [x] execute("syn list x")
+
+lua:
+  - [x] make print() always safe (branch somewhere)
+  - [x] FLEG to check if in "fast" mode (nvim_get_mode() already??)
+
+floats:
+  - [x] the "minimal" UX flag
+  - [x] :resize
+  - [x] lnum/col position (WIP)
+  - [ ] explicit z-order
+  - [ ] "schtiky" attribute (every tabpage)
+  - [ ] "visible" attribute (what it says)
+  - [x] style='minimal' set fdc=0 (and others??)
+
+ext_multigrid:
+  - [ ] new space created by grid_resize(>=2,...) should be invalid, not implpictly cleared
+  - [x] test `win_hide` on tab switch (like "## grid 3 (hidden)" )
+  - [x] win_pos window type Integer => Window
+  - [ ] make new areas after grid_resize invalid (just like grid_scroll)
+  - [x] message_grid already
+  - [ ] transmit z-order
+  - [x] transmit winblend (also blend= ? or rather via blend= ...)
+
+api:
+  - [ ] make nvim_buf/win_set/get_option handle "unset" local value for global-local
+
+pynvim:
+  - [ ] MIXED STUFF
+
+
+
+
