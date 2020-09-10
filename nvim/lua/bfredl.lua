@@ -229,7 +229,7 @@ function h.f(args)
   end
 
   local ret
-  return buf._do(b, function()
+  return buf.call(b, function()
     local ret
     if args.cat then
       if args.term then error('FY!') end
