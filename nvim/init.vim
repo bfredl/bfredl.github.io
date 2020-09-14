@@ -9,6 +9,7 @@ set sw=2 ts=2 sts=2
 set incsearch
 set mouse=a
 set updatetime=1666
+set foldmethod=marker
 " }}}
 " color scheme {{{
 set termguicolors

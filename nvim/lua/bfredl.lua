@@ -11,6 +11,22 @@ _G.h = _G.bfredl
 
 
 -- }}}
+ -- packages {{{
+require'packer'.startup(function ()
+  use 'norcalli/snippets.nvim'
+  use 'norcalli/nvim-colorizer.lua'
+  use 'vim-conf-live/pres.vim'
+  use 'norek/bork'
+
+  use 'nvim-lua/plenary.nvim'
+
+  use '~/dev/nvim-miniyank'
+  use '~/dev/nvim-bufmngr'
+  use '~/dev/nvim-luadev'
+  use '~/dev/ibus-chords'
+end)
+
+-- }}}
 -- util {{{
 --
 function h.unprefix(str, pre, to)
@@ -64,11 +80,6 @@ function h.exec(block)
 end
 local exec = h.exec
 -- }}}
--- colors {{{
--- TODO(bfredl): can the reload?
-h.colors = require'bfredl.colors'
-local colors = h.colors
---- }}}
 -- them basic bindings {{{
 -- test
 v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
@@ -82,19 +93,24 @@ v [[
 ]]
 
 -- }}}
- -- packages {{{
-require'packer'.startup(function ()
-  use 'norcalli/snippets.nvim'
-  use 'norcalli/nvim-colorizer.lua'
-  use 'vim-conf-live/pres.vim'
-  use 'nork/bork'
-
-  use '~/dev/nvim-miniyank'
-  use '~/dev/nvim-bufmngr'
-  use '~/dev/nvim-luadev'
-  use '~/dev/ibus-chords'
-end)
--- }}}
+-- vimenter stuff {{{
+local colors
+function h.vimenter(startup)
+  require'plenary.reload'.reload_module'bfredl.'
+  h.snippets_setup()
+  colors = require'bfredl.colors'
+  colors.defaults()
+  h.colors = colors
+  if startup then
+    if a._fork_serve then
+      _G.prepfork = true
+       a._fork_serve()
+      _G.postfork = true
+       -- because reasons
+       a._stupid_test()
+    end
+  end
+end -- }}}
 function h.snippets_setup() -- {{{
   local s = require'snippets'
   s.use_suggested_mappings()
@@ -250,20 +266,7 @@ function h.f(args)
 end
 _G.f = h.f -- HAIII
 -- }}}
-function h.vimenter(startup) -- {{{
-  h.snippets_setup()
-  colors.defaults()
-  if startup then
-    if a._fork_serve then
-      _G.prepfork = true
-       a._fork_serve()
-      _G.postfork = true
-       -- because reasons
-       a._stupid_test()
-    end
-  end
-end -- }}}
--- autocmds {{{
+-- autocmds {{
 exec [[
   augroup bfredlua
     au CursorHold * lua _G.bfredl.cursorhold()
