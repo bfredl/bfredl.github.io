@@ -19,10 +19,10 @@ function h.def_hi(group, o)
 end
 
 h.colors = {
-  darkblue = "#1a2c41";
+  darkblue = "#1a3c54";
   midblue = "#232081";
   cyanish = "#0088ff";
-  cyan = "#1188ee";
+  cyan = "#4188ee";
   violet = "#8800ff";
 }
 local c = h.colors
@@ -45,5 +45,24 @@ function h.defaults()
   h.setall(h.basetheme)
 end
 
--- h.defaults()
+function h.fastmode()
+  local b = _G.bfredl
+  local bb = b.a.get_current_buf()
+  function _G._ccheck()
+    local f = b.buf.get_lines(bb, 0, -1, true)
+    local text = table.concat(f, "\n")
+    local codes = loadstring(text, b.buf.get_name(bb))
+    if codes then
+      codes().defaults()
+    end
+  end
+
+  b.exec [[
+  augroup fastmode
+    au InsertLeave,TextChanged <buffer>  * lua _G._ccheck()
+  augroup END
+  ]]
+end
+
+-- h.fastmode()
 return h

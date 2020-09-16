@@ -31,6 +31,8 @@ let g:mapleader = ","
 " mappings: vimrc {{{
 " TODO(bfredl): better mappings, works for now
 noremap <leader>u <cmd>source $MYVIMRC<cr>
+" TODO(bfredl): automagically on save in the lua files
+noremap <leader>r <cmd>update<cr><cmd>source $MYVIMRC<cr>
 " TODO(bfredl): jump to open window if already exist
 noremap <Leader>v <cmd>split $MYVIMRC<CR>
 noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]<CR>
