@@ -32,6 +32,7 @@ h.colors = {
 local c = h.colors
 
 h.basetheme = {
+  -- TODO: luahl hook to interatively preview these already
   Normal = {bg=c.darkblue};
   NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};

@@ -102,6 +102,7 @@ function h.vimenter(startup)
   colors.defaults()
   h.colors = colors
   if startup then
+    require'colorizer'.setup()
     if a._fork_serve then
       _G.prepfork = true
        a._fork_serve()
