@@ -10,6 +10,15 @@ set incsearch
 set mouse=a
 set updatetime=1666
 set foldmethod=marker
+set nomodeline
+set cpo-=_
+if has("vim_starting")
+    " I liked this better:
+    let &dir = ".,".&dir
+endif
+
+set splitbelow
+
 " }}}
 " color scheme {{{
 set termguicolors
@@ -48,6 +57,12 @@ noremap <Leader>o <C-W>o
 noremap <Plug>ch:hc <C-W>w
 noremap <Plug>CH:hc <C-W>W
 " }}}
+" mappings: save and exit {{{
+nmap <Plug>ch:ir :w<cr>
+nmap <Plug>CH:ir :w!<cr>
+nmap ö :wq
+nmap Ö :conf qa<cr>
+" }}}
 " mappings: miniyank {{{
 " TODO(bfredl): formally associate the mappings with the plugin
 map p <Plug>(miniyank-autoput)
@@ -68,6 +83,19 @@ function! NLuaBindings()
 	vmap <buffer> <Plug>ch:un <Plug>(Luadev-Run)
 	imap <buffer> <Plug>ch:.u <Plug>(Luadev-Complete)
 endfunction
+function! LuadevLaunch(...) "{{{
+    Luadev
+    call NLuaBindings()
+endfunction
+command! NL :call LuadevLaunch()
+
+" }}}
+" mappings: SUPERTAB {{{
+function! UnBlank()
+  let ch = matchstr(getline('.'), '\%' . (col('.')-1) . 'c.')
+  return ch != "" && ch != " " && ch != "\t"
+endfunction
+imap <expr> <tab> (UnBlank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
 " }}}
 " LOGIC: preinit/lua {{{
 if !get(g:, "bfredl_preinit")
