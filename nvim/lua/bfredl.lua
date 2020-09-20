@@ -16,7 +16,9 @@ require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'vim-conf-live/pres.vim'
-  use 'norek/bork'
+  --use 'norek/bork'
+
+  use 'nvim-treesitter/nvim-treesitter'
 
   use 'nvim-lua/plenary.nvim'
 
@@ -79,6 +81,11 @@ function h.exec(block)
   a.exec(block, false)
 end
 local exec = h.exec
+
+
+function h.code(str)
+  return a.replace_termcodes(str, true, true, true)
+end
 -- }}}
 -- them basic bindings {{{
 -- test
@@ -135,6 +142,36 @@ end]];
     };
   }
 end -- }}}
+-- tree sitter stuff {{{
+function h.ts_setup()
+  h.did_ts = true
+  require'nvim-treesitter.configs'.setup {
+    --ensure_installed = "all",     -- one of "all", "language", or a list of languages
+    highlight = {
+      enable = true; -- false will disable the whole extension
+    };
+    incremental_selection = {
+      enable = true;
+      keymaps = {
+        init_selection = "gnn";
+        node_incremental = "gxn";
+        scope_incremental = "grc";
+        node_decremental = "grm";
+      };
+    };
+    refactor = {
+      highlight_definitions = { enable = true };
+      --highlight_current_scope = { enable = false };
+    };
+  }
+  exec [[
+    nmap <plug>ch:ht grn
+  ]]
+end
+if h.did_ts then
+  h.ts_setup()
+end
+-- }}}
 -- xcolor {{{
 function h.xcolor()
  local out = io.popen("xcolor"):read("*a")
