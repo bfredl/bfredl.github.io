@@ -65,7 +65,7 @@ function h.fastmode() -- {{{
 
   b.exec [[
   augroup fastmode
-    au InsertLeave,TextChanged <buffer>  * lua _G._ccheck()
+    au InsertLeave,TextChanged <buffer> lua _G._ccheck()
   augroup END
   ]]
 end -- }}}
