@@ -28,15 +28,32 @@ h.colors = {
   cyanish = "#0088ff";
   cyan = "#4188ee";
   violet = "#8800ff";
+
+  vic0 = "#000000";
+  vic1 = "#ffffff";
+  vic2 = "#a8734a";
+  vic3 = "#e9b287";
+  vic4 = "#772d26";
+  vic5 = "#b66862";
+  vic6 = "#85d4dc";
+  vic7 = "#c5ffff";
+  vic8 = "#a85fb4";
+  vic9 = "#e99df5";
+  vica = "#559e4a";
+  vicb = "#92df87";
+  vicc = "#42348b";
+  vicd = "#7e70ca";
+  vice = "#bdcc71";
+  vicf = "#ffffb0";
 }
 local c = h.colors
 
 h.basetheme = {
   -- TODO: luahl hook to interatively preview these already
-  Normal = {bg=c.darkblue};
+  Normal = {bg=c.vicc};
   NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};
-  LineNr = {fg=c.cyan};
+  LineNr = {fg=c.vicf, bg=c.vicd};
   MsgArea = {bg=c.midblue, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
 }
@@ -56,6 +73,7 @@ function h.fastmode() -- {{{
   local bb = b.a.get_current_buf()
   function _G._ccheck()
     local f = b.buf.get_lines(bb, 0, -1, true)
+
     local text = table.concat(f, "\n")
     local codes = loadstring(text, b.buf.get_name(bb))
     if codes then
@@ -70,5 +88,6 @@ function h.fastmode() -- {{{
   ]]
 end -- }}}
 
--- h.fastmode()
+h.fastmode()
+
 return h
