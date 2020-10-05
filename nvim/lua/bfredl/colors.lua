@@ -56,6 +56,7 @@ h.basetheme = {
   LineNr = {fg=c.vicf, bg=c.vicd};
   MsgArea = {bg=c.midblue, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
+  NonText = {fg=c.vic5};
 }
 
 function h.setall(theme) -- {{{
@@ -88,6 +89,7 @@ function h.fastmode() -- {{{
   ]]
 end -- }}}
 
+h.defaults()
 h.fastmode()
 
 return h
