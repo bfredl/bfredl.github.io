@@ -5,3 +5,6 @@
 	path = docs/pres/remark
 	url = https://github.com/gnab/remark
 	ignore = dirty
+[submodule "hemsida/themes/terminal"]
+	path = hemsida/themes/terminal
+	url = https://github.com/panr/hugo-theme-terminal

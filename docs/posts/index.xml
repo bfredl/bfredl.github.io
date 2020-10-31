@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on bfredl&#39;s random stuff</title>
+    <link>http://bfredl.github.io/posts/</link>
+    <description>Recent content in Posts on bfredl&#39;s random stuff</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 31 Oct 2020 10:16:15 +0100</lastBuildDate><atom:link href="http://bfredl.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>8k Intro</title>
+      <link>http://bfredl.github.io/posts/8k-intro/</link>
+      <pubDate>Sat, 31 Oct 2020 10:16:15 +0100</pubDate>
+      
+      <guid>http://bfredl.github.io/posts/8k-intro/</guid>
+      <description>This is just a test.</description>
+    </item>
+    
+  </channel>
+</rss>
