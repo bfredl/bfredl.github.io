@@ -1,5 +1,5 @@
 [submodule "nvim/submod/packer.nvim"]
-	path = nvim/submod/packer.nvim
+	path = nvim/start/packer.nvim
 	url = https://github.com/wbthomason/packer.nvim
 [submodule "pres/remark"]
 	path = docs/pres/remark

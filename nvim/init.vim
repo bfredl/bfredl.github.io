@@ -83,6 +83,7 @@ function! NLuaBindings()
 	vmap <buffer> <Plug>ch:un <Plug>(Luadev-Run)
 	imap <buffer> <Plug>ch:.u <Plug>(Luadev-Complete)
 endfunction
+" }}}
 function! LuadevLaunch(...) "{{{
     Luadev
     call NLuaBindings()
@@ -99,9 +100,7 @@ imap <expr> <tab> (UnBlank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
 " }}}
 " LOGIC: preinit/lua {{{
 if !get(g:, "bfredl_preinit")
-  " TODO(neovim): nvim_get_runtime_file should allow you to find a directory
-  " directly
-  let &rtp = &rtp.','.fnamemodify(nvim_get_runtime_file("submod/packer.nvim/LICENSE", 0)[0], ':p:h')
+  " TODO(neovim): nvim_get_runtime_file should allow you to find a directory directly
   let g:bfredl_preinit = v:true
 end
 
