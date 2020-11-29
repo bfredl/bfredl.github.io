@@ -16,7 +16,7 @@ require'packer'.startup(function ()
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'vim-conf-live/pres.vim'
-  --use 'norek/bork'
+  use 'norek/bbbork'
 
   use 'nvim-treesitter/nvim-treesitter'
 
