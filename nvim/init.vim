@@ -63,7 +63,17 @@ nmap <Plug>CH:ir :w!<cr>
 nmap ö :wq
 nmap Ö :conf qa<cr>
 " }}}
-" mappings: miniyank {{{
+" mappings: clipboard and miniyank {{{
+noremap <Plug>ch:,. "+y
+nnoremap <Plug>CH:,. "+yy
+noremap <Plug>ch:jk "*y
+noremap <Plug>CH:jk "*yy
+map <Leader>p "+p
+map <Leader>P "+P
+map <Leader>i "*p
+map <Leader>I "*P
+
+
 " TODO(bfredl): formally associate the mappings with the plugin
 map p <Plug>(miniyank-autoput)
 map P <Plug>(miniyank-autoPut)
