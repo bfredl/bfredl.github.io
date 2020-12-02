@@ -1,15 +1,12 @@
 -- logic: first_run, setup module and _G {{{
-local first_run = not _G.bfredl
-if first_run then
-  _G.bfredl = {}
-end
-local h = _G.bfredl
-_G.b = _G.bfredl -- for convenience
+local bfredl = _G.bfredl or {}
+
+vim.cmd [[ runtime! autoload/bfredl.vim ]]
+
+local h = bfredl
 
 -- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
-_G.h = _G.bfredl
-
-
+_G.h = bfredl
 -- }}}
  -- packages {{{
 require'packer'.startup(function ()
@@ -322,10 +319,4 @@ function h.cursorhold()
   end
 end
 -- }}}
--- logic {{{
-if first_run then
-  v [[autocmd VimEnter * lua _G.bfredl.vimenter(true)]]
-else
-  h.vimenter(false)
-end
--- }}}
+return bfredl

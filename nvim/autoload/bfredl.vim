@@ -108,11 +108,3 @@ function! UnBlank()
 endfunction
 imap <expr> <tab> (UnBlank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
 " }}}
-" LOGIC: preinit/lua {{{
-if !get(g:, "bfredl_preinit")
-  " TODO(neovim): nvim_get_runtime_file should allow you to find a directory directly
-  let g:bfredl_preinit = v:true
-end
-
-lua dofile(vim.api.nvim_get_runtime_file("lua/bfredl.lua", 0)[1])
-" }}}
