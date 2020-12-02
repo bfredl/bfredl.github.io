@@ -1,0 +1,6 @@
+--lua <--EOF
+
+_G.bangbangbang = true
+print 'this is a luaruntime file'
+
+--EOF
