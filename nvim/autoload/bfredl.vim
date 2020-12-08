@@ -47,8 +47,8 @@ noremap <Leader>v <cmd>exe "split ".nvim_get_runtime_file("autoload/bfredl.vim",
 noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]<CR>
 augroup vimrc
   au!
-  au BufWritePost $MYVIMRC source $MYVIMRC
-  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]." source $MYVIMRC"
+  au BufWritePost $MYVIMRC luaf $MYVIMRC
+  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]." luaf $MYVIMRC"
 augroup END
 command! IS au InsertLeave <buffer> nested write
 " }}}

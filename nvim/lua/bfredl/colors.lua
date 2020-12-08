@@ -90,6 +90,6 @@ function h.fastmode() -- {{{
 end -- }}}
 
 h.defaults()
-h.fastmode()
+--h.fastmode()
 
 return h

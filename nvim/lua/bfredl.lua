@@ -1,4 +1,5 @@
 -- logic: first_run, setup module and _G {{{
+local first_run = not _G.bfredl
 local bfredl = _G.bfredl or {}
 
 vim.cmd [[ runtime! autoload/bfredl.vim ]]
@@ -9,11 +10,18 @@ local h = bfredl
 _G.h = bfredl
 -- }}}
  -- packages {{{
-require'packer'.startup(function ()
+local packer = require'packer'
+local pkg = '~/.local/share/nvim/site2/'
+if first_run then
+  vim.o.packpath = vim.o.packpath .. ','..pkg
+end
+packer.init {package_root= pkg..'/pack'}
+packer.reset()
+do local use = packer.use
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'vim-conf-live/pres.vim'
-  use 'norek/bbbork'
+  --use 'norek/bbbork'
 
   use 'nvim-treesitter/nvim-treesitter'
 
@@ -23,7 +31,7 @@ require'packer'.startup(function ()
   use '~/dev/nvim-bufmngr'
   use '~/dev/nvim-luadev'
   use '~/dev/ibus-chords'
-end)
+end
 
 -- }}}
 -- util {{{
