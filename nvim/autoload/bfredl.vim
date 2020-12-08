@@ -39,7 +39,7 @@ set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newcon
 let g:mapleader = ","
 " mappings: vimrc {{{
 " TODO(bfredl): better mappings, works for now
-noremap <leader>u <cmd>source $MYVIMRC<cr>
+noremap <leader>u <cmd>luaf $MYVIMRC<cr>
 " TODO(bfredl): automagically on save in the lua files
 noremap <leader>r <cmd>update<cr><cmd>luafile $MYVIMRC<cr>
 " TODO(bfredl): jump to open window if already exist
@@ -107,4 +107,16 @@ function! UnBlank()
   return ch != "" && ch != " " && ch != "\t"
 endfunction
 imap <expr> <tab> (UnBlank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
+" }}}
+" mappings: wildmenu {{{
+set wildmenu
+set wildmode=longest:full,full
+set wildignorecase
+" NO WILDCHARM
+set wc=0 wcm=0
+cnoremap <tab> <c-z>
+function! Spacey()
+  return getcmdline()[-1:] == "/" ? "\<bs>" : ""
+endfunc
+cnoremap <expr> / wildmenumode() ? Spacey()."/<c-z>" : "/"
 " }}}
