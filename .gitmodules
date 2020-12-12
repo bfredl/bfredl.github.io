@@ -8,3 +8,6 @@
 [submodule "hemsida/themes/terminal"]
 	path = hemsida/themes/terminal
 	url = https://github.com/panr/hugo-theme-terminal
+[submodule "doom-emacs"]
+	path = doom-emacs
+	url = https://github.com/hlissner/doom-emacs
