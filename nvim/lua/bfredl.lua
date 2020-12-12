@@ -2,7 +2,11 @@
 local first_run = not _G.bfredl
 local bfredl = _G.bfredl or {}
 
-vim.cmd [[ runtime! autoload/bfredl.vim ]]
+do local status, err = pcall(vim.cmd, [[ runtime! autoload/bfredl.vim ]])
+  if not status then
+    vim.api.nvim_err_writeln(err)
+  end
+end
 
 local h = bfredl
 
@@ -31,6 +35,21 @@ do local use = packer.use
   use '~/dev/nvim-bufmngr'
   use '~/dev/nvim-luadev'
   use '~/dev/ibus-chords'
+  use '~/dev/nvim-ipy'
+
+  use 'numirias/semshi'
+  use {'davidhalter/jedi-vim', ft = {'python'}}
+
+  use 'mileszs/ack.vim'
+
+  use 'Lokaltog/vim-easymotion'
+  use 'justinmk/vim-sneak'
+  use 'tommcdo/vim-exchange'
+
+  -- tpope section
+  use 'tpope/vim-repeat'
+  use 'tpope/vim-surround'
+  use 'tpope/vim-fugitive'
 end
 
 -- }}}
