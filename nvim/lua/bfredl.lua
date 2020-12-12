@@ -15,11 +15,7 @@ _G.h = bfredl
 -- }}}
  -- packages {{{
 local packer = require'packer'
-local pkg = '~/.local/share/nvim/site2/'
-if first_run then
-  vim.o.packpath = vim.o.packpath .. ','..pkg
-end
-packer.init {package_root= pkg..'/pack'}
+packer.init {}
 packer.reset()
 do local use = packer.use
   use 'norcalli/snippets.nvim'
@@ -28,6 +24,7 @@ do local use = packer.use
   --use 'norek/bbbork'
 
   use 'nvim-treesitter/nvim-treesitter'
+  use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
   use 'nvim-lua/plenary.nvim'
 

@@ -32,7 +32,7 @@ let s:a = api_info().version
 let g:_b_version = s:a.major.'.'.s:a.minor
 " TODO(bfredl): show ASAN vs RelWithDebInfo
 " when built from non-master branch, show branchname
-set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (newconf,\ %{g:_b_version})
+set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ (%{g:_b_version})
 " }}}
 " TODO(bfredl): one logic please for detecting conflicting mappings
 
@@ -114,6 +114,10 @@ if executable("rg")
 elseif executable("ag")
   let g:ackprg = 'ag --vimgrep'
 endif
+" }}}
+" telescope {{{
+" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
 " }}}
 " a brief interchange {{{
 nmap cr cx
