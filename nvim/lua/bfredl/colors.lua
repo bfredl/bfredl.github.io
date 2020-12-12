@@ -45,6 +45,7 @@ h.colors = {
   vicd = "#7e70ca";
   vice = "#bdcc71";
   vicf = "#ffffb0";
+  vicca= "#322a68";
 }
 local c = h.colors
 
@@ -57,6 +58,7 @@ h.basetheme = {
   MsgArea = {bg=c.midblue, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
+  String = {fg=c.vic1, bg=c.vicca};
 }
 
 function h.setall(theme) -- {{{

@@ -24,6 +24,9 @@ do local use = packer.use
   --use 'norek/bbbork'
 
   use 'nvim-treesitter/nvim-treesitter'
+  use 'nvim-treesitter/playground'
+
+
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
   use 'nvim-lua/plenary.nvim'
@@ -183,6 +186,12 @@ function h.ts_setup()
     refactor = {
       highlight_definitions = { enable = true };
       --highlight_current_scope = { enable = false };
+    };
+    playground = {
+    enable = true;
+    disable = {};
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source cod;
+    persist_queries = false; -- Whether the query persists across vim sessions
     };
   }
   exec [[
