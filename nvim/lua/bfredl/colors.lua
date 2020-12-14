@@ -28,6 +28,9 @@ h.colors = {
   cyanish = "#0088ff";
   cyan = "#4188ee";
   violet = "#8800ff";
+  whitey = "#d0d0d0";
+  whiteish = "#dddddd";
+  shiny = "#eeeeee";
 
   vic0 = "#000000";
   vic1 = "#ffffff";
@@ -45,20 +48,21 @@ h.colors = {
   vicd = "#7e70ca";
   vice = "#bdcc71";
   vicf = "#ffffb0";
-  vicca= "#322a68";
+  vicca= "#312474";
 }
 local c = h.colors
 
 h.basetheme = {
   -- TODO: luahl hook to interatively preview these already
-  Normal = {bg=c.vicc};
+  Normal = {bg=c.vicca, fg=c.whiteish};
   NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};
   LineNr = {fg=c.vicf, bg=c.vicd};
   MsgArea = {bg=c.midblue, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
-  String = {fg=c.vic1, bg=c.vicca};
+  String = {fg=c.whitey, bg=c.vicc};
+  Special = {fg=c.vic9};
 }
 
 function h.setall(theme) -- {{{
@@ -92,6 +96,8 @@ function h.fastmode() -- {{{
 end -- }}}
 
 h.defaults()
---h.fastmode()
+if false then
+  require'bfredl.colors'.fastmode()
+end
 
 return h

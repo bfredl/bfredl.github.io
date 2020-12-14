@@ -50,7 +50,12 @@ augroup vimrc
   au BufWritePost $MYVIMRC luaf $MYVIMRC
   exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]." luaf $MYVIMRC"
 augroup END
-command! IS au InsertLeave <buffer> nested write
+
+command! IWrite au InsertLeave <buffer> nested write
+
+noremap <silent> <Plug>ch:,l :up<CR>:so %<CR>
+au FileType lua noremap <buffer> <silent> <Plug>ch:,l :up<CR>:luafile %<CR>
+
 " }}}
 " windows {{{
 noremap <Leader>o <C-W>o
@@ -155,7 +160,7 @@ func! bfredl#ipy()
   nmap <Plug>ch:ur <Plug>(IPy-RunCell)
   map <Plug>ch:mw <Plug>(IPy-RunOp)
 
-  nnoremap <Plug>ch:uc :w<cr>:<c-u>call IPyRun('%run -i '.RunFileName())<cr>
+  nnoremap <Plug>ch:uc :w<cr>:<c-u>call IPyRun('%run -i '.bfredl#runfile())<cr>
   " TODO: test if python or not
   nmap <Plug>CH:uc :let b:the_run_file = "
   "nmap <Plug>ch:ai :w<cr>:<c-u>call IPyRun('%aimport *'.bufname('%')[:-4])<cr>
@@ -187,6 +192,10 @@ if exists('g:hasipy')
   " for reloads
   call bfredl#ipy()
 endif
+
+function! bfredl#runfile()
+    return get(b:, "the_run_file", bufname('%'))
+endfunction
 
 func! bfredl#ipylaunch(...)
   call call("IPyConnect", a:000)
