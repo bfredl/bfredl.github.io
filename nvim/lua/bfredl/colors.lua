@@ -62,7 +62,7 @@ h.basetheme = {
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
   String = {fg=c.whitey, bg=c.vicc};
-  Special = {fg=c.vic9};
+  Special = {fg=c.vicb};
 }
 
 function h.setall(theme) -- {{{
