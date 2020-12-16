@@ -20,11 +20,16 @@ endif
 set splitbelow
 
 " }}}
-" color scheme {{{
+" just for looks {{{
 set termguicolors
 set winblend=20
 set pumblend=15
-" #223341
+
+set list
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:\ 
+set fillchars=eob:█
+set showbreak=↪
+
 " }}}
 " options: title {{{
 " TODO(bfredl): make title a lua function, probably
@@ -243,4 +248,9 @@ func! bfredl#python() "{{{
 "map <buffer>  <Plug>ch:jt :<c-u>let g:jedi#show_call_signatures=1-g:jedi#show_call_signatures<cr>
 endfunc
 
+" }}}
+" semshi {{{
+let g:semshi#simplify_markup = v:false
+let g:semshi#excluded_hl_groups = ['self', 'local']
+let g:semshi#mark_selected_nodes = 2
 " }}}

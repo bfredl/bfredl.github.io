@@ -4,7 +4,15 @@ local h = {}
 -- borrowed from norcallis lua pile
 function h.def_hi(group, o)
   local parts = {group}
-  if o.default then table.insert(parts, "defoult") end
+  if o.default then table.insert(parts, "default") end
+  if o.link then
+    if not o.default then
+      vim.cmd('highlight clear '..table.concat(parts, ' '))
+    end
+    table.insert(parts, 1, "link")
+    table.insert(parts, o.link)
+    return vim.cmd('highlight '..table.concat(parts, ' '))
+  end
   if o.fg then table.insert(parts, "guifg="..o.fg) end
   if o.bg then table.insert(parts, "guibg="..o.bg) end
   if o.ctermfg then table.insert(parts, "ctermfg="..o.ctermfg) end
@@ -17,7 +25,7 @@ function h.def_hi(group, o)
   if o.blend then table.insert(parts, "blend="..o.blend) end
 
   -- nvim.api.nvim_sett_highlig()(name, parts)
-  vim.cmd ('highlight '..table.concat(parts, ' '))
+  vim.cmd('highlight '..table.concat(parts, ' '))
 end
 -- }}}
 
@@ -62,7 +70,11 @@ h.basetheme = {
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
   String = {fg=c.whitey, bg=c.vicc};
+  Whitespace = {bg=c.vic6};
+  EndOfBuffer = {fg=c.vicc, bg=c.vicc};
   Special = {fg=c.vicb};
+  semshiBuiltin = {link="Identifier"};
+  
 }
 
 function h.setall(theme) -- {{{
