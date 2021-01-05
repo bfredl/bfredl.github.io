@@ -40,27 +40,37 @@ let g:_b_version = s:a.major.'.'.s:a.minor
 set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ %{g:_b_version}
 " }}}
 " TODO(bfredl): one logic please for detecting conflicting mappings
-
 let g:mapleader = ","
 " vimrc {{{
+func bfredl#rt(name)
+  return nvim_get_runtime_file(a:name, 0)[0]
+endfunc
+command Reload luafile $MYVIMRC
+
 " TODO(bfredl): better mappings, works for now
-noremap <leader>u <cmd>luaf $MYVIMRC<cr>
+noremap <leader>u <cmd>Reload<cr>
 " TODO(bfredl): automagically on save in the lua files
-noremap <leader>r <cmd>update<cr><cmd>luafile $MYVIMRC<cr>
+noremap <leader>r <cmd>update<cr><cmd>Reload<cr>
 " TODO(bfredl): jump to open window if already exist
-noremap <Leader>v <cmd>exe "split ".nvim_get_runtime_file("autoload/bfredl.vim", 0)[0]<CR>
-noremap <Leader>h <cmd>exe "split ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]<CR>
+noremap <Leader>v <cmd>exe "split ".bfredl#rt("autoload/bfredl.vim")<CR>
+noremap <Leader>h <cmd>exe "split ".bfredl#rt("lua/bfredl.lua")<CR>
+noremap <Leader>V <cmd>split ~/config/vimrc<CR>
 augroup vimrc
   au!
-  au BufWritePost $MYVIMRC luaf $MYVIMRC
-  exe "au BufWritePost ".nvim_get_runtime_file("lua/bfredl.lua", 0)[0]." luaf $MYVIMRC"
+  au BufWritePost $MYVIMRC Reload
+  exe "au BufWritePost ".bfredl#rt("lua/bfredl.lua")." Reload"
+  exe "au BufWritePost ".bfredl#rt("autoload/bfredl.vim")." Reload"
 augroup END
 
 command! IWrite au InsertLeave <buffer> nested write
 
-noremap <silent> <Plug>ch:,l :up<CR>:so %<CR>
-au FileType lua noremap <buffer> <silent> <Plug>ch:,l :up<CR>:luafile %<CR>
+noremap <silent> <Plug>ch:,l <cmd>update<cr><cmd>so %<cr>
+au FileType lua noremap <buffer> <silent> <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>
 
+" }}}
+" path and files {{{
+noremap <Plug>ch:ph :cd %:p:h<cr>
+noremap <Plug>CH:ph :cd ..<cr>
 " }}}
 " windows {{{
 noremap <Leader>o <C-W>o
@@ -115,6 +125,13 @@ function! TheWalk()
     return repeat(" ",end-start)
 endfunc
 inoremap <expr> <Plug>ch:es TheWalk()
+
+map <Plug>ch:jc :cnext<cr>
+map <Plug>ch:kc :cprev<cr>
+map <Plug>ch:jn :lnext<cr>
+map <Plug>ch:kn :lprev<cr>
+
+noremap <expr> <Plug>ch:hv ":setlocal colorcolumn=".(&cc==80?0:80)."<cr>"
 " }}}
 " grepping and searching{{{
 noremap <Plug>ch:ag :Ack!<space>
@@ -210,12 +227,17 @@ command! -nargs=* IP :call bfredl#ipylaunch(<f-args>)
 command! -nargs=* IJ :call bfredl#ipylaunch("--kernel", "julia-1.0")
 command! -nargs=* IR :call bfredl#ipylaunch("--kernel", "ir")
 " }}}
-" insert mode: SUPERTAB {{{
+" insert mode: completion {{{
 func! bfredl#unblank()
   let ch = matchstr(getline('.'), '\%' . (col('.')-1) . 'c.')
   return ch != "" && ch != " " && ch != "\t"
 endfunc
 imap <expr> <tab> (bfredl#unblank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
+
+" [p]ath [c]ompletion
+inoremap <Plug>ch:pc <c-x><c-f>
+" OMNI
+inoremap <Plug>ch:.u <c-x><c-o>
 " }}}
 " cmdline: wildmenu {{{
 set wildmenu
@@ -254,3 +276,4 @@ let g:semshi#simplify_markup = v:false
 let g:semshi#excluded_hl_groups = ['self', 'local']
 let g:semshi#mark_selected_nodes = 2
 " }}}
+map <Plug>ch:ht V"ep

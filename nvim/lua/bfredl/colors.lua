@@ -107,7 +107,6 @@ function h.fastmode() -- {{{
   ]]
 end -- }}}
 
-h.defaults()
 if false then
   require'bfredl.colors'.fastmode()
 end

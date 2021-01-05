@@ -26,10 +26,12 @@ do local use = packer.use
   use 'nvim-treesitter/nvim-treesitter'
   use 'nvim-treesitter/playground'
 
+  use 'neovim/nvim-lspconfig'
 
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
-  use 'nvim-lua/plenary.nvim'
+  -- TODO(packer): this should not be an error:
+  -- use 'nvim-lua/plenary.nvim'
 
   use '~/dev/nvim-miniyank'
   use '~/dev/nvim-bufmngr'
@@ -50,6 +52,10 @@ do local use = packer.use
   use 'tpope/vim-repeat'
   use 'tpope/vim-surround'
   use 'tpope/vim-fugitive'
+
+  use 'vim-scripts/a.vim'
+
+  use 'ziglang/zig.vim'
 end
 
 -- }}}
@@ -128,9 +134,6 @@ v [[
 local colors
 function h.vimenter(startup)
   require'plenary.reload'.reload_module'bfredl.'
-  h.snippets_setup()
-  colors = require'bfredl.colors'
-  colors.defaults()
   h.colors = colors
   if startup then
     require'colorizer'.setup()
@@ -165,7 +168,19 @@ end]];
       vp = "(void *)";
     };
   }
-end -- }}}
+end
+h.snippets_setup()
+-- }}}
+-- LSP {{{
+if not vim.g.bfredl_unvisual then
+  if vim.fn.executable('clangd') ~= 0 then
+    require'lspconfig'.clangd.setup {}
+  end
+  if vim.fn.executable('ra_lsp_server') ~= 0 then
+    require'lspconfig'.rust_analyzer.setup {}
+  end
+end
+-- }}}
 -- tree sitter stuff {{{
 function h.ts_setup()
   h.did_ts = true
@@ -188,21 +203,29 @@ function h.ts_setup()
       --highlight_current_scope = { enable = false };
     };
     playground = {
-    enable = true;
-    disable = {};
-    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source cod;
-    persist_queries = false; -- Whether the query persists across vim sessions
+      enable = true;
+      disable = {};
+      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source cod;
+      persist_queries = false; -- Whether the query persists across vim sessions
     };
   }
   exec [[
     nmap <plug>ch:ht grn
   ]]
 end
-if h.did_ts then
+if true or h.did_ts then
   h.ts_setup()
 end
 -- }}}
--- xcolor {{{
+-- color {{{
+h.colors = require'bfredl.colors'
+if os.getenv'NVIM_INSTANCE' then
+  h.colors.defaults()
+else
+  v [[ hi EndOfBuffer guibg=#222222 guifg=#666666 ]]
+  v [[ hi Folded guifg=#000000 ]]
+end
+
 function h.xcolor()
  local out = io.popen("xcolor"):read("*a")
  return vim.trim(out)
