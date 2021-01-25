@@ -39,9 +39,6 @@ do local use = packer.use
   use '~/dev/ibus-chords'
   use '~/dev/nvim-ipy'
 
-  use 'numirias/semshi'
-  use {'davidhalter/jedi-vim', ft = {'python'}}
-
   use 'mileszs/ack.vim'
 
   use 'Lokaltog/vim-easymotion'
@@ -55,7 +52,13 @@ do local use = packer.use
 
   use 'vim-scripts/a.vim'
 
+  -- filetypes
+  use 'numirias/semshi'
+  use {'davidhalter/jedi-vim', ft = {'python'}}
+
   use 'ziglang/zig.vim'
+
+  use 'JuliaEditorSupport/julia-vim'
 end
 
 -- }}}
@@ -146,31 +149,7 @@ function h.vimenter(startup)
     end
   end
 end -- }}}
-function h.snippets_setup() -- {{{
-  local s = require'snippets'
-  s.use_suggested_mappings()
-  s.snippets = {
-    _global = {
-      todob = "TODO(bfredl):";
-      todou = "TODO(upstream):";
-      todon = "TODO(neovim):";
-      f = "FIXME:";
-      re = "return"; -- TODO(bfredl): redundant, integrate snippets with ibus-chords properly
-    };
-    lua = {
-      fun = [[function $1($2)
-  $0
-end]];
-      r = [[require]];
-      l = [[local $1 = $0]];
-    };
-    c = {
-      vp = "(void *)";
-    };
-  }
-end
-h.snippets_setup()
--- }}}
+require'bfredl.snippets'.setup()
 -- LSP {{{
 if not vim.g.bfredl_unvisual then
   if vim.fn.executable('clangd') ~= 0 then

@@ -224,7 +224,7 @@ func! bfredl#ipylaunch(...)
   call bfredl#ipy()
 endfunc
 command! -nargs=* IP :call bfredl#ipylaunch(<f-args>)
-command! -nargs=* IJ :call bfredl#ipylaunch("--kernel", "julia-1.0")
+command! -nargs=* IJ :call bfredl#ipylaunch("--kernel", "julia-1.6")
 command! -nargs=* IR :call bfredl#ipylaunch("--kernel", "ir")
 " }}}
 " insert mode: completion {{{
@@ -276,4 +276,8 @@ let g:semshi#simplify_markup = v:false
 let g:semshi#excluded_hl_groups = ['self', 'local']
 let g:semshi#mark_selected_nodes = 2
 " }}}
-map <Plug>ch:ht V"ep
+" julia {{{
+let g:latex_to_unicode_tab = 0
+" }}}
+" }}}
+"map <Plug>ch:ht V"ep
