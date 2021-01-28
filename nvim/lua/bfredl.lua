@@ -38,6 +38,7 @@ do local use = packer.use
   use '~/dev/nvim-luadev'
   use '~/dev/ibus-chords'
   use '~/dev/nvim-ipy'
+  use '~/dev/vim-argclinic'
 
   use 'mileszs/ack.vim'
 
@@ -49,6 +50,8 @@ do local use = packer.use
   use 'tpope/vim-repeat'
   use 'tpope/vim-surround'
   use 'tpope/vim-fugitive'
+
+  use 'airblade/vim-gitgutter'
 
   use 'vim-scripts/a.vim'
 

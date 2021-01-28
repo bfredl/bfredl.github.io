@@ -57,6 +57,7 @@ h.colors = {
   vice = "#bdcc71";
   vicf = "#ffffb0";
   vicca= "#312474";
+  vicda = "#5e50ba";
 }
 local c = h.colors
 
@@ -65,7 +66,7 @@ h.basetheme = {
   Normal = {bg=c.vicca, fg=c.whiteish};
   NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};
-  LineNr = {fg=c.vicf, bg=c.vicd};
+  LineNr = {fg=c.vicf, bg=c.vicda};
   MsgArea = {bg=c.midblue, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
@@ -74,7 +75,8 @@ h.basetheme = {
   EndOfBuffer = {fg=c.vicc, bg=c.vicc};
   Special = {fg=c.vicb};
   semshiBuiltin = {link="Identifier"};
-  
+  SignColumn = {bg=c.vicd};
+
 }
 
 function h.setall(theme) -- {{{

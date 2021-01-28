@@ -109,6 +109,7 @@ map <Leader>k <Plug>(miniyank-tochar)
 " motion and selection {{{
 map <Plug>ch:jh <Plug>(easymotion-j)
 map <Plug>ch:kh <Plug>(easymotion-k)
+let g:EasyMotion_keys = "aoeidtn',.pgljkbmuh:cr"
 
 map <Space> <plug>Sneak_s
 nmap S <plug>Sneak_S
@@ -130,6 +131,20 @@ map <Plug>ch:jc :cnext<cr>
 map <Plug>ch:kc :cprev<cr>
 map <Plug>ch:jn :lnext<cr>
 map <Plug>ch:kn :lprev<cr>
+
+
+map <Plug>ch:en <Plug>(argclinic-deletearg)
+map <Plug>ch:pn <Plug>(argclinic-putarg)
+map <Plug>ch:pt <Plug>(argclinic-putarg-before)
+
+map <Plug>ch:an <Plug>(argclinic-nextarg)
+map <Plug>ch:av <Plug>(argclinic-nextend)
+map <Plug>ch:at <Plug>(argclinic-prevarg)
+map <Plug>ch:aw <Plug>(argclinic-prevend)
+
+omap ie <Plug>(argclinic-selectarg)
+xmap ie <Plug>(argclinic-selectarg)
+
 
 noremap <expr> <Plug>ch:hv ":setlocal colorcolumn=".(&cc==80?0:80)."<cr>"
 " }}}
@@ -228,6 +243,8 @@ command! -nargs=* IJ :call bfredl#ipylaunch("--kernel", "julia-1.6")
 command! -nargs=* IR :call bfredl#ipylaunch("--kernel", "ir")
 " }}}
 " insert mode: completion {{{
+set completeopt=menuone,preview,longest
+
 func! bfredl#unblank()
   let ch = matchstr(getline('.'), '\%' . (col('.')-1) . 'c.')
   return ch != "" && ch != " " && ch != "\t"
