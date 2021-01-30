@@ -161,6 +161,9 @@ if not vim.g.bfredl_unvisual then
   if vim.fn.executable('ra_lsp_server') ~= 0 then
     require'lspconfig'.rust_analyzer.setup {}
   end
+  if vim.fn.executable('zls') ~= 0 then
+    require'lspconfig'.zls.setup {}
+  end
 end
 -- }}}
 -- tree sitter stuff {{{

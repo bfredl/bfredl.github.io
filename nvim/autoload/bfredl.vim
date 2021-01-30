@@ -162,6 +162,21 @@ endif
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
 " }}}
+" LSP {{
+function! bfredl#lspmap()
+" shiiny
+set winblend=20
+nmap <buffer> <Plug>ch:,d <cmd>lua vim.lsp.buf.signature_help()<cr>
+nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
+nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
+nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
+nmap <buffer> <Plug>ch:jk <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+" TODO: use ASYNC!
+set omnifunc=v:lua.vim.lsp.omnifunc
+" ic does not work, delete ic->char ?
+"map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
+endfunction
+" }}}
 " a brief interchange {{{
 nmap cr cx
 nmap crr cxx
@@ -276,6 +291,7 @@ augroup Filetypes
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
+  au FileType c,zig call bfredl#lspmap()
 augroup END
 
 func! bfredl#python() "{{{
