@@ -56,23 +56,34 @@ h.colors = {
   vicd = "#7e70ca";
   vice = "#bdcc71";
   vicf = "#ffffb0";
-  vicca= "#312474";
+  vic6a = "#104057";
+  vic6b = "#25909c";
+  vicca= "#2c1b63";
   vicda = "#5e50ba";
 }
 local c = h.colors
 
+local basebg, endbg, tonebg
+if os.getenv'NVIM_DEV' then
+  basebg, endbg = c.vic6a, c.vic6b
+  tonebg = c.vicda
+else
+  basebg, endbg = c.vicca, c.vicc
+  tonebg = c.vicda
+end
+
 h.basetheme = {
   -- TODO: luahl hook to interatively preview these already
-  Normal = {bg=c.vicca, fg=c.whiteish};
+  Normal = {bg=basebg, fg=c.whiteish};
   NormalFloat = {bg=c.midblue};
   Pmenu = {bg=c.violet};
-  LineNr = {fg=c.vicf, bg=c.vicda};
-  MsgArea = {bg=c.midblue, blend=11};
+  LineNr = {fg=c.vicf, bg=tonebg};
+  MsgArea = {bg=endbg, blend=11};
   Folded = {bg=c.ultragray, fg="#222222", attr="bold"};
   NonText = {fg=c.vic5};
-  String = {fg=c.whitey, bg=c.vicc};
+  String = {fg=c.whitey, bg=endbg};
   Whitespace = {bg=c.vic6};
-  EndOfBuffer = {fg=c.vicc, bg=c.vicc};
+  EndOfBuffer = {fg=endbg, bg=endbg};
   Special = {fg=c.vicb};
   semshiBuiltin = {link="Identifier"};
   SignColumn = {bg=c.vicd};

@@ -18,6 +18,12 @@ if has("vim_starting")
 endif
 
 set splitbelow
+set diffopt+=vertical
+
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
 
 " }}}
 " just for looks {{{
@@ -162,7 +168,7 @@ endif
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
 " }}}
-" LSP {{
+" LSP {{{
 function! bfredl#lspmap()
 " shiiny
 set winblend=20
@@ -176,6 +182,26 @@ set omnifunc=v:lua.vim.lsp.omnifunc
 " ic does not work, delete ic->char ?
 "map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
 endfunction
+" }}}
+" fugutive and gitgutter {{{
+command! Gt Gstatus
+command! Gc Gcommit -va
+command! Gcm Gcommit -v
+command! Gw Gwrite
+command! Gr Gread
+command! -nargs=* Gd Gdiff <args>
+command! Gdp Gdiff HEAD^
+
+map <Plug>ch:tn :GitGutterNextHunk<cr>
+map <Plug>CH:tn :GitGutterPrevHunk<cr>
+" intentional no<cr>
+map <Plug>CH:tr :GitGutterRevertHunk
+map <Plug>ch:ts :GitGutterStageHunk
+
+" diffput/diffget
+noremap <Plug>ch:pd dp
+noremap <Plug>ch:od do
+
 " }}}
 " a brief interchange {{{
 nmap cr cx
