@@ -36,13 +36,13 @@ local function packagedef()
 
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
-  use {
+  if false then use {
     'glepnir/galaxyline.nvim', branch = 'main',
     -- your statusline
     --config = function() require'my_statusline' end,
     -- some optional icons
     ---requires = {'kyazdani42/nvim-web-devicons', opt = true}
-  }
+  } end
 
   -- TODO(packer): this should not be an error:
   -- use 'nvim-lua/plenary.nvim'
@@ -231,74 +231,7 @@ function h.xcolor()
 end
 v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
 -- }}}
--- statusline {{{
-local c = colors.cdef
-local galaxyline = require'galaxyline'
-local l = galaxyline.section
-function bygga(list)
-  local pos = 1
-  local function byggare(value)
-    list[pos] = value
-    pos = pos + 1
-    return byggare
-  end
-  return byggare
-end
-
-function h.namelist(list)
-  local pos = 1
-  local function byggare(name) return function (value)
-    list[pos] = {[name] = value}
-    pos = pos + 1
-    return byggare
-  end end
-  return byggare
-end
-
-local function buffer_not_empty()
-
-  if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
-    return true
-  end
-  return false
-end
-
-local cc = {
-  ViMode = c.vic7;
-  FileName = c.vic1; FileNameBG = c.vic4;
-}
-
-l.left = {} h.namelist (l.left)
-
-[[FirstElement]] {
-  provider = function() return '▋' end;
-  highlight = {c.vic4,cc.ViMode};
-}
-
-[[ViMode]] {
-  provider = function()
-    local alias = {n = 'NORMAL',i = 'INSERT',c= 'C-LINE',v= 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
-    return alias[vim.fn.mode()]
-  end;
-  highlight = {c.vic4,cc.ViMode,'bold'};
-  --separator = '',
-  --separator = '',
-  separator = '▋';
-  separator_highlight = {cc.ViMode,cc.FileName};
-}
-
-[[FileName]] {
-  provider = {'FileName','FileSize'};
-  highlight = {cc.FileNameBG,cc.FileName};
-  --condition = buffer_not_empty,
-  separator = '▋';
-  separator_highlight = {cc.FileName,c.vic8};
-}
-
-if not first_run then
-  galaxyline.load_galaxyline()
-end
--- }}}
+require'bfredl.miniline'.setup()
 -- floaty stuff {{{
 h.toclose = h.toclose or {}
 
