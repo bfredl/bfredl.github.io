@@ -1,28 +1,13 @@
+local u = require'bfredl.util'
 local colors = require'bfredl.colors'
 local c = colors.cdef
-
 local h = {}
-
-function h.namelist()
-  local list = {}
-  local function byggare(name)
-    if name == "END" then
-      return list
-    end
-    return function (value)
-      value.name = name
-      table.insert(list, value)
-      return byggare
-    end
-  end
-  return byggare
-end
 
 local function current()
   return tonumber(vim.g.actual_curwin) == vim.api.nvim_get_current_win()
 end
 
-local elements = h.namelist()
+local elements = u.namelist()
 
 [[LeftMark]] {
   bg = c.vic4
@@ -84,7 +69,7 @@ end
 h.stl = table.concat(pieces, '')
 
 function h.setup()
-  a.set_option('statusline', h.stl)
+  u.a.set_option('statusline', h.stl)
 end
 
 if package.loaded["bfredl.miniline"] then
@@ -92,4 +77,3 @@ if package.loaded["bfredl.miniline"] then
 end
 
 return h
--- }}}

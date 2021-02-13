@@ -80,63 +80,19 @@ end
 packagedef()
 
 -- }}}
--- util {{{
---
-function h.unprefix(str, pre, to)
-  local res = nil
-  if vim.startswith(str, pre) then
-    local val = string.sub(str, string.len(pre)+1)
-    if to then
-      return to(val)
-    else
-      return val
-    end
-  end
-  return nil
-end
+-- utils and API shortcuts {{{
 
 h.counter = h.counter or 0
 function h.id()
   h.counter = h.counter + 1
   return h.counter
 end
--- }}}
--- API shortcuts {{{
 
-h.a = {}
-h.buf, h.win, h.tabpage = {}, {}, {}
+for k,v in pairs(require'bfredl.util') do h[k] = v end
 local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
-_G.a, _G.buf, _G.win, _G.tabpage = h.a, h.buf, h.win, h.tabpage
-
-for k,v in pairs(vim.api) do
-  a[k] = v
-  h.unprefix(k, 'nvim_', function (x)
-    a[x] = v
-    h.unprefix(x, 'buf_', function (m)
-      buf[m] = v
-    end)
-    h.unprefix(x, 'win_', function (m)
-      win[m] = v
-    end)
-    h.unprefix(x, 'tabpage_', function (m)
-      tabpage[m] = v
-    end)
-    h.unprefix(x, '_buf_', function (m)
-      buf['_'..m] = v
-    end)
-  end)
-end
 
 local v = vim.cmd
-function h.exec(block)
-  a.exec(block, false)
-end
 local exec = h.exec
-
-
-function h.code(str)
-  return a.replace_termcodes(str, true, true, true)
-end
 -- }}}
 -- them basic bindings {{{
 -- test
