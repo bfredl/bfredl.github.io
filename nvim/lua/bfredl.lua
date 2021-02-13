@@ -2,6 +2,10 @@
 local first_run = not _G.bfredl
 local bfredl = _G.bfredl or {}
 
+if not first_run then
+  require'plenary.reload'.reload_module'bfredl.'
+end
+
 do local status, err = pcall(vim.cmd, [[ runtime! autoload/bfredl.vim ]])
   if not status then
     vim.api.nvim_err_writeln(err)
@@ -17,7 +21,9 @@ _G.h = bfredl
 local packer = require'packer'
 packer.init {}
 packer.reset()
-do local use = packer.use
+local function packagedef()
+  local use = packer.use
+
   use 'norcalli/snippets.nvim'
   use 'norcalli/nvim-colorizer.lua'
   use 'vim-conf-live/pres.vim'
@@ -29,6 +35,14 @@ do local use = packer.use
   use 'neovim/nvim-lspconfig'
 
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+
+  use {
+    'glepnir/galaxyline.nvim', branch = 'main',
+    -- your statusline
+    --config = function() require'my_statusline' end,
+    -- some optional icons
+    ---requires = {'kyazdani42/nvim-web-devicons', opt = true}
+  }
 
   -- TODO(packer): this should not be an error:
   -- use 'nvim-lua/plenary.nvim'
@@ -63,6 +77,7 @@ do local use = packer.use
 
   use 'JuliaEditorSupport/julia-vim'
 end
+packagedef()
 
 -- }}}
 -- util {{{
@@ -137,10 +152,7 @@ v [[
 
 -- }}}
 -- vimenter stuff {{{
-local colors
 function h.vimenter(startup)
-  require'plenary.reload'.reload_module'bfredl.'
-  h.colors = colors
   if startup then
     require'colorizer'.setup()
     if a._fork_serve then
@@ -203,9 +215,11 @@ if true or h.did_ts then
 end
 -- }}}
 -- color {{{
-h.colors = require'bfredl.colors'
+
+local colors = require'bfredl.colors'
+h.colors = colors
 if os.getenv'NVIM_INSTANCE' then
-  h.colors.defaults()
+  colors.defaults()
 else
   v [[ hi EndOfBuffer guibg=#222222 guifg=#666666 ]]
   v [[ hi Folded guifg=#000000 ]]
@@ -216,6 +230,74 @@ function h.xcolor()
  return vim.trim(out)
 end
 v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
+-- }}}
+-- statusline {{{
+local c = colors.cdef
+local galaxyline = require'galaxyline'
+local l = galaxyline.section
+function bygga(list)
+  local pos = 1
+  local function byggare(value)
+    list[pos] = value
+    pos = pos + 1
+    return byggare
+  end
+  return byggare
+end
+
+function h.namelist(list)
+  local pos = 1
+  local function byggare(name) return function (value)
+    list[pos] = {[name] = value}
+    pos = pos + 1
+    return byggare
+  end end
+  return byggare
+end
+
+local function buffer_not_empty()
+
+  if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
+    return true
+  end
+  return false
+end
+
+local cc = {
+  ViMode = c.vic7;
+  FileName = c.vic1; FileNameBG = c.vic4;
+}
+
+l.left = {} h.namelist (l.left)
+
+[[FirstElement]] {
+  provider = function() return '▋' end;
+  highlight = {c.vic4,cc.ViMode};
+}
+
+[[ViMode]] {
+  provider = function()
+    local alias = {n = 'NORMAL',i = 'INSERT',c= 'C-LINE',v= 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
+    return alias[vim.fn.mode()]
+  end;
+  highlight = {c.vic4,cc.ViMode,'bold'};
+  --separator = '',
+  --separator = '',
+  separator = '▋';
+  separator_highlight = {cc.ViMode,cc.FileName};
+}
+
+[[FileName]] {
+  provider = {'FileName','FileSize'};
+  highlight = {cc.FileNameBG,cc.FileName};
+  --condition = buffer_not_empty,
+  separator = '▋';
+  separator_highlight = {cc.FileName,c.vic8};
+}
+
+if not first_run then
+  galaxyline.load_galaxyline()
+end
 -- }}}
 -- floaty stuff {{{
 h.toclose = h.toclose or {}
@@ -342,7 +424,7 @@ function h.f(args)
 end
 _G.f = h.f -- HAIII
 -- }}}
--- autocmds {{
+-- autocmds {{{
 exec [[
   augroup bfredlua
     au CursorHold * lua _G.bfredl.cursorhold()

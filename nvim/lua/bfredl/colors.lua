@@ -29,7 +29,7 @@ function h.def_hi(group, o)
 end
 -- }}}
 
-h.colors = {
+h.cdef = {
   darkblue = "#1a3c54";
   midblue = "#232081";
   ultragray = "#909090";
@@ -61,7 +61,7 @@ h.colors = {
   vicca= "#2c1b63";
   vicda = "#5e50ba";
 }
-local c = h.colors
+local c = h.cdef
 
 local basebg, endbg, tonebg
 if os.getenv'NVIM_DEV' then
