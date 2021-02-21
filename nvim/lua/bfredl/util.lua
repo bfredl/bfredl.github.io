@@ -48,7 +48,7 @@ end
 function h.namelist()
   local list = {}
   local function byggare(name)
-    if name == "END" then
+    if name == nil then
       return list
     end
     return function (value)

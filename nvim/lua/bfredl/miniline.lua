@@ -35,8 +35,6 @@ local elements = u.namelist()
   bg = c.vic3;
 }
 
-[[END]]
-
 --separator = '',
 --separator = '',
 local separator = '▋';
@@ -46,7 +44,7 @@ _G._LL = h.expr
 local pieces = {}
 local lastbg = nil
 local put = function(a) table.insert(pieces, a) end
-for i,e in ipairs(elements) do
+for i,e in ipairs(elements()) do
   local cname = "LL_"..e.name
   if lastbg ~= nil then
     colors.def_hi(cname..'Sep', {bg=e.bg, fg=lastbg})
