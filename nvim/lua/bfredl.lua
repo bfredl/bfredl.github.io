@@ -203,7 +203,7 @@ function h.f(args)
   else
     b = a.nvim_create_buf(false, true)
   end
-  local firstline = ""
+  local firstline = nil
   local text
   if args.text then
     if type(args.text) == "string" then
@@ -261,6 +261,7 @@ function h.f(args)
     col=args.c or 5;
     style=args.style or "minimal";
     focusable=args.focusable;
+    border=args.border;
   }
   if w then
     win.set_config(w, config)
