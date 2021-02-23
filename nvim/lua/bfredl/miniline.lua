@@ -35,6 +35,17 @@ local elements = u.namelist()
   bg = c.vic3;
 }
 
+[[FileType]] {
+  stl = '%y  '; --
+  bg = c.vic3;
+  fg = c.vicca;
+}
+
+[[Ruler]] {
+  stl = '%-14.(%l,%c%V%) %P';
+  bg = c.vic3;
+  fg = c.vicca;
+}
 --separator = '',
 --separator = '',
 local separator = '▋';
@@ -47,8 +58,12 @@ local put = function(a) table.insert(pieces, a) end
 for i,e in ipairs(elements()) do
   local cname = "LL_"..e.name
   if lastbg ~= nil then
-    colors.def_hi(cname..'Sep', {bg=e.bg, fg=lastbg})
-    put ("%#"..cname..'Sep#'..separator)
+    if lastbg ~= e.bg then
+      colors.def_hi(cname..'Sep', {bg=e.bg, fg=lastbg})
+      put ("%#"..cname..'Sep#'..separator)
+    else
+      put " "
+    end
   end
   lastbg = e.bg
 
