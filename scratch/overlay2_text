@@ -1,0 +1,12 @@
+for _,item in ipairs(items) do
+    local text, hl_id_cell, count = unpack(item)
+    if hl_id_cell ~= nil then
+        hl_id = hl_id_cell
+    end
+    for _ = 1, (count or 1) do
+        local cell = line[colpos]
+        cell.text = text
+        cell.hl_id = hl_id
+        colpos = colpos+1
+    end
+end

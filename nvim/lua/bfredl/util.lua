@@ -1,7 +1,6 @@
 local h = {}
 
 function h.unprefix(str, pre, to)
-  local res = nil
   if vim.startswith(str, pre) then
     local val = string.sub(str, string.len(pre)+1)
     if to then
