@@ -98,7 +98,7 @@ local exec = h.exec
 -- test
 v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 
--- TODO(bfredl): reload all the filetypes when reloading bfredl.lua
+-- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[
   augroup bfredlft
     au FileType lua noremap <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>

@@ -59,12 +59,12 @@ noremap <leader>u <cmd>Reload<cr>
 noremap <leader>r <cmd>update<cr><cmd>Reload<cr>
 " TODO(bfredl): jump to open window if already exist
 noremap <Leader>v <cmd>exe "split ".bfredl#rt("autoload/bfredl.vim")<CR>
-noremap <Leader>h <cmd>exe "split ".bfredl#rt("lua/bfredl.lua")<CR>
+noremap <Leader>h <cmd>exe "split ".bfredl#rt("lua/bfredl/init.lua")<CR>
 noremap <Leader>V <cmd>split ~/config/vimrc<CR>
 augroup vimrc
   au!
   au BufWritePost $MYVIMRC Reload
-  exe "au BufWritePost ".bfredl#rt("lua/bfredl.lua")." Reload"
+  exe "au BufWritePost ".bfredl#rt("lua/bfredl/init.lua")." Reload"
   exe "au BufWritePost ".bfredl#rt("autoload/bfredl.vim")." Reload"
 augroup END
 
