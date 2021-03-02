@@ -46,9 +46,9 @@ local elements = u.namelist()
   bg = c.vic3;
   fg = c.vicca;
 }
---separator = '',
---separator = '',
-local separator = '▋';
+--local separator = ''
+--local separator = '▋'
+local separator = ''
 h.expr = {}
 _G._LL = h.expr
 

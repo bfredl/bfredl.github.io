@@ -71,7 +71,6 @@ augroup END
 command! IWrite au InsertLeave <buffer> nested write
 
 noremap <silent> <Plug>ch:,l <cmd>update<cr><cmd>so %<cr>
-au FileType lua noremap <buffer> <silent> <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>
 
 " }}}
 " path and files {{{
@@ -318,6 +317,7 @@ augroup Filetypes
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,zig call bfredl#lspmap()
+  exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
 augroup END
 
 func! bfredl#python() "{{{
@@ -338,5 +338,29 @@ let g:semshi#mark_selected_nodes = 2
 " julia {{{
 let g:latex_to_unicode_tab = 0
 " }}}
+"
+func bfredl#nvim_c_ft()
+  setlocal expandtab
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal textwidth=80
+  setlocal comments=:///,://
+  setlocal cinoptions=0(
+  setlocal commentstring=//\ %s
+endfunc
+
+func bfredl#nvimdev()
+  augroup nvimdev
+    au!
+    au BufRead,BufNewFile *.h set filetype=c
+    au FileType c call bfredl#nvim_c_ft()
+  augroup END
+
+  if &ft ==# 'c'
+    call bfredl#nvim_c_ft()
+  endif
+endfunc
+
+
 " }}}
 "map <Plug>ch:ht V"ep

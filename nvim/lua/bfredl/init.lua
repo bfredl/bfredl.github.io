@@ -53,6 +53,7 @@ local function packagedef()
   use '~/dev/ibus-chords'
   use '~/dev/nvim-ipy'
   use '~/dev/vim-argclinic'
+  use '~/dev/nsync.nvim/'
 
   use 'mileszs/ack.vim'
 
