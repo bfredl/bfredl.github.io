@@ -102,8 +102,8 @@ v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[
   augroup bfredlft
-    au FileType lua noremap <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>
-    au FileType lua noremap <Plug>ch:un <cmd>update<cr><cmd>luafile %<cr>
+    au FileType lua noremap <buffer> <Plug>ch:,l <cmd>update<cr><cmd>luafile %<cr>
+    au FileType lua noremap <buffer> <Plug>ch:un <cmd>update<cr><cmd>luafile %<cr>
   augroup END
 ]]
 

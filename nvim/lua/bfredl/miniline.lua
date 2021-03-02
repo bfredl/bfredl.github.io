@@ -30,13 +30,35 @@ local elements = u.namelist()
   fg = c.vic1;
 }
 
+[[GitGutter]] {
+  expr = function()
+    local status, res = pcall(vim.fn.GitGutterGetHunkSummary)
+    if not status then return "" end
+    local a,m,r = unpack(res)
+    if a+m+r == 0 then return "" end
+    if true then
+      local parts = {}
+      if a > 0 then table.insert(parts, "+"..a) end
+      if m > 0 then table.insert(parts, ""..m) end
+      if r > 0 then table.insert(parts, "-"..r) end
+      return ' '..table.concat(parts, " ")
+    end
+    return (a>0 and'+'..a or'  ') .. ' '
+        .. (m>0 and''..m or'  ') .. ' '
+        .. (r>0 and'-'..r or'  ')
+  end;
+  fg = c.vic6a;
+  bg = c.vic3;
+}
+
+
 [[Padding]] {
-  stl = '%='; --
+  stl = '%=';
   bg = c.vic3;
 }
 
 [[FileType]] {
-  stl = '%y  '; --
+  stl = '%y  ';
   bg = c.vic3;
   fg = c.vicca;
 }

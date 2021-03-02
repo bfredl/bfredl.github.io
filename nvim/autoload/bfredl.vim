@@ -81,6 +81,9 @@ noremap <Plug>CH:ph :cd ..<cr>
 noremap <Leader>o <C-W>o
 noremap <Plug>ch:hc <C-W>w
 noremap <Plug>CH:hc <C-W>W
+
+noremap å :A<cr>
+noremap Å :AS<cr>
 " }}}
 " save and exit {{{
 nmap <Plug>ch:ir :w<cr>
@@ -191,8 +194,10 @@ command! Gr Gread
 command! -nargs=* Gd Gdiff <args>
 command! Gdp Gdiff HEAD^
 
+let g:gitgutter_map_keys = 0 " no u
 map <Plug>ch:tn :GitGutterNextHunk<cr>
 map <Plug>CH:tn :GitGutterPrevHunk<cr>
+
 " intentional no<cr>
 map <Plug>CH:tr :GitGutterRevertHunk
 map <Plug>ch:ts :GitGutterStageHunk
@@ -200,6 +205,10 @@ map <Plug>ch:ts :GitGutterStageHunk
 " diffput/diffget
 noremap <Plug>ch:pd dp
 noremap <Plug>ch:od do
+
+augroup diffy
+  au BufWritePre,InsertLeave * GitGutter
+augroup END
 
 " }}}
 " a brief interchange {{{
