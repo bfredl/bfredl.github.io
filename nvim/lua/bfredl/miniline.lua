@@ -57,20 +57,34 @@ local elements = u.namelist()
   bg = c.vic3;
 }
 
+[[LSP]] {
+  expr = function()
+    local clients = vim.lsp.buf_get_clients()
+    if #clients == 0 then
+      return ''
+    end
+    return clients[1].name
+  end;
+  bg = c.vic6;
+  fg = c.vic4;
+}
+
+
 [[FileType]] {
-  stl = '%y  ';
-  bg = c.vic3;
+  stl = '%y';
+  bg = c.vic6;
   fg = c.vicca;
 }
 
 [[Ruler]] {
   stl = '%-14.(%l,%c%V%) %P';
-  bg = c.vic3;
+  bg = c.vic6b;
   fg = c.vicca;
 }
---local separator = ''
---local separator = '▋'
-local separator = ''
+local separator
+separator = ''
+separator = ''
+separator = '▋'
 h.expr = {}
 _G._LL = h.expr
 
