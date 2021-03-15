@@ -60,7 +60,7 @@ local elements = u.namelist()
 [[LSP]] {
   expr = function()
     local clients = vim.lsp.buf_get_clients()
-    if #clients == 0 then
+    if not clients[1] then
       return ''
     end
     return clients[1].name

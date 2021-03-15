@@ -78,6 +78,7 @@ function h.f(args)
     style=args.style or "minimal";
     focusable=args.focusable;
     border=args.border;
+    border_style=args.border_style;
   }
   if w then
     win.set_config(w, config)
@@ -94,7 +95,7 @@ function h.f(args)
     local bg
     if string.sub(args.bg, 1, 1) == "#" then
       -- TODO(bfredl):be smart and reuse hl ids.
-      bg = "XXTMP"..h.id()
+      bg = "XXTMP"..u.id()
       colors.def_hi(bg, {bg=args.bg, fg=args.fg})
     else
       bg = args.bg

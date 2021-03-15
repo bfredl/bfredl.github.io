@@ -82,18 +82,44 @@ packagedef()
 
 -- }}}
 -- utils and API shortcuts {{{
-
-h.counter = h.counter or 0
-function h.id()
-  h.counter = h.counter + 1
-  return h.counter
-end
-
 for k,v in pairs(require'bfredl.util') do h[k] = v end
 local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
+_G.a = a
 
-local v = vim.cmd
-local exec = h.exec
+local v, exec = vim.cmd, h.exec
+-- }}}
+-- basic options {{{
+h.set()
+  'hidden'
+  'title'
+  'number'
+  'smartcase'
+  'ignorecase'
+  'expandtab'
+  'sw' (2)
+  'ts' (2)
+  'sts' (2)
+
+  'incsearch'
+  'mouse' "a"
+  'updatetime' (1666)
+  'foldmethod' "marker"
+  'nomodeline'
+
+  'splitbelow'
+
+  'notimeout'
+  'ttimeout'
+  'ttimeoutlen' (10)
+
+v 'set cpo-=_'
+v 'set diffopt+=vertical'
+
+if first_run then
+  -- I liked this better:
+  vim.o.dir = '.,'..vim.o.dir
+end
+
 -- }}}
 -- them basic bindings {{{
 -- test

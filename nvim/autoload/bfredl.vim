@@ -1,31 +1,3 @@
-" options: basic {{{
-set hidden
-set title
-set number
-set smartcase
-set ignorecase
-set expandtab
-set sw=2 ts=2 sts=2
-set incsearch
-set mouse=a
-set updatetime=1666
-set foldmethod=marker
-set nomodeline
-set cpo-=_
-if has("vim_starting")
-    " I liked this better:
-    let &dir = ".,".&dir
-endif
-
-set splitbelow
-set diffopt+=vertical
-
-set notimeout
-set ttimeout
-set ttimeoutlen=10
-
-
-" }}}
 " just for looks {{{
 set termguicolors
 set winblend=20
@@ -101,6 +73,10 @@ map <Leader>P "+P
 map <Leader>i "*p
 map <Leader>I "*P
 
+noremap <Plug>ch:it '[=']
+noremap <Plug>CH:it '[V']
+" ch:,u
+noremap ü "*p'[V']>.
 
 " TODO(bfredl): formally associate the mappings with the plugin
 map p <Plug>(miniyank-autoput)
@@ -153,6 +129,9 @@ map <Plug>ch:aw <Plug>(argclinic-prevend)
 omap ie <Plug>(argclinic-selectarg)
 xmap ie <Plug>(argclinic-selectarg)
 
+noremap <Plug>ch:jt gj
+noremap <Plug>ch:kt gk
+noremap <Plug>ch:hn :noh<cr>
 
 noremap <expr> <Plug>ch:hv ":setlocal colorcolumn=".(&cc==80?0:80)."<cr>"
 " }}}
@@ -326,7 +305,9 @@ augroup Filetypes
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,zig call bfredl#lspmap()
-  exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
+  "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
+  au FileType lua 1match Grupp /^\[\[.\+]]/
+  au FileType lua 2match Option /^\s*'[a-z]\+'/
 augroup END
 
 func! bfredl#python() "{{{

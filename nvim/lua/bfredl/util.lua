@@ -1,4 +1,11 @@
-local h = {}
+local h = _G._bfredl_util or {}
+_G._bfredl_util = h
+
+h.counter = h.counter or 0
+function h.id()
+  h.counter = h.counter + 1
+  return h.counter
+end
 
 function h.unprefix(str, pre, to)
   if vim.startswith(str, pre) then
@@ -57,6 +64,42 @@ function h.namelist()
     end
   end
   return byggare
+end
+
+
+h.options = a.get_all_options_info()
+for n,v in pairs(a.get_all_options_info()) do
+  if v.shortname ~= "" then h.options[v.shortname] = h.options[n] end
+end
+function h.set()
+  local function meta(name)
+    local boolval = true
+    h.unprefix(name, 'no', function(nam)
+      if h.options[nam] and h.options[nam].type == 'boolean' then
+        name = nam
+        boolval = false
+      end
+    end)
+    local o = h.options[name]
+    if not o then
+      error(name)
+    end
+
+    local function unmeta(val)
+      if o.global_local or o.scope == "global" then
+        a.set_option(name, val)
+      elseif o.scope == "win" then
+        a.win_set_option(0, name, val)
+      elseif o.scope == "buf" then
+        a.buf_set_option(0, name, val)
+      else
+        error 'doh!'
+      end
+      return meta
+    end
+    return o.type == "boolean" and unmeta(boolval) or unmeta
+  end
+  return meta
 end
 
 return h

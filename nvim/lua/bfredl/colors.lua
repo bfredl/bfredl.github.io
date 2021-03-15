@@ -87,7 +87,9 @@ h.basetheme = {
   Special = {fg=c.vicb};
   semshiBuiltin = {link="Identifier"};
   SignColumn = {bg=c.vicd};
-  Grupp = {bg=basebg, fg=c.vic7, attr="bold"};
+  Grupp = {bg=c.whiteish, fg="#222222"};
+  --Grupp = {bg='#222222', fg='#40cccc', attr="reverse"};
+  Option = {bg=basebg, fg="#60ff60", attr="bold"};
 
 
 }
