@@ -12,6 +12,10 @@ do local status, err = pcall(vim.cmd, [[ runtime! autoload/bfredl.vim ]])
   end
 end
 
+local function each(z)
+  return (function (x) return x(x) end) (function (x) return function (y) z(y) return x(x) end end)
+end
+
 local h = bfredl
 
 -- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
@@ -21,7 +25,7 @@ _G.h = bfredl
 local packer = require'packer'
 packer.init {}
 packer.reset()
-do (function (x) return x(x) end) (function (x) return function (y) packer.use(y) return x(x) end end)
+do each (packer.use)
   'norcalli/snippets.nvim'
   'norcalli/nvim-colorizer.lua'
   'vim-conf-live/pres.vim'
