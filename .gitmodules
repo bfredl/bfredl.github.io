@@ -11,3 +11,6 @@
 [submodule "doom-emacs"]
 	path = doom-emacs
 	url = https://github.com/hlissner/doom-emacs
+[submodule "nvim/start/luarefvim"]
+	path = nvim/start/luarefvim
+	url = git@github.com:bfredl/luarefvim.git

@@ -102,4 +102,8 @@ function h.set()
   return meta
 end
 
+function h.mapcmd(lhs) return function(cmd)
+  a.set_keymap('', lhs, '<cmd>'..string.gsub(cmd,'<','<lt>')..'<cr>', {noremap=true})
+end end
+
 return h
