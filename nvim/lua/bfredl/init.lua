@@ -21,64 +21,61 @@ _G.h = bfredl
 local packer = require'packer'
 packer.init {}
 packer.reset()
-local function packagedef()
-  local use = packer.use
 
-  use 'norcalli/snippets.nvim'
-  use 'norcalli/nvim-colorizer.lua'
-  use 'vim-conf-live/pres.vim'
-  --use 'norek/bbbork'
+local use = packer.use
+use 'norcalli/snippets.nvim'
+use 'norcalli/nvim-colorizer.lua'
+use 'vim-conf-live/pres.vim'
+--use 'norek/bbbork'
 
-  use 'nvim-treesitter/nvim-treesitter'
-  use 'nvim-treesitter/playground'
+use 'nvim-treesitter/nvim-treesitter'
+use 'nvim-treesitter/playground'
 
-  use 'neovim/nvim-lspconfig'
+use 'neovim/nvim-lspconfig'
 
-  use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
-  if false then use {
-    'glepnir/galaxyline.nvim', branch = 'main',
-    -- your statusline
-    --config = function() require'my_statusline' end,
-    -- some optional icons
-    ---requires = {'kyazdani42/nvim-web-devicons', opt = true}
-  } end
+if false then use {
+  'glepnir/galaxyline.nvim', branch = 'main',
+  -- your statusline
+  --config = function() require'my_statusline' end,
+  -- some optional icons
+  ---requires = {'kyazdani42/nvim-web-devicons', opt = true}
+} end
 
-  -- TODO(packer): this should not be an error:
-  -- use 'nvim-lua/plenary.nvim'
+-- TODO(packer): this should not be an error:
+-- use 'nvim-lua/plenary.nvim'
 
-  use '~/dev/nvim-miniyank'
-  use '~/dev/nvim-bufmngr'
-  use '~/dev/nvim-luadev'
-  use '~/dev/ibus-chords'
-  use '~/dev/nvim-ipy'
-  use '~/dev/vim-argclinic'
-  use '~/dev/nsync.nvim/'
+use '~/dev/nvim-miniyank'
+use '~/dev/nvim-bufmngr'
+use '~/dev/nvim-luadev'
+use '~/dev/ibus-chords'
+use '~/dev/nvim-ipy'
+use '~/dev/vim-argclinic'
+use '~/dev/nsync.nvim/'
 
-  use 'mileszs/ack.vim'
+use 'mileszs/ack.vim'
 
-  use 'Lokaltog/vim-easymotion'
-  use 'justinmk/vim-sneak'
-  use 'tommcdo/vim-exchange'
+use 'Lokaltog/vim-easymotion'
+use 'justinmk/vim-sneak'
+use 'tommcdo/vim-exchange'
 
-  -- tpope section
-  use 'tpope/vim-repeat'
-  use 'tpope/vim-surround'
-  use 'tpope/vim-fugitive'
+-- tpope section
+use 'tpope/vim-repeat'
+use 'tpope/vim-surround'
+use 'tpope/vim-fugitive'
 
-  use 'airblade/vim-gitgutter'
+use 'airblade/vim-gitgutter'
 
-  use 'vim-scripts/a.vim'
+use 'vim-scripts/a.vim'
 
-  -- filetypes
-  use 'numirias/semshi'
-  use {'davidhalter/jedi-vim', ft = {'python'}}
+-- filetypes
+use 'numirias/semshi'
+use {'davidhalter/jedi-vim', ft = {'python'}}
 
-  use 'ziglang/zig.vim'
+use 'ziglang/zig.vim'
 
-  use 'JuliaEditorSupport/julia-vim'
-end
-packagedef()
+use 'JuliaEditorSupport/julia-vim'
 
 -- }}}
 -- utils and API shortcuts {{{
@@ -86,31 +83,30 @@ for k,v in pairs(require'bfredl.util') do h[k] = v end
 local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
 _G.a = a
 
-local v, exec = vim.cmd, h.exec
+local v, exec, set = vim.cmd, h.exec, h.set
 -- }}}
 -- basic options {{{
-h.set()
-  'hidden'
-  'title'
-  'number'
-  'smartcase'
-  'ignorecase'
-  'expandtab'
-  'sw' (2)
-  'ts' (2)
-  'sts' (2)
+'hidden'
+'title'
+'number'
+'smartcase'
+'ignorecase'
+'expandtab'
+'sw' (2)
+'ts' (2)
+'sts' (2)
 
-  'incsearch'
-  'mouse' "a"
-  'updatetime' (1666)
-  'foldmethod' "marker"
-  'nomodeline'
+'incsearch'
+'mouse' "a"
+'updatetime' (1666)
+'foldmethod' "marker"
+'nomodeline'
 
-  'splitbelow'
+'splitbelow'
 
-  'notimeout'
-  'ttimeout'
-  'ttimeoutlen' (10)
+'notimeout'
+'ttimeout'
+'ttimeoutlen' (10)
 
 v 'set cpo-=_'
 v 'set diffopt+=vertical'

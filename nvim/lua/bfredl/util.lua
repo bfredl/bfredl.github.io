@@ -71,7 +71,7 @@ h.options = a.get_all_options_info()
 for n,v in pairs(a.get_all_options_info()) do
   if v.shortname ~= "" then h.options[v.shortname] = h.options[n] end
 end
-function h.set()
+h.set = (function()
   local function meta(name)
     local boolval = true
     h.unprefix(name, 'no', function(nam)
@@ -100,7 +100,7 @@ function h.set()
     return o.type == "boolean" and unmeta(boolval) or unmeta
   end
   return meta
-end
+end)()
 
 function h.mapcmd(lhs) return function(cmd)
   a.set_keymap('', lhs, '<cmd>'..string.gsub(cmd,'<','<lt>')..'<cr>', {noremap=true})
