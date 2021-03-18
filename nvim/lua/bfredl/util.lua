@@ -86,14 +86,16 @@ h.set = (function()
     end
 
     local function unmeta(val)
-      if o.global_local or o.scope == "global" then
+      -- all options except window options have global value,
+      -- because reasons.
+      if o.global_local or o.scope ~= "win" then
         a.set_option(name, val)
-      elseif o.scope == "win" then
-        a.win_set_option(0, name, val)
+      end
+
+      if o.scope == "win" then
+        win.set_option(0, name, val)
       elseif o.scope == "buf" then
-        a.buf_set_option(0, name, val)
-      else
-        error 'doh!'
+        buf.set_option(0, name, val)
       end
       return meta
     end
