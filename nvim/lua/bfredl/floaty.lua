@@ -1,7 +1,7 @@
 local h = _G._bfredl_floaty or {}
 local colors = require'bfredl.colors'
 local u = require'bfredl.util'
-local a = u.a
+local a, win, buf = u.a, u.win, u.buf
 
 _G._bfredl_floaty = h
 
@@ -14,7 +14,7 @@ function h.f(args)
     b = win.get_buf(w)
     oc = win.get_config(w)
   end
-  if args.buf and a.buf_is_valid(args.buf) then
+  if args.buf and buf.is_valid(args.buf) then
     b = args.buf
   else
     b = a.create_buf(false, true)
@@ -28,7 +28,7 @@ function h.f(args)
       text = args.text
     end
     firstline = text[1] or ""
-    a.buf_set_lines(b, 0, -1, true, text)
+    buf.set_lines(b, 0, -1, true, text)
   end
 
   local p_rows, p_cols = vim.o.lines-1, vim.o.columns
@@ -110,7 +110,7 @@ function h.f(args)
   end
 
   local ret
-  return a.buf_call(b, function()
+  return buf.call(b, function()
     local ret
     if args.cat then
       if args.term then error('FY!') end
