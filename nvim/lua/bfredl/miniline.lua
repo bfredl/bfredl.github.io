@@ -3,8 +3,10 @@ local colors = require'bfredl.colors'
 local c = colors.cdef
 local h = {}
 
+local context = false
 local function current()
-  return tonumber(vim.g.actual_curwin) == vim.api.nvim_get_current_win()
+  -- PGA ORSAKER
+  return tonumber(context and vim.g.statusline_winid or vim.g.actual_curwin) == vim.api.nvim_get_current_win()
 end
 
 local elements = u.namelist()
@@ -22,6 +24,7 @@ local elements = u.namelist()
   bg = c.vic7;
   fg = c.vic4;
   attr={bold=true};
+  active = function() return current() end;
 }
 
 [[FileName]] {
@@ -118,23 +121,28 @@ end
 function h.render()
   local pieces = {}
   local lastbg = nil
+  context = true -- nonlocal
   local put = function(a) table.insert(pieces, a) end
   for i,e in ipairs(elements()) do
-    local cname = "LL_"..e.name
-    if lastbg ~= nil then
-      if lastbg ~= e.bg then
-        put ("%#"..cname..'Sep#'..separator)
-      else
-        put " "
+    local inactive = e.active and not e.active()
+    if not inactive then
+      local cname = "LL_"..e.name
+      if lastbg ~= nil then
+        if lastbg ~= e.bg then
+          put ("%#"..cname..'Sep#'..separator)
+        else
+          put " "
+        end
+      end
+      lastbg = e.bg
+
+      put (e._cdef)
+      if e.stl then
+        put (e.stl)
       end
     end
-    lastbg = e.bg
-
-    put (e._cdef)
-    if e.stl then
-      put (e.stl)
-    end
   end
+  context = false -- nonlocal
   return table.concat(pieces, '')
 end
 h.expr._render = h.render
