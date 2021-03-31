@@ -50,6 +50,8 @@ do each (packer.use)
   '~/dev/vim-argclinic'
   '~/dev/nsync.nvim/'
 
+  { '~/dev/nvim-miniluv/', rocks = 'openssl' }
+
   'mileszs/ack.vim'
 
   'Lokaltog/vim-easymotion'
