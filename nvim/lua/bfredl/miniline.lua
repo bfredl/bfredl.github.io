@@ -88,17 +88,14 @@ separator = '▋'
 h.expr = {}
 _G._LL = h.expr
 
-local pieces = {}
+
+-- TODO: temas will not require colors to be pre-defined
 local lastbg = nil
-local put = function(a) table.insert(pieces, a) end
 for i,e in ipairs(elements()) do
   local cname = "LL_"..e.name
   if lastbg ~= nil then
     if lastbg ~= e.bg then
       colors.def_hi(cname..'Sep', {bg=e.bg, fg=lastbg})
-      put ("%#"..cname..'Sep#'..separator)
-    else
-      put " "
     end
   end
   lastbg = e.bg
@@ -106,19 +103,44 @@ for i,e in ipairs(elements()) do
   local attr = {bg=e.bg, fg=e.fg}
   if next(attr) then
     colors.def_hi(cname, attr)
-    put ("%#"..cname..'#')
+    e._cdef = "%#"..cname..'#'
+  else
+    e._cdef = ""
   end
-  if e.stl then
-    put (e.stl)
-  elseif e.expr then
+
+  if e.expr then
     h.expr[e.name] = e.expr
-    put ("%{v:lua._LL."..e.name.."()}")
+    e.stl = "%{v:lua._LL."..e.name.."()}"
   end
 end
-h.stl = table.concat(pieces, '')
+
+
+function h.render()
+  local pieces = {}
+  local lastbg = nil
+  local put = function(a) table.insert(pieces, a) end
+  for i,e in ipairs(elements()) do
+    local cname = "LL_"..e.name
+    if lastbg ~= nil then
+      if lastbg ~= e.bg then
+        put ("%#"..cname..'Sep#'..separator)
+      else
+        put " "
+      end
+    end
+    lastbg = e.bg
+
+    put (e._cdef)
+    if e.stl then
+      put (e.stl)
+    end
+  end
+  return table.concat(pieces, '')
+end
+h.expr._render = h.render
 
 function h.setup()
-  u.a.set_option('statusline', h.stl)
+  u.a.set_option('statusline', '%!v:lua._LL._render()')
 end
 
 if package.loaded["bfredl.miniline"] then
