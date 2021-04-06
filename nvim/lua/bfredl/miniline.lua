@@ -2,11 +2,14 @@ local u = require'bfredl.util'
 local colors = require'bfredl.colors'
 local c = colors.cdef
 local h = {}
+local a = u.a
+
+local ns = a.create_namespace 'miniline'
 
 local context = false
 local function current()
   -- PGA ORSAKER
-  return tonumber(context and vim.g.statusline_winid or vim.g.actual_curwin) == vim.api.nvim_get_current_win()
+  return tonumber(context and vim.g.statusline_winid or vim.g.actual_curwin) == a.get_current_win()
 end
 
 local elements = u.namelist()
@@ -95,18 +98,10 @@ _G._LL = h.expr
 -- TODO: temas will not require colors to be pre-defined
 local lastbg = nil
 for i,e in ipairs(elements()) do
-  local cname = "LL_"..e.name
-  if lastbg ~= nil then
-    if lastbg ~= e.bg then
-      colors.def_hi(cname..'Sep', {bg=e.bg, fg=lastbg})
-    end
-  end
-  lastbg = e.bg
-
   local attr = {bg=e.bg, fg=e.fg}
   if next(attr) then
-    colors.def_hi(cname, attr)
-    e._cdef = "%#"..cname..'#'
+    a.set_hl(ns, e.name, attr)
+    e._cdef = "%#"..e.name..'#'
   else
     e._cdef = ""
   end
@@ -126,10 +121,10 @@ function h.render()
   for i,e in ipairs(elements()) do
     local inactive = e.active and not e.active()
     if not inactive then
-      local cname = "LL_"..e.name
       if lastbg ~= nil then
         if lastbg ~= e.bg then
-          put ("%#"..cname..'Sep#'..separator)
+          a.set_hl(ns, e.name..'Sep', {bg=e.bg, fg=lastbg})
+          put ("%#"..e.name..'Sep#'..separator)
         else
           put " "
         end
@@ -149,6 +144,7 @@ h.expr._render = h.render
 
 function h.setup()
   u.a.set_option('statusline', '%!v:lua._LL._render()')
+  a._set_hl_ns(ns)
 end
 
 if package.loaded["bfredl.miniline"] then

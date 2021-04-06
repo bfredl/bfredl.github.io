@@ -64,6 +64,7 @@ do each (packer.use)
   'tpope/vim-fugitive'
 
   'airblade/vim-gitgutter'
+  'hotwatermorning/auto-git-diff'
 
   'vim-scripts/a.vim'
 
