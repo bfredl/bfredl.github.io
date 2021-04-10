@@ -146,8 +146,9 @@ elseif executable("ag")
 endif
 " }}}
 " telescope {{{
-" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
+nnoremap <Plug>ch:ig <cmd>Telescope live_grep<cr>
+nnoremap <Plug>ch:am :Telescope <c-z>
 " }}}
 " LSP {{{
 function! bfredl#lspmap()

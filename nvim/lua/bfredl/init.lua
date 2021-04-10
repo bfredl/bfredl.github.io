@@ -193,6 +193,14 @@ if true or h.did_ts then
   h.ts_setup()
 end
 -- }}}
+-- telescope {{{
+require'telescope'.setup {
+  defaults = {
+    winblend = 20;
+    border = false;
+  };
+}
+-- }}}
 -- color {{{
 
 local colors = require'bfredl.colors'
