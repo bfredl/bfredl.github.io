@@ -1,10 +1,19 @@
-
+local newsym
+if false then
 local syms = vim.fn["julia_latex_symbols#get_dict"]()
-local newsym = {}
+
+newsym = {}
 for k,v in pairs(syms) do
   if string.sub(k,1,1) == "\\" then
     newsym[string.sub(k,2)] = v
   end
+end
+
+f= io.open('timp', 'w')
+f:write(vim.inspect(newsym))
+f:close()
+else
+  newsym = require'bfredl.julia_symbols'
 end
 
 local h = {}

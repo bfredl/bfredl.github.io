@@ -78,7 +78,7 @@ function h.f(args)
     style=args.style or "minimal";
     focusable=args.focusable;
     border=args.border;
-    border_style=args.border_style;
+    zindex=args.zindex;
   }
   if w then
     win.set_config(w, config)
@@ -100,7 +100,8 @@ function h.f(args)
     else
       bg = args.bg
     end
-    win.set_option(w, 'winhl', 'Normal:'..bg)
+    oldhl = win.get_option(w, 'winhl')
+    win.set_option(w, 'winhl', oldhl..(#oldhl > 0 and ',' or '')..'Normal:'..bg)
   end
   if args.chold then
     h.toclose[w] = true
