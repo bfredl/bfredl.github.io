@@ -76,6 +76,8 @@ do each (packer.use)
 
   'JuliaEditorSupport/julia-vim'
 
+  'lervag/vimtex'
+
 end
 
 -- }}}
@@ -96,6 +98,8 @@ local v, exec, set = vim.cmd, h.exec, h.set
 'sw' (2)
 'ts' (2)
 'sts' (2)
+
+'linebreak'
 
 'incsearch'
 'mouse' "a"

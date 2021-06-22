@@ -135,9 +135,18 @@ noremap <Plug>ch:hn :noh<cr>
 
 noremap <expr> <Plug>ch:hv ":setlocal colorcolumn=".(&cc==80?0:80)."<cr>"
 " }}}
+" is of no SPEL {{{
+noremap <Plug>ch:js ]s
+noremap <Plug>ch:ks [s
+" fix spel
+noremap <Plug>ch:es z=
+" }}}
 " grepping and searching{{{
 noremap <Plug>ch:ag :Ack!<space>
 noremap <Plug>CH:ag *:AckFromSearch!<cr>
+
+" STFU
+noremap <Plug>ch:hn :noh<cr>
 
 if executable("rg")
   let g:ackprg = 'rg --vimgrep --no-heading'
@@ -352,6 +361,6 @@ func bfredl#nvimdev()
   endif
 endfunc
 
-
+let g:tex_flavor = 'latex'
 " }}}
 "map <Plug>ch:ht V"ep
