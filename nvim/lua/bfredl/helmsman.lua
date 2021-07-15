@@ -3,6 +3,7 @@ local curl = require'plenary.curl'
 
 h.API_TOKEN = os.getenv "hugtoken"
 
+
 function h.doit(input, cb)
   local tzero = vim.loop.gettimeofday()
   local res = curl.post("https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B", {
@@ -49,25 +50,29 @@ function h.dump_res(time, res)
 end
 
 function h.visual()
+  local print = require'luadev'.print
   local text = vim.fn["bfredl#get_selection"](false)
+  print("trigger the text "..vim.inspect(text))
   h.testtext(text, vim.schedule_wrap(function(time, res, err)
     local r = vim.fn.json_decode(res)
     h.dump_res(time, r)
   end))
 end
 
-vim.cmd [[vnoremap <plug>ch:ht :<c-u>lua require'bfredl.helmsman'.visual()]]
+vim.cmd [[vnoremap <plug>ch:ht :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
 
 
 -- FUBBIT
 _G.h = h
 
-h.testtext("void nvim_command(String command, Error *err)\n{\n", vim.schedule_wrap(function(time, res, err)
-  if err ~= nil then
-    return error("ÄRROR "..tostring(err))
-  end
-  h.dump_res(time, vim.fn.json_decode(res))
-end))
+if false then
+  h.testtext("void nvim_command(String command, Error *err)\n{\n", vim.schedule_wrap(function(time, res, err)
+    if err ~= nil then
+      return error("ÄRROR "..tostring(err))
+    end
+    h.dump_res(time, vim.fn.json_decode(res))
+  end))
+end
 
 
 return h

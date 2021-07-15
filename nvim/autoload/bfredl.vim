@@ -391,7 +391,7 @@ function! bfredl#get_selection(is_op)
     let lines[0] = lines[0][col1 - 1:]
 
     " TODO: GRUGG 'operatorfunc' GRUGG! "line" "char" "block" GRUG GRUGG!
-    return join(lines, "\n").(visualmode() == "V" ? "\n" : "")
+    return join(lines, "\n").((visualmode() ==# "V") ? "\n" : "")
 endfunction
 
 " }}}
