@@ -4,16 +4,18 @@ local curl = require'plenary.curl'
 h.API_TOKEN = os.getenv "hugtoken"
 
 function h.doit(input, cb)
+  local tzero = vim.loop.gettimeofday()
   local res = curl.post("https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B", {
     body = vim.fn.json_encode(input);
     headers = {
       Authorization = "Bearer "..h.API_TOKEN;
     };
     callback = function(res)
+      local time = vim.loop.gettimeofday() - tzero
       if res.status ~= 200 then
-        cb(nil, res.status)
+        cb(time, nil, res.status)
       else
-        cb(res.body, nil)
+        cb(time, res.body, nil)
       end
     end;
   })
@@ -34,19 +36,37 @@ function h.testtext(prompt, cb)
   return h.doit(input, cb)
 end
 
+function h.dump_res(time, res)
+  local print = require'luadev'.print
+  print("RESULTS: ("..tostring(time)..")\n")
+  for i,item in ipairs(res) do
+    if i > 1 then
+      print("=======\n")
+    end
+    print(item.generated_text)
+  end
+  print("=FIN=\n")
+end
+
+function h.visual()
+  local text = vim.fn["bfredl#get_selection"](false)
+  h.testtext(text, vim.schedule_wrap(function(time, res, err)
+    local r = vim.fn.json_decode(res)
+    h.dump_res(time, r)
+  end))
+end
+
+vim.cmd [[vnoremap <plug>ch:ht :<c-u>lua require'bfredl.helmsman'.visual()]]
+
+
 -- FUBBIT
 _G.h = h
 
-h.testtext("void win_line(win_T *wp, linenr_T lnum)\n{\n", vim.schedule_wrap(function(res, err)
-  local print = require'luadev'.print
+h.testtext("void nvim_command(String command, Error *err)\n{\n", vim.schedule_wrap(function(time, res, err)
   if err ~= nil then
     return error("ÄRROR "..tostring(err))
   end
-  print("RESULTS:\n")
-  for _,item in ipairs(vim.fn.json_decode(res)) do
-    print("=======\n")
-    print(item.generated_text)
-  end
+  h.dump_res(time, vim.fn.json_decode(res))
 end))
 
 

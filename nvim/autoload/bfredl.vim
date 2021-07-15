@@ -375,4 +375,24 @@ endfunc
 
 let g:tex_flavor = 'latex'
 " }}}
+" get_selection {{{
+" thanks to @xolox on stackoverflow for visual selection
+" and to @mightymicha for operator selection
+function! bfredl#get_selection(is_op)
+    let [lnum1, col1] = getpos(a:is_op ? "'[" : "'<")[1:2]
+    let [lnum2, col2] = getpos(a:is_op ? "']" : "'>")[1:2]
+
+    if lnum1 > lnum2
+      let [lnum1, col1, lnum2, col2] = [lnum2, col2, lnum1, col1]
+    endif
+
+    let lines = getline(lnum1, lnum2)
+    let lines[-1] = lines[-1][: col2 - ((&selection == 'inclusive' || a:is_op) ? 1 : 2)]
+    let lines[0] = lines[0][col1 - 1:]
+
+    " TODO: GRUGG 'operatorfunc' GRUGG! "line" "char" "block" GRUG GRUGG!
+    return join(lines, "\n").(visualmode() == "V" ? "\n" : "")
+endfunction
+
+" }}}
 "map <Plug>ch:ht V"ep
