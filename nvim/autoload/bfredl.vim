@@ -134,6 +134,19 @@ noremap <Plug>ch:kt gk
 noremap <Plug>ch:hn :noh<cr>
 
 noremap <expr> <Plug>ch:hv ":setlocal colorcolumn=".(&cc==80?0:80)."<cr>"
+
+function! bfredl#tagInSplit(tag)
+  if &ft=="help"
+    split
+  else
+    wincmd w
+  end
+  exec "tag ".a:tag
+endfunction
+nnoremap <Plug>ch:ou <c-]>
+nnoremap <Plug>CH:ou :call bfredl#tagInSplit(expand("<cword>"))<cr>
+
+
 " }}}
 " is of no SPEL {{{
 noremap <Plug>ch:js ]s
@@ -168,8 +181,7 @@ nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
 nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
 nmap <buffer> <Plug>ch:jk <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
-" TODO: use ASYNC!
-set omnifunc=v:lua.vim.lsp.omnifunc
+setl omnifunc=v:lua.vim.lsp.omnifunc
 " ic does not work, delete ic->char ?
 "map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
 endfunction

@@ -78,6 +78,9 @@ do each (packer.use)
 
   'lervag/vimtex'
 
+-- them colors
+  'morhetz/gruvbox'
+  'eemed/sitruuna.vim'
 end
 
 -- }}}

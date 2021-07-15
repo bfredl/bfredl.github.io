@@ -143,8 +143,8 @@ end
 h.expr._render = h.render
 
 function h.setup()
+  (a._set_hl_ns or a.set_hl_ns)(ns)
   u.a.set_option('statusline', '%!v:lua._LL._render()')
-  a._set_hl_ns(ns)
 end
 
 if package.loaded["bfredl.miniline"] then
