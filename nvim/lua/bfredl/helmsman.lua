@@ -15,7 +15,7 @@ function h.doit(input, cb)
       else
         cb(res.body, nil)
       end
-    end
+    end;
   })
 end
 
@@ -26,9 +26,9 @@ function h.testtext(prompt, cb)
     parameters={
       top_p=0.9;
       repetition_penalty=1.9;
-      max_new_tokens=250;
+      max_new_tokens=80;
       max_time=30;
-      num_return_sequences=1;
+      num_return_sequences=3;
     };
   }
   return h.doit(input, cb)
@@ -37,9 +37,16 @@ end
 -- FUBBIT
 _G.h = h
 
-h.testtext("Give me some good news!", vim.schedule_wrap(function(res, err)
-  require'luadev'.print(res)
-  require'luadev'.print(err)
+h.testtext("void win_line(win_T *wp, linenr_T lnum)\n{\n", vim.schedule_wrap(function(res, err)
+  local print = require'luadev'.print
+  if err ~= nil then
+    return error("ÄRROR "..tostring(err))
+  end
+  print("RESULTS:\n")
+  for _,item in ipairs(vim.fn.json_decode(res)) do
+    print("=======\n")
+    print(item.generated_text)
+  end
 end))
 
 
