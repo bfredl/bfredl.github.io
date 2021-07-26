@@ -54,6 +54,9 @@ function h.visual()
   local text = vim.fn["bfredl#get_selection"](false)
   print("trigger the text "..vim.inspect(text))
   h.testtext(text, vim.schedule_wrap(function(time, res, err)
+    if err ~= nil then
+      return error("FÄÄÄääLLL "..tostring(err))
+    end
     local r = vim.fn.json_decode(res)
     h.dump_res(time, r)
   end))

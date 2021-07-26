@@ -36,11 +36,12 @@ do each (packer.use)
   'nvim-treesitter/playground'
 
   'neovim/nvim-lspconfig'
+  'jose-elias-alvarez/null-ls.nvim'
 
   {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
 
 -- TODO(packer): this should not be an error:
--- use 'nvim-lua/plenary.nvim'
+-- 'nvim-lua/plenary.nvim'
 
   '~/dev/nvim-miniyank'
   '~/dev/nvim-bufmngr'
@@ -83,13 +84,15 @@ do each (packer.use)
   'eemed/sitruuna.vim'
 end
 
+vim.cmd [[ noremap ø :update<cr>:so $MYVIMRC<cr>:PackerUpdate<cr>  ]] -- <Plug>ch:,r
+
 -- }}}
 -- utils and API shortcuts {{{
 for k,v in pairs(require'bfredl.util') do h[k] = v end
 local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
 _G.a = a
 
-local v, exec, set = vim.cmd, h.exec, h.set
+local v, set = vim.cmd, h.set
 -- }}}
 -- basic options {{{
 'hidden'
@@ -153,15 +156,22 @@ end -- }}}
 require'bfredl.snippets'.setup()
 -- LSP {{{
 if not vim.g.bfredl_unvisual then
+  local lspconfig = require'lspconfig'
   if vim.fn.executable('clangd') ~= 0 then
-    require'lspconfig'.clangd.setup {}
+    lspconfig.clangd.setup {}
   end
   if vim.fn.executable('ra_lsp_server') ~= 0 then
-    require'lspconfig'.rust_analyzer.setup {}
+    lspconfig.rust_analyzer.setup {}
   end
   if vim.fn.executable('zls') ~= 0 then
-    require'lspconfig'.zls.setup {}
+    -- lspconfig.zls.setup {}
   end
+
+  require'null-ls'.config {
+    sources = { require'null-ls'.builtins.diagnostics.zig_astcheck };
+  }
+  lspconfig['null-ls'].setup {}
+
 end
 -- }}}
 -- tree sitter stuff {{{
@@ -229,9 +239,10 @@ require'bfredl.miniline'.setup()
 h.f = require'bfredl.floaty'.f
 _G.f = h.f -- HAIII
 -- autocmds {{{
-exec [[
+v [[
   augroup bfredlua
   augroup END
 ]]
 -- }}}
+v [[ color sitruuna ]]
 return bfredl

@@ -185,6 +185,7 @@ setl omnifunc=v:lua.vim.lsp.omnifunc
 " ic does not work, delete ic->char ?
 "map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
 endfunction
+command! ASAN set efm=%*[^/]%f:%l:%c | cfile /tmp/theasanfile
 " }}}
 " fugutive and gitgutter {{{
 command! Gt Gstatus
@@ -306,7 +307,7 @@ inoremap <Plug>ch:pc <c-x><c-f>
 " OMNI
 inoremap <Plug>ch:.u <c-x><c-o>
 " }}}
-" cmdline: wildmenu {{{
+" cmdline and wildmenu {{{
 set wildmenu
 set wildmode=longest:full,full
 set wildignorecase
@@ -317,6 +318,10 @@ func! bfredl#spacey()
   return getcmdline()[-1:] == "/" ? "\<bs>" : ""
 endfunc
 cnoremap <expr> / wildmenumode() ? bfredl#spacey()."/<c-z>" : "/"
+
+
+cnoremap <c-t> <c-f>
+cnoremap <c-h> <c-f>0
 " }}}
 " filetype {{{
 augroup Filetypes

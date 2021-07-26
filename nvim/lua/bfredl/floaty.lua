@@ -131,8 +131,8 @@ function h.f(args)
   end)
 end
 
-u.exec [[
-  augroup bfred_floaty
+vim.cmd [[
+  augroup bfredl_floaty
     au CursorHold * lua _G._bfredl_floaty.cursorhold()
   augroup END
 ]]

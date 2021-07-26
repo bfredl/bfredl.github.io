@@ -42,11 +42,6 @@ for k,v in pairs(vim.api) do
   end)
 end
 
-function h.exec(block)
-  a.exec(block, false)
-end
-
-
 function h.code(str)
   return a.replace_termcodes(str, true, true, true)
 end
