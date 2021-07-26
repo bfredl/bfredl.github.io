@@ -170,7 +170,7 @@ if not vim.g.bfredl_unvisual then
   require'null-ls'.config {
     sources = { require'null-ls'.builtins.diagnostics.zig_astcheck };
   }
-  lspconfig['null-ls'].setup {}
+  if lspconfig['null-ls'].setup then lspconfig['null-ls'].setup {} end
 
 end
 -- }}}
