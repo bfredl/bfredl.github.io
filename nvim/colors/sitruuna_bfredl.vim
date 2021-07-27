@@ -14,18 +14,19 @@ let s:col            = {}
 let s:col.lemon      = ['#FAC03B', 220]
 let s:col.special    = ['#ffb354', 215]
 let s:col.preproc    = ['#a29bfe', 147]
-let s:col.function   = ['#a3db81', 117]
+let s:col.type       = ['#a3db81', 117]
 let s:col.foreground = ['#d1d1d1', 188]
 let s:col.fg_alt     = ['#a1a1a1', 145]
 let s:col.statusline = ['#34373a', 137]
 let s:col.darker     = ['#131515', 232]
-let s:col.background = ['#181a1b', 233]
+let s:col.background = ['#1c2438', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
-let s:col.comment    = ['#5c6366', 244]
+let s:col.comment    = ['#7c88d3', 244]
 let s:col.selection  = ['#2D3032', 238]
-let s:col.string     = ['#37ad82', 72]
-let s:col.type       = ['#7398dd', 104]
+let s:col.string     = ['#8b94e6', 72]
+let s:col.stringbg   = ['#292c40', 136]
+let s:col.function   = ['#33c0c8', 104]
 let s:col.constant   = ['#ca70d6', 170]
 let s:col.error      = ['#c15959', 131]
 let s:col.none       = ['NONE', 'NONE']
@@ -81,12 +82,12 @@ call s:HL('Comment',         'comment',    'none')
 call s:HL('Conceal',         'error',      'none')
 call s:HL('Constant',        'constant',   'none')
 call s:HL('Error',           'error',      'none',       'none')
-call s:HL('Identifier',      'function',       'none')
+call s:HL('Identifier',      'none',       'none')
 call s:HL('Ignore',          'comment',    'none')
 call s:HL('PreProc',         'preproc',    'none')
 call s:HL('Special',         'special',    'none')
 call s:HL('Statement',       'lemon',      'none',       'bold')
-call s:HL('String',          'string',     'none')
+call s:HL('String',          'string',     'stringbg')
 call s:HL('Todo',            'background', 'string')
 call s:HL('Type',            'type',       'none',       'none')
 call s:HL('Underlined',      'function',   'none')
@@ -124,7 +125,7 @@ call s:HL('debugPC',         'error',      'none')
 call s:HL('debugBreakpoint', 'error',      'none')
 call s:HL('ColorColumn',     'none',       'light_bg')
 call s:HL('Delimiter',       'none',       'none')
-call s:HL('Operator',        'function',   'none',       'none')
+call s:HL('Operator',        'none',   'none',       'none')
 call s:HL('htmlTagName',     'lemon',      'none',       'bold')
 call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')

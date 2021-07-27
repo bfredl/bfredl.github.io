@@ -244,5 +244,5 @@ v [[
   augroup END
 ]]
 -- }}}
-v [[ color sitruuna ]]
+v [[ color sitruuna_bfredl ]]
 return bfredl
