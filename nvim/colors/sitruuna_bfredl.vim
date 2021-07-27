@@ -13,7 +13,7 @@ let g:colors_name="sitruuna"
 let s:col            = {}
 let s:col.lemon      = ['#FAC03B', 220]
 let s:col.special    = ['#ffb354', 215]
-let s:col.preproc    = ['#a29bfe', 147]
+let s:col.preproc    = ['#a2abae', 147]
 let s:col.type       = ['#a3db81', 117]
 let s:col.foreground = ['#d1d1d1', 188]
 let s:col.fg_alt     = ['#a1a1a1', 145]
@@ -22,11 +22,11 @@ let s:col.darker     = ['#131515', 232]
 let s:col.background = ['#1c2438', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
-let s:col.comment    = ['#7c88d3', 244]
 let s:col.selection  = ['#2D3032', 238]
+let s:col.comment    = ['#94a0d8', 244]
 let s:col.string     = ['#8b94e6', 72]
-let s:col.stringbg   = ['#292c40', 136]
-let s:col.function   = ['#33c0c8', 104]
+let s:col.stringbg   = ['#292b40', 136]
+let s:col.function   = ['#68d0d8', 104]
 let s:col.constant   = ['#ca70d6', 170]
 let s:col.error      = ['#c15959', 131]
 let s:col.none       = ['NONE', 'NONE']
@@ -81,6 +81,7 @@ call s:HL('SignColumn',      'lighter_bg', 'darker')
 call s:HL('Comment',         'comment',    'none')
 call s:HL('Conceal',         'error',      'none')
 call s:HL('Constant',        'constant',   'none')
+call s:HL('Number',          'string',     'none')
 call s:HL('Error',           'error',      'none',       'none')
 call s:HL('Identifier',      'none',       'none')
 call s:HL('Ignore',          'comment',    'none')
@@ -140,7 +141,6 @@ call s:HL('SpellLocal', 'special', 'none',       'bold,underline')
 call s:HL('SpellRare',  'special', 'none',       'bold,underline')
 
 hi link Terminal                 Normal
-hi link Number                   Constant
 hi link CursorIM                 Cursor
 hi link Boolean                  Constant
 hi link Character                Constant
@@ -155,7 +155,6 @@ hi link Include                  PreProc
 hi link Keyword                  Statement
 hi link Label                    Statement
 hi link Macro                    PreProc
-hi link Number                   Constant
 hi link PreCondit                PreProc
 hi link Repeat                   Statement
 hi link SpecialChar              Special
