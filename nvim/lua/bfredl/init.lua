@@ -244,5 +244,7 @@ v [[
   augroup END
 ]]
 -- }}}
-v [[ color sitruuna_bfredl ]]
+if os.getenv'NVIM_INSTANCE' and not os.getenv'NVIM_DEV' then
+  v [[ color sitruuna_bfredl ]]
+end
 return bfredl

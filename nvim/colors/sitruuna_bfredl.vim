@@ -20,6 +20,7 @@ let s:col.fg_alt     = ['#a1a1a1', 145]
 let s:col.statusline = ['#34373a', 137]
 let s:col.darker     = ['#131515', 232]
 let s:col.background = ['#1c2438', 233]
+let s:col.darkbg     = ['#161414', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
 let s:col.selection  = ['#2D3032', 238]
@@ -27,6 +28,7 @@ let s:col.comment    = ['#94a0d8', 244]
 let s:col.string     = ['#8b94e6', 72]
 let s:col.stringbg   = ['#292b40', 136]
 let s:col.function   = ['#68d0d8', 104]
+let s:col.lightfun   = ['#98a0d8', 104]
 let s:col.constant   = ['#ca70d6', 170]
 let s:col.error      = ['#c15959', 131]
 let s:col.none       = ['NONE', 'NONE']
@@ -70,7 +72,7 @@ function! s:HL(group, fg, ...)
 endfunction
 " }}}
 " Highlights {{{
-call s:HL('Normal',          'foreground', 'background')
+call s:HL('Normal',          'foreground', 'darkbg')
 call s:HL('NonText',         'comment',    'background')
 call s:HL('EndOfBuffer',     'lighter_bg')
 call s:HL('LineNr',          'comment',    'light_bg')
@@ -114,7 +116,7 @@ call s:HL('Visual',          'none',       'selection')
 call s:HL('VisualNOS',       'foreground', 'background')
 call s:HL('VertSplit',       'lighter_bg', 'lighter_bg')
 call s:HL('WildMenu',        'foreground', 'background')
-call s:HL('Function',        'function',   'none',       'none')
+call s:HL('Function',        'lightfun',   'none',       'none')
 call s:HL('SpecialKey',      'special',    'none')
 call s:HL('Title',           'lemon',      'none',       'bold')
 call s:HL('DiffAdd',         'string',     'none')
