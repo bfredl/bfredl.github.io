@@ -1,0 +1,168 @@
+ 
+
+partial alphanumeric_keys
+xkb_symbols "base" {
+
+    name[Group1]= "my own";
+
+    // Alphanumeric section
+
+    key <TLDE> { [ Delete ] };
+
+    key <AE01> { [ 1, dead_acute   ] };
+    key <AE02> { [ 2, dead_grave   ] };
+    key <AE03> { [ 3, dead_diaeresis, less  ] };
+    key <AE04> { [ 4, EuroSign,         greater ] };
+    key <AE05> { [ 5, dead_tilde   ] };
+    key <AE06> { [ 6, dead_cedilla  ] };
+    key <AE07> { [ 7, question ] };
+    key <AE08> { [ 8, B, asciitilde] };
+    key <AE09> { [ 9, X, dollar ] };
+    key <AE10> { [ 0] };
+    key <AE11> { [ adiaeresis, Adiaeresis   ] };
+    key <AE12> { [ odiaeresis, Odiaeresis   ] };
+
+    key <AD01> { [ apostrophe, NoSymbol, asciicircum] };
+    key <AD02> { [ comma,      dollar, percent] };
+    key <AD03> { [ period,     underscore, asciicircum] };
+    key <AD04> { [ p,          P] };
+    key <AD05> { [ y,          Y] };
+    key <AD06> { [ f,          F] };
+    key <AD07> { [ g,          G, at] };
+    key <AD08> { [ c,          C, ampersand, Up] };
+    key <AD09> { [ r,          R, quotedbl ] };
+    key <AD10> { [ l,          L ] };
+    key <AD11> { [ NoSymbol] };
+    key <AD12> { [ NoSymbol  ] };
+
+    key <AC01> { [ a,         A, asterisk]};
+    key <AC02> { [ o,         O, plus] };
+    key <AC03> { [ e,         E, equal] };
+    key <AC04> { [ u,         U, slash, bar ] };
+    key <AC05> { [ i,         I, backslash  ] };
+    key <AC06> { [ d,         D, question, exclam ] };
+    key <AC07> { [ h,         H, parenleft, Left] };
+    key <AC08> { [ t,         T, parenright, Down] };
+    key <AC09> { [ n,         N, bracketleft, Right] };
+    key <AC10> { [ s,         S, bracketright, numbersign ] };
+    key <AC11> { [ colon,     ssharp, grave ] };
+    key <BKSL> { [ aring, Aring, bar ] };
+
+    key <AB01> { [ semicolon, minus] };
+    key <AB02> { [ q, Q, exclam ]};
+    key <AB03> { [ j, J, underscore  ] };
+    key <AB04> { [ k, K, minus] };
+    key <AB05> { [ x, X, dollar  ] };
+
+    key <AB06> { [ b, B, asciitilde  ] };
+    key <AB07> { [ m, M, semicolon ] };
+    key <AB08> { [ w, W, apostrophe ] };
+    key <AB09> { [ v, V, numbersign  ] };
+    key <AB10> { [ z, Z, bar  ] };
+
+    key <SPCE> { [ space,      space,        space, nobreakspace ] };
+};
+
+
+partial alphanumeric_keys
+xkb_symbols "standard" {
+
+    name[Group1]= "my own";
+    include "ownkeys(base)"
+    include "level3(lwin_switch)"
+    include "level3(ralt_switch)"
+    include "level3(switch)"
+
+    #intl keyboard
+    replace key <LSGT> { type[Group1]    = "TWO_LEVEL",
+                         symbols[Group1] = [ Control_L, Control_L ] };
+    modifier_map Control { <LSGT> }; 
+
+    #typematrix
+    replace key <AB01> { type[Group1]    = "TWO_LEVEL",
+                         symbols[Group1] = [ Control_L, Control_L ] };
+    modifier_map Control { <AB01> }; 
+
+    //key <LCTL> {
+    //  type[Group1]="ONE_LEVEL",
+    //  symbols[Group1] = [ Super_L ]
+    //};
+    include "level3(modifier_mapping)"
+
+
+    key <CAPS> { [  Escape ] };
+    key <ESC> { [ Caps_Lock ] }; 
+    key <AB11> { [  aring, Aring, bar ] };
+    key <RTSH> {
+        type[Group1]="ONE_LEVEL",
+        symbols[Group1] = [ Super_L ]
+    };
+
+    key <AD11> { [ XF86Tools ] };
+};
+
+partial alphanumeric_keys modifier_keys 
+xkb_symbols "aspire" {
+    include "ownkeys(standard)"
+    name[Group1] = "aspire keys";
+
+    // special cases for the laptop could go here
+
+};
+
+partial alphanumeric_keys modifier_keys 
+xkb_symbols "tm_old" {
+    name[Group1]= "tm_old";
+
+    include "ownkeys(base)"
+
+    replace key <RTSH> { type[Group1]    = "TWO_LEVEL",
+                         symbols[Group1] = [ Control_R, Control_R ] };
+    modifier_map Control { <RTSH> }; 
+
+    key <PGDN> { type[Group1]="ONE_LEVEL",
+            symbols[Group1] = [ ISO_Level3_Latch ]
+    };
+    key <CAPS> { type[Group1]="ONE_LEVEL",
+            symbols[Group1] = [ ISO_Level4_Latch ]
+    };
+    #modifier_map Mod5   { ISO_Level3_Shift };
+
+    key <PGUP> { [ Escape ] };
+    replace key <RCTL> { [ Prior ] } ;
+    replace key <LALT> { [ Next ] } ;
+
+    #key <COMP> {         [            Menu ] };
+
+};
+
+xkb_symbols "typematrix" {
+    name[Group1]= "typematrix";
+
+    include "ownkeys(base)"
+    include "level3(lalt_switch)"
+    include "level3(ralt_switch)"
+    include "inet(evdev)"
+
+    replace key <RTSH> { type[Group1]    = "TWO_LEVEL",
+                         symbols[Group1] = [ Control_R, Control_R ] };
+    modifier_map Control { <RTSH> }; 
+
+    key <RCTL> { [ Super_R ] }; 
+
+    key <I172> { [ Super_L ] }; #XMOD
+    key <LWIN> { [ Alt_L, Meta_L ] };
+    key <RCTL> { [ Alt_L, Meta_L ] };
+
+    key <PAUS> { [ Caps_Lock ] }; 
+
+    # expect 106-mode
+    key <HENK> { [ Escape ] }; #XMOD
+    key <AB11> { [  backslash,  bar           ]       };
+    key <BKSL> { [ z, Z ] };
+    key <CAPS> { [ x ,X ] } ;
+    #key <MUHE> { [ odiaeresis, Odiaeresis, oe, OE ] }; #XMOD
+    key <MUHE> { [ b, B, oe, OE ] }; #XMOD
+
+
+};
