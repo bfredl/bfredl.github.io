@@ -324,6 +324,8 @@ cnoremap <c-t> <c-f>
 cnoremap <c-h> <c-f>0
 " }}}
 " filetype {{{
+filetype plugin indent on
+set shortmess-=F
 augroup Filetypes
   au!
   au FileType python call bfredl#python()
@@ -332,6 +334,7 @@ augroup Filetypes
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,zig call bfredl#lspmap()
+  au FileType c call bfredl#nvim_c_ft()
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
   au FileType lua 1match Grupp /^\[\[.\+]]/
   au FileType lua 2match Option /^\s*'[a-z]\+'/
