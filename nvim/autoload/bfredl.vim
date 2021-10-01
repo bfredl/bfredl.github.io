@@ -180,7 +180,7 @@ nmap <buffer> <Plug>ch:,d <cmd>lua vim.lsp.buf.signature_help()<cr>
 nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
 nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
-nmap <buffer> <Plug>ch:jk <cmd>lua vim.lsp.util.show_line_diagnostics()<cr>
+nmap <buffer> <Plug>ch:mv <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
 setl omnifunc=v:lua.vim.lsp.omnifunc
 " ic does not work, delete ic->char ?
 "map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
@@ -335,9 +335,10 @@ augroup Filetypes
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,zig call bfredl#lspmap()
   au FileType c call bfredl#nvim_c_ft()
+  au FileType vim call bfredl#vim_ft()
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
-  au FileType lua 1match Grupp /^\[\[.\+]]/
-  au FileType lua 2match Option /^\s*'[a-z]\+'/
+  "au FileType lua 1match Grupp /^\[\[.\+]]/
+  "au FileType lua 2match Option /^\s*'[a-z]\+'/
 augroup END
 
 func! bfredl#python() "{{{
@@ -368,6 +369,11 @@ func bfredl#nvim_c_ft()
   setlocal cinoptions=0(
   setlocal commentstring=//\ %s
 endfunc
+
+function! bfredl#vim_ft() "{{{
+    noremap <silent> <buffer> <Plug>ch:un <cmd>execute getline('.')<cr>
+endfunction
+" }}}
 
 func bfredl#nvimdev()
   augroup nvimdev

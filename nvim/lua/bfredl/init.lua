@@ -155,7 +155,7 @@ function h.vimenter(startup)
 end -- }}}
 require'bfredl.snippets'.setup()
 -- LSP {{{
-if not vim.g.bfredl_unvisual then
+if not vim.g.bfredl_nolsp then
   local lspconfig = require'lspconfig'
   if vim.fn.executable('clangd') ~= 0 then
     lspconfig.clangd.setup {}
@@ -235,7 +235,9 @@ function h.xcolor()
 end
 v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
 -- }}}
-require'bfredl.miniline'.setup()
+if os.getenv'NVIM_INSTANCE' then
+  require'bfredl.miniline'.setup()
+end
 h.f = require'bfredl.floaty'.f
 _G.f = h.f -- HAIII
 -- autocmds {{{
@@ -247,4 +249,5 @@ v [[
 if os.getenv'NVIM_INSTANCE' and not os.getenv'NVIM_DEV' then
   v [[ color sitruuna_bfredl ]]
 end
+v [[ hi MsgArea blend=15 guibg=#281811]]
 return bfredl

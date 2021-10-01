@@ -1,10 +1,19 @@
 local h = _G._bfredl_util or {}
 _G._bfredl_util = h
+_G.u = _G._bfredl_util
 
 h.counter = h.counter or 0
 function h.id()
   h.counter = h.counter + 1
   return h.counter
+end
+
+function h.splitlast(str, sep, plain)
+  local vals = vim.split(str, sep)
+  local last = vals[#vals]
+  vals[#vals] = nil
+  local prefix = table.concat(vals, sep)
+  return prefix, last
 end
 
 function h.unprefix(str, pre, to)

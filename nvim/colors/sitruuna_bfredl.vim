@@ -17,10 +17,13 @@ let s:col.preproc    = ['#a2abae', 147]
 let s:col.type       = ['#a3db81', 117]
 let s:col.foreground = ['#d1d1d1', 188]
 let s:col.fg_alt     = ['#a1a1a1', 145]
+let s:col.fg_dark    = ['#919191', 145]
 let s:col.statusline = ['#34373a', 137]
 let s:col.darker     = ['#131515', 232]
 let s:col.background = ['#1c2438', 233]
-let s:col.darkbg     = ['#161414', 233]
+let s:col.darkbg     = ['#182024', 233]
+let s:col.linenrbg   = ['#303050', 233]
+let s:col.signbg     = ['#505080', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
 let s:col.selection  = ['#2D3032', 238]
@@ -74,15 +77,15 @@ endfunction
 " Highlights {{{
 call s:HL('Normal',          'foreground', 'darkbg')
 call s:HL('NonText',         'comment',    'background')
-call s:HL('EndOfBuffer',     'lighter_bg')
-call s:HL('LineNr',          'comment',    'light_bg')
+call s:HL('EndOfBuffer',     'statusline', 'darker')
+call s:HL('LineNr',          'comment',    'linenrbg')
 call s:HL('FoldColumn',      'lighter_bg', 'darker')
 call s:HL('Folded',          'fg_alt',    'statusline')
 call s:HL('MatchParen',      'special',    'none',       'bold')
-call s:HL('SignColumn',      'lighter_bg', 'darker')
-call s:HL('Comment',         'comment',    'none')
+call s:HL('SignColumn',      'foreground', 'signbg')
+call s:HL('Comment',         'fg_dark',    'none')
 call s:HL('Conceal',         'error',      'none')
-call s:HL('Constant',        'constant',   'none')
+call s:HL('Constant',        'string',   'none')
 call s:HL('Number',          'string',     'none')
 call s:HL('Error',           'error',      'none',       'none')
 call s:HL('Identifier',      'none',       'none')
@@ -126,7 +129,7 @@ call s:HL('DiffText',        'function',   'none')
 call s:HL('Directory',       'lemon',      'none')
 call s:HL('debugPC',         'error',      'none')
 call s:HL('debugBreakpoint', 'error',      'none')
-call s:HL('ColorColumn',     'none',       'light_bg')
+call s:HL('ColorColumn',     'none',       'constant')
 call s:HL('Delimiter',       'none',       'none')
 call s:HL('Operator',        'none',   'none',       'none')
 call s:HL('htmlTagName',     'lemon',      'none',       'bold')
@@ -208,6 +211,9 @@ hi link cssProp       Special
 
 " Fugitive
 hi link fugitiveHash Constant
+
+" C
+hi link cSpecial Constant
 
 " Python
 hi link pythonBuiltin Constant

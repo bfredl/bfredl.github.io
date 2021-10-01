@@ -26,3 +26,8 @@ function! HungFunk(boo)
   echo gloo.require'vim.inspect'()
 endfunction
 
+if v:false
+echo v:lua.require'vim.inspect'.inspect(123)
+echo v:lua.vim.inspect(123)
+
+endif
