@@ -7,8 +7,7 @@ function h.clint(bufnr)
   -- 
   local path, fname = u.splitlast(name, 'src/nvim/')
   local makename = 'touches/ran-clint-'..fname:gsub("[/.]","-")
-  vim.bo[bufnr].makeprg = 'ninja'
-  vim.cmd ("make -C "..path.."build/ "..makename)
+  data = io.popen("ninja -C "..path.."build/ "..makename):read'*a'
 end
 
 _G.h = h

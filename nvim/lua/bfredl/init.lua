@@ -173,6 +173,10 @@ if not vim.g.bfredl_nolsp then
   if lspconfig['null-ls'].setup then lspconfig['null-ls'].setup {} end
 
 end
+vim.diagnostic.config {
+  signs = false;
+  update_in_insert = true;
+}
 -- }}}
 -- tree sitter stuff {{{
 function h.ts_setup()

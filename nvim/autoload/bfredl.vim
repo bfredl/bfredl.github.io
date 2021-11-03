@@ -54,6 +54,8 @@ noremap <Leader>o <C-W>o
 noremap <Plug>ch:hc <C-W>w
 noremap <Plug>CH:hc <C-W>W
 
+noremap <Leader>s :sp<CR>:bn<CR>
+
 noremap å :A<cr>
 noremap Å :AS<cr>
 " }}}
@@ -188,13 +190,13 @@ endfunction
 command! ASAN set efm=%*[^/]%f:%l:%c | cfile /tmp/theasanfile
 " }}}
 " fugutive and gitgutter {{{
-command! Gt Gstatus
 command! Gc Gcommit -va
 command! Gcm Gcommit -v
 command! Gw Gwrite
 command! Gr Gread
 command! -nargs=* Gd Gdiff <args>
 command! Gdp Gdiff HEAD^
+command! Gb Git blame
 
 let g:gitgutter_map_keys = 0 " no u
 map <Plug>ch:tn :GitGutterNextHunk<cr>
@@ -242,6 +244,16 @@ command! NL :call bfredl#luadevlaunch()
 let g:nvim_ipy_perform_mappings = 0
 let g:ipy_shortprompt = 1
 let g:ipy_truncate_input = 3
+
+function! bfredl#get_current_word()
+    let isk_save = &isk
+    let &isk = '@,48-57,_,192-255,.'
+    let word = expand("<cword>")
+    let &isk = isk_save
+    return word
+endfunction
+
+
 func! bfredl#ipy()
   map <Plug>ch:un <Plug>(IPy-Run)
   imap <Plug>ch:un <c-o><Plug>(IPy-Run)
@@ -265,8 +277,8 @@ func! bfredl#ipy()
   map <Plug>ch:id <Plug>(IPy-WordObjInfo)
   set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)%(\ -\ %{g:ipy_status}%)\ -\ NVIM
   map <Plug>ch:id <Plug>(IPy-WordObjInfo)
-  noremap <Plug>ch:um <Cmd>call IPyRun(Get_current_word().'.shape')<cr>
-  nnoremap <bs> <Cmd>call IPyRun('type('.Get_current_word().')')<cr>
+  noremap <Plug>ch:um <Cmd>call IPyRun(bfredl#get_current_word().'.shape')<cr>
+  nnoremap <bs> <Cmd>call IPyRun('type('.bfredl#get_current_word().')')<cr>
 
   " TODO: Justice de Julia
   nnoremap <Plug>ch:ig :call IPyRun('figure();',1)<cr>
@@ -300,7 +312,14 @@ func! bfredl#unblank()
   let ch = matchstr(getline('.'), '\%' . (col('.')-1) . 'c.')
   return ch != "" && ch != " " && ch != "\t"
 endfunc
-imap <expr> <tab> (bfredl#unblank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
+func! bfredl#tabfunc()
+  return (bfredl#unblank() || pumvisible())
+endfunc
+
+imap <expr> <tab> bfredl#tabfunc()  ? "<c-n>" : "<tab>"
+
+" TODO: this bugs up copilot.vim
+"imap <expr> <tab> (bfredl#unblank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
 
 " [p]ath [c]ompletion
 inoremap <Plug>ch:pc <c-x><c-f>

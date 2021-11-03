@@ -1,0 +1,19 @@
+the marktree is a kbtree of "events"
+An event is either the start or the end of a range (or perhaps a compact representation of an empty extrange = extmark. Or perhaps not, to easier support differing gravity).
+
+event ID is like the range ID but LSB indicates 0/1 start end (or two bits: 10 start 01 end 00 empty perhaps). Probably range ID should then be even only (or 4-even lol).
+
+The tree is "doubly linked", every node links to parent node, except root which link to NULL.
+There is a map from event ids to the node that contains them.
+
+subtrees are traversed on the "inner" key that comes before them. A key is never traversed by another key on the same node/layer
+
+There is only _one_ extra set-of-range-ids per (both inner and leaf) node to keep track of "enclosing" ranges.
+A range is enclosing a node iff:
+  1) the beginning event is before the node and the end event after the node
+  2) the range doesn't enclose a parent node (it is redundant then).
+
+When a inner node is split in two,
+  the additional ranges in enclosing set of the new split nodes can be found by taking the intersection of all the children?? (and then remove them from children)
+When a leaf node is split in two, consider all the events of the other node manually (use the map to find non-leaf ranges)
+

@@ -26,7 +26,8 @@ let s:col.linenrbg   = ['#303050', 233]
 let s:col.signbg     = ['#505080', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
-let s:col.selection  = ['#2D3032', 238]
+let s:col.selection  = ['#484848', 238]
+let s:col.trailwhite = ['#707070', 238]
 let s:col.comment    = ['#94a0d8', 244]
 let s:col.string     = ['#8b94e6', 72]
 let s:col.stringbg   = ['#292b40', 136]
@@ -77,6 +78,7 @@ endfunction
 " Highlights {{{
 call s:HL('Normal',          'foreground', 'darkbg')
 call s:HL('NonText',         'comment',    'background')
+call s:HL('WhiteSpace',      'comment',    'trailwhite')
 call s:HL('EndOfBuffer',     'statusline', 'darker')
 call s:HL('LineNr',          'comment',    'linenrbg')
 call s:HL('FoldColumn',      'lighter_bg', 'darker')
