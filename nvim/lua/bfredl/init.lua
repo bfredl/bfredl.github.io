@@ -48,8 +48,10 @@ do each (packer.use)
   '~/dev/nvim-luadev'
   '~/dev/ibus-chords'
   '~/dev/nvim-ipy'
+  '~/dev/nvim-test'
   '~/dev/vim-argclinic'
   '~/dev/nsync.nvim/'
+  '~/dev/nvim-lanterna/'
 
   { '~/dev/nvim-miniluv/', rocks = 'openssl' }
 
@@ -71,7 +73,7 @@ do each (packer.use)
 
 -- filetypes
   'numirias/semshi'
-  {'davidhalter/jedi-vim', ft = {'python'}}
+  -- {'davidhalter/jedi-vim', ft = {'python'}}
 
   'ziglang/zig.vim'
 
@@ -112,6 +114,8 @@ local v, set = vim.cmd, h.set
 'updatetime' (1666)
 'foldmethod' "marker"
 'nomodeline'
+
+'noshowmode'
 
 'splitbelow'
 
@@ -166,11 +170,16 @@ if not vim.g.bfredl_nolsp then
   if vim.fn.executable('zls') ~= 0 then
     -- lspconfig.zls.setup {}
   end
+  if vim.fn.executable 'jedi-language-server' ~= 0 then
+     lspconfig.pylsp.setup {}
+  end
 
-  require'null-ls'.config {
-    sources = { require'null-ls'.builtins.diagnostics.zig_astcheck };
-  }
-  if lspconfig['null-ls'].setup then lspconfig['null-ls'].setup {} end
+  if false then -- DISABLE
+    require'null-ls'.config {
+      sources = { require'null-ls'.builtins.diagnostics.zig_astcheck };
+    }
+    if lspconfig['null-ls'].setup then lspconfig['null-ls'].setup {} end
+  end
 
 end
 vim.diagnostic.config {
@@ -180,6 +189,9 @@ vim.diagnostic.config {
 -- }}}
 -- tree sitter stuff {{{
 function h.ts_setup()
+  if os.getenv'NVIM_NOTS' then
+    return
+  end
   h.did_ts = true
   require'nvim-treesitter.configs'.setup {
     --ensure_installed = "all",     -- one of "all", "language", or a list of languages

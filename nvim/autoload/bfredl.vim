@@ -179,14 +179,19 @@ function! bfredl#lspmap()
 " shiiny
 set winblend=20
 nmap <buffer> <Plug>ch:,d <cmd>lua vim.lsp.buf.signature_help()<cr>
+imap <buffer> <Plug>ch:,d <cmd>lua vim.lsp.buf.signature_help()<cr>
 nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
 nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
 nmap <buffer> <Plug>ch:mv <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
 setl omnifunc=v:lua.vim.lsp.omnifunc
+let b:did_lspmap = v:true
 " ic does not work, delete ic->char ?
 "map <buffer> <Plug>ch:ic <cmd>lua vim.lsp.buf_request(nil, 'textDocument/completion', vim.lsp.protocol.make_text_document_position_params())<cr>
 endfunction
+if get(b:, "did_lspmap")
+  call bfredl#lspmap()
+end
 command! ASAN set efm=%*[^/]%f:%l:%c | cfile /tmp/theasanfile
 " }}}
 " fugutive and gitgutter {{{
@@ -352,12 +357,18 @@ augroup Filetypes
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
-  au FileType c,zig call bfredl#lspmap()
+  au FileType c,python call bfredl#lspmap()
   au FileType c call bfredl#nvim_c_ft()
   au FileType vim call bfredl#vim_ft()
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
   "au FileType lua 1match Grupp /^\[\[.\+]]/
   "au FileType lua 2match Option /^\s*'[a-z]\+'/
+
+  " after filetypes have been setup
+  au BufReadPost *
+    \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+    \ |   exe "normal! g`\""
+    \ | endif
 augroup END
 
 func! bfredl#python() "{{{
