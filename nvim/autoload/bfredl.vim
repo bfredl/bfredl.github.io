@@ -360,6 +360,7 @@ augroup Filetypes
   au FileType c,python call bfredl#lspmap()
   au FileType c call bfredl#nvim_c_ft()
   au FileType vim call bfredl#vim_ft()
+  au FileType zig lua require'bfredl.lint'.zig()
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
   "au FileType lua 1match Grupp /^\[\[.\+]]/
   "au FileType lua 2match Option /^\s*'[a-z]\+'/
