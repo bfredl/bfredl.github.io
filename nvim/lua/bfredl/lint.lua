@@ -23,9 +23,8 @@ function h.clint(bufnr)
   vim.diagnostic.set(ns, 0, diags, {})
 end
 
-function h.astcheck(bufnr)
-  local name = a.buf_get_name(bufnr)
-  local lines = a.buf_get_lines(bufnr, 0, -1, true)
+function h.astcheck()
+  local lines = a.buf_get_lines(0, 0, -1, true)
   local data = table.concat(lines, '\n') .. '\n'
   local aout = {}
   local job = Job:new {
@@ -38,9 +37,8 @@ function h.astcheck(bufnr)
           --lines[i] = p
         end)
       end
-      items = vim.fn.getqflist{lines=lines}
-      diags = vim.diagnostic.fromqflist(items.items)
-      print(vim.inspect(items))
+      local items = vim.fn.getqflist{lines=lines}
+      local diags = vim.diagnostic.fromqflist(items.items)
       vim.diagnostic.set(ns, 0, diags, {})
 
     end);
@@ -51,11 +49,31 @@ function h.astcheck(bufnr)
   job:start()
 end
 
+function h.luaload()
+  local lines = a.buf_get_lines(0, 0, -1, true)
+  local data = table.concat(lines, '\n') .. '\n'
+  status, err = loadstring(data, '@<stdin>')
+  local diags
+  if status then
+    diags = {}
+  else
+      local items = vim.fn.getqflist{lines={err}}
+      diags = vim.diagnostic.fromqflist(items.items)
+  end
+  vim.diagnostic.set(ns, 0, diags, {})
+end
+
+
 function h.zig()
   -- vim.cmd [[autocmd InsertLeave,CursorHold,CursorHoldI,BufWritePre <buffer> lua require'bfredl.lint'.astcheck()]]
   -- Nooo! you cannot run an external process as a linter on each keypress. Nooo!
   -- haha, astgen go brrr
   vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.astcheck()]]
+end
+
+function h.lua()
+  -- gör du ens jämn
+  vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.luaload()]]
 end
 
 _G.h = h
