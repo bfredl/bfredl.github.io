@@ -321,7 +321,7 @@ func! bfredl#tabfunc()
   return (bfredl#unblank() || pumvisible())
 endfunc
 
-imap <expr> <tab> bfredl#tabfunc()  ? "<c-n>" : "<tab>"
+inoremap <expr> <tab> bfredl#tabfunc()  ? "<c-n>" : "<tab>"
 
 " TODO: this bugs up copilot.vim
 "imap <expr> <tab> (bfredl#unblank() \|\| pumvisible()) ? "<c-n>" : "<tab>"
@@ -343,9 +343,13 @@ func! bfredl#spacey()
 endfunc
 cnoremap <expr> / wildmenumode() ? bfredl#spacey()."/<c-z>" : "/"
 
+cnoremap <expr> = getcmdline() == "" ? "lua=" : "="
 
 cnoremap <c-t> <c-f>
 cnoremap <c-h> <c-f>0
+
+" shift-:
+nnoremap ß :lua=
 " }}}
 " filetype {{{
 filetype plugin indent on
@@ -357,7 +361,7 @@ augroup Filetypes
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
-  au FileType c,python call bfredl#lspmap()
+  au FileType c,cpp,python call bfredl#lspmap()
   au FileType c call bfredl#nvim_c_ft()
   au FileType vim call bfredl#vim_ft()
   au FileType zig lua require'bfredl.lint'.zig()
