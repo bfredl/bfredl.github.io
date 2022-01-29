@@ -1,0 +1,440 @@
+#!/usr/bin/env python
+
+# -*- coding: utf-8 -*-
+from functools import partial
+holdThreshold = 180
+holdThreshold2 = 180
+chordThreshold2 = 300
+chordTreshold = 2.0
+modThreshold = 0.5
+seqThreshold = 110
+
+logs = False
+
+"""
+  h  t  n  s  c  r
+a Dw .  .  Up Le Ri
+o 0  1  2  3  4  5
+e F  f  x  y  &  #
+u Rt Bs Es .  .  .
+, å  ä  ö  s. .  .
+. <  >  {  }  |  .
+"""
+
+s = Shift
+h = lambda x: Shift(None,x)
+NOP = []
+
+keymap['tasks'] = {}
+parents['base'] =  ()
+keymap['base'] = {
+    #Sym('Shift_L'): s(Sym('Escape'),Sym('Escape')),
+    'ah': Sym('Down'),
+    'as': Sym('Up'),
+    'ac': s(Sym('Left'),Sym('Home')),
+    'ar': s(Sym('Right'),Sym('End')),
+    # I don't even middleclick
+    'qj': Sym(SHIFT, 'Insert'),
+    'oh': '0', 'ot': '1',
+    'on': '2', 'os': '3',
+    'oc': '4', 'or': '5',
+    'om': '6', 'ow': '7',
+    'ov': '8', 'oz': '9',
+    'eh': 'F',
+    'et': 'f',
+    #'ou': s('x','X'),
+    #'hc': s('b','B'),
+    'uh': Sym('Return'),
+    'ut': Sym('BackSpace'),
+    ',h': s('å', 'Å'),
+    ',t': s('ä', 'Ä'),
+    ',n': s('ö', 'Ö'),
+    ',u': s('ü', 'Ü'),
+    ',i': s('ï', 'Ï'),
+    ',e': s('ë', 'Ë'),
+    ',y': s('ÿ', 'Ÿ'),
+    ',c': s('æ', 'Æ'),
+    ',r': s('ø', 'Ø'),
+    'xn': s('ñ', 'Ñ'),
+    'a9':s('á','Á'),
+    'o9':s('ó','Ó'),
+    'e9':s('é','É'),
+    'u9':s('ú','Ú'),
+    'i9':s('í','Í'),
+    'y9':s('ý','Ý'),
+    '.h': s('<','<<'),
+    '.t': s('>','>>'),
+    '.n': '{',
+    '.s': '}',
+    'Tb': h('~/'),
+    'a0': pause,
+    'a3': quiet,
+    '23': conf,
+    '9p': set_keymap('python'),
+    '9j': set_keymap('julia'),
+    '9c': set_keymap('cstyle'),
+    'eu': s('-','--'),
+    'eut': '-1',
+    '.r': s('\'','\''),
+    '.c': s('!','¡'),
+    'au': h(unlock),
+    #CONFLICT, so explicit override:
+    'T:': '`',
+    '12': '½',
+}
+
+#OMGLOLROFL
+keymap['capslock'] = {x:x.upper() for x in map(chr,range(ord('a'), ord('z')+1))}
+keymap['capslock'].update({
+    ',h': 'Å',
+    ',t': 'Ä',
+    ',n': 'Ö',
+    ',u': 'Ü',
+    ',e': 'Ë',
+    ',i': 'Ï',
+    ',y': 'Ÿ',
+    ',c': 'Æ',
+    ',r': 'Ø',
+    'xn': 'Ñ',
+    'a9': 'Á',
+    'o9': 'Ó',
+    'e9': 'É',
+    'u9': 'Ú',
+    'i9': 'Í',
+    'y9': 'Ý',
+})
+
+parents['insert'] = ('base',)
+keymap['insert'] = {
+    'Tc': h(' && '),
+    'Tm': h(';\n'),
+    '.n': h('{{{'),
+    '.s': h('}}}'),
+    'Tz': h(' || '),
+    'pz': s('2>&1| ', '2>&1|less'),
+    'Ta': h('**'),
+    'Tj': h('__'),
+    'Tk': h('--'),
+    '\'c': '\': \'',
+    'ed': ' != ',
+    'is': s(' = ',' == '),
+    'oe': s(' += ',' -= '),
+    'Te': h('≠'),
+    'Tj': h('__'),
+    'ht': '()',
+    'ns': s('[]','{}'),
+    'rt': '->',
+    'Ti': h('\\n'),
+    'iw': h("'\\n'"),
+    'Tu': h('./'),
+    'eh': h('HEAD'),
+    'hl': s('-h','--help'), #I need somebody...
+    # this one is just too common
+    'kn': 'return ',
+    'mt': h('™'),
+    'oc': h('~/config/'),
+    'wv': s('/home/bjorn/config2/','/home/bjorn/config2/nvim/'),
+    'ev': h('~/dev/'),
+    'nv': h('~/dev/neovim'),
+    'er': h('bfredl'),
+    'm:': h('bjorn.linse@gmail.com'),
+    'ma': h('master'),
+    'or': h('origin'),
+    'orm': h('origin/master'),
+    'pro': h('×'),
+    'cro': h('⨯'),
+    'auc': h(lock('capslock')),
+    'To': h(lock('numlock')),
+    'iz': s('ž', 'Ž'),
+    'Td': h('¿'),
+    'Tq': h('¡'),
+    'um': s('μ', 'μ'),
+}
+
+keymap['numlock'] = {
+    'h': '0', 't': '1',
+    'n': '2', 's': '3',
+    'c': '4', 'r': '5',
+    'm': '6', 'w': '7',
+    'v': '8', 'z': '9',
+}
+
+parents['vim'] = ('insert',)
+keymap['vim'] = {
+    'ps': '<space>',
+    'pg': '<Plug>',
+    'cr': s('<cr>', '<c-'),
+    'mn': s('noremap ', 'inoremap '),
+    'qm': 'noremap! ',
+    ',c': s('<Plug>ch:', '<Plug>CH:'),
+    'us': s(r'%s/\v', r's/\v'),
+    'kv': 'let ',
+}
+
+parents['python'] = ('insert',)
+keymap['python'] = {
+    ',s': s('self','self.'),
+    'kr': 'for ',
+    'kl': 'while ',
+    'kd': 'def ',
+    'kc': s('if ', 'continue\n'),
+    'kn': 'return ',
+    'yd': 'yield ',
+    'kt': 'not ',
+    'Tz': h(' or '),
+    'ec': h(' and '),
+    'ek': s('else:\n', 'elif '),
+    'in': s(' in ', ' not in '),
+    'ak': 'break\n',
+    'im': s('import ', 'from '),
+    'ur': s('try:\n', 'except'),
+
+    'al': 'lambda ', #muy TeX-ig
+
+    'ud': 'True',
+    'ad': s('False', 'None'),
+    'km': s(':\n','):\n'),
+    'ks': s(' is ', ' is not '),
+
+    'oh': h('zeros('),
+    'pr': s('print(','print '),
+    'um': 'enumerate(',
+    'hl': 'len(',
+    'an': 'range(',
+    'jn': s('.join(','os.path.join('),
+    'ph': ('.append('),
+    'mt': '.format(',
+
+    'ys': s('sys','sys.'),
+    'op': s('os.path','os.path.'),
+    'nam': h("if __name__ == '__main__':\n"),
+}
+
+parents['julia'] = ('insert',)
+keymap['julia'] = {
+    'kr': 'for ',
+    'kl': 'while ',
+    'kd': 'function ',
+    'kc': s('if ', 'continue\n'),
+    'kn': 'return ',
+    'ek': s('else\n', 'elseif '),
+    'in': ' in ',
+    'ak': 'break\n',
+    'im': s('import ', 'using '),
+    'ur': s('try\n', 'catch'),
+    '.m': 'end\n',
+    'ks': s(' === ', ' !== '),
+
+    'ud': 'true',
+    'ad': s('false', 'nothing'),
+
+    'ir': s('Array', 'Array{'),
+    'iv': s('Vector', 'Vector{'),
+    'ia': s('Matrix', 'Matrix{'),
+    'ih': s('Int', 'Uint'),
+    'hs': s('Int16', 'Uint16'),
+    'id': s('Float64', 'Float32'),
+    'oh': h('zeros('),
+
+    'pr': s('print(','println('),
+    'um': s('enumerate(', 'immutable '),
+    'el': s('length(', 'size('),
+    'an': 'range(',
+    'ph': 'push!(',
+}
+
+parents['R'] = ('insert',)
+keymap['R'] = {
+    'tn': s('<-',' <- '),
+}
+parents['rmd'] = ('R',)
+keymap['rmd'] = {}
+
+parents['lua'] = ('insert',)
+keymap['lua'] = {
+    ',s': s('self','self.'),
+    'kr': 'for ',
+    'kl': 'while ',
+    'kd': 'function',
+    'kc': s('if ', 'continue\n'),
+    'kn': 'return ',
+    'kt': 'not ',
+    'Tz': h(' or '),
+    'Tc': h(' and '),
+    'ek': s('else\n', 'elseif '),
+    'in': ' in ',
+    'ak': 'break\n',
+    'im': "require('",
+    'ur': ('pcall('),
+    '.m': 'end\n',
+    'ed': ' ~= ',
+    'km': s(' then\n',' do\n'),
+
+    'ud': 'true',
+    'ad': s('false', 'nil'),
+
+    'kv': 'local ',
+
+
+    'pr': 'print(',
+    'um': s('ipairs(', 'pairs('),
+}
+parents['cstyle'] = ('insert',)
+keymap['cstyle'] = {
+    'kr': 'for (',
+    'kc': s('if (', 'continue;'),
+    'kl': 'while (',
+    'ek': s('} else {\n', '} else if ('),
+    'ak': 'break;',
+    'ks': s('static ', 'const '),
+    'kn': 'return ',
+    'kt': 'typedef ',
+    'ud': 'true',
+    'ad': s('false', 'NULL'),
+    'km': s(') {\n', '{\n'),
+    '.m': s('}\n', '\n}'),
+    'ih': s('int ', 'int* '),
+    'ig': 'unsigned ',
+    'il': 'bool',
+    'id': s('double', 'float'),
+    'iz': s('size_t', 'uintptr_t'),
+    'oz': h('sizeof'),
+    'in': s('long', 'int64_t'),
+    'hs': s('short', 'short *'),
+    'it': s('void', 'void *'),
+    'ic': s('char', 'char *'),
+    'pr': s('printf("', 'fprintf(stderr,"'),
+}
+
+#FIXME: separate c-specific from c-style
+parents['c'] = ('cstyle',)
+keymap['c'] = {
+    'im': s('#include <', '#include "'),
+    'kd': s('#define ', '#ifdef '),
+}
+parents['cpp'] = ('c',)
+keymap['cpp'] = {}
+
+parents['java'] = ('cstyle',)
+keymap['java'] = {}
+parents['haskell'] = ('insert',)
+keymap['haskell'] = {
+    'kc': s('if ', 'then'),
+    'kn': 'return ',
+    'kt': 'not ',
+    'kd': 'do\n',
+    'ek': 'else',
+    'in': s(' in ', ' not in '),
+    'im': s('import ', 'from '),
+    'hr': ' <- ',
+    'rt': s(' -> ', ' => '),
+    'ud': 'True',
+    'ad': s('False', 'None'),
+
+    #parsec
+    '.z': (' <|> '),
+    'Ta': h(' <*> '),
+    'To': h(' <+> '),
+}
+
+parents['fortran'] = ('insert',)
+keymap['fortran'] = {
+    'kr': s('do ','end do\n'),
+    'kl': s('do while ( ', 'call '),
+    'kd': s('function ','subroutine '),
+    '.d': s('end function\n', 'end subroutine\n'),
+    'pd': s('#define ', '#ifdef '),
+    'kc': s('if (', 'cycle\n'),
+    '.c':  'end if\n',
+    'kn': s('return', ' result('),
+    'kt': '.not. ',
+    'Tz': h(' .or. '),
+    'ec': h(' .and. '),
+    'ek': s('else\n', 'elseif '),
+    'in': ' in ',
+    'ak': 'break\n',
+    'im': s('use ', 'use '),
+    '.m': 'end ',
+    'ed': ' /= ',
+
+    'ud': '.true.',
+    'ad': s('.false.', 'nothing'),
+
+    'ir': s('(:)', '(:,:)'),
+    'ih': s('integer', 'integer(4) :: '),
+    'id': s('real(8)', 'real(8) :: '),
+    'il': s('logical', 'logical :: '),
+    'oh': h('zeros('),
+
+    'pr': s('print*, ','println('),
+    'um': 'enumerate(',
+    'el': s('length(', 'size('),
+    'an': 'range(',
+}
+
+parents['tex'] = ('insert',)
+keymap['tex'] = {
+    'er': s(r'\ref{',r'\eqref{'),
+    'el': r'\label{',
+    'em': r'\emph{',
+    'bo': r'\textbf{',
+    'it': r'\item ',
+    '.p': r'\pi',
+    'pl': r'\alpha',
+    'ph': r'\phi',
+    'al': s(r'\lambda',r'\Lambda'),
+    'th': h(r'\theta'),
+    'be': s(r'\beta', r'\bexp{'), # becus statmek
+    'at': r'\tau',
+    'hr': r'\rho',
+    'eg': s(r'\omega',r'\Omega'),
+    'mt': s(r'\textrm{',r'\mathrm{'),
+    'qu': r'\quad',
+    'um': r'\mu',
+    'ig': r'\sigma',
+    'sq': r'\sqrt{',
+    'us': s('_{', '\sum_'),
+    'ps': '^{',
+    'iv': '^{-1}', #invert
+    '.h': h(r'\leq '),
+    '.t': h(r'\geq '),
+    'au': r'\frac{',
+    'tn': '}{',
+    'Tn': h(r'\[ '),
+    'Ts': h(r' \]'),
+    'uh': h(r'\\'),
+    'jh': r'\left',
+    'jt': r'\right',
+    'in': s(r' \in ','\infty'),
+    'pt': r'\propto ',
+    #'en': snippet('begin')
+    # define exp as needed [underförstått]
+    'xn': r'\exp{',
+    'pr': r'\approx ',
+
+    'ol': '\log',
+    'ic': '~\cite{',
+    'pd': '\pd{',
+}
+
+parents['relent'] = ('tex',)
+keymap['relent'] = {
+}
+
+modmap = {
+    #'HOLD': SHIFT,
+    'Up': LEVEL3,
+    ' ': LEVEL3,
+    'Tab': SHIFT,
+    #    'Escape': ALT,
+    ':': CTRL,
+    #FIXME: this should be understood :) (only matters for OSD)
+    'Control_L': CTRL,
+    'Shift_L': SHIFT,
+    'Escape': SHIFT,
+}
+
+ignore = {} # a bit ulgy but works :)
+ch_char = 'ö'
+
+chordorder = "CST'aå,oq.ejpukyixfdbghmctwrnvlsz:"

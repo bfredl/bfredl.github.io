@@ -84,7 +84,7 @@ local elements = u.namelist()
 
 [[Ruler]] {
   stl = '%-14.(%l,%c%V%) %P';
-  bg = c.vic6b;
+  bg = (os.getenv'NVIM_DEV' and c.vic8 or c.vic6b);
   fg = c.vicca;
 }
 local separator

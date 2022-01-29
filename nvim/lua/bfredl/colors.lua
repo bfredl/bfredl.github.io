@@ -57,7 +57,8 @@ h.cdef = {
   vice = "#bdcc71";
   vicf = "#ffffb0";
   vic6a = "#104057";
-  vic6b = "#25909c";
+  vic6b = "#05909c";
+  vic6c = "#307080";
   vicca= "#2c1b63";
   vicda = "#5e50ba";
 }
