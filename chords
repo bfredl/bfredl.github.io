@@ -315,6 +315,27 @@ keymap['c'] = {
 parents['cpp'] = ('c',)
 keymap['cpp'] = {}
 
+parents['zig'] = ('insert',)
+keymap['zig'] = {
+    'kr': 'for (',
+    'kc': s('if (', 'continue;'),
+    'kl': 'while (',
+    'ek': s('} else {\n', '} else if ('),
+    'ak': 'break;',
+    # 'ks': s('static ', 'const '),
+    'kn': 'return ',
+    'ud': 'true',
+    'ad': s('false', 'null'),
+    'km': s(') {\n', '{\n'),
+    '.m': s('}\n', '\n}'),
+    'iz': s('usize', 'isize'),
+    'pr': 'print("',
+    '.p': s('", .{', '});'),
+    '.r': '.{',
+    
+}
+
+
 parents['java'] = ('cstyle',)
 keymap['java'] = {}
 parents['haskell'] = ('insert',)

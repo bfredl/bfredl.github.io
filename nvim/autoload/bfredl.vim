@@ -150,6 +150,9 @@ nnoremap <Plug>CH:ou :call bfredl#tagInSplit(expand("<cword>"))<cr>
 
 
 " }}}
+" macro {{{
+noremap <leader>c @q
+" }}}
 " is of no SPEL {{{
 noremap <Plug>ch:js ]s
 noremap <Plug>ch:ks [s
