@@ -1,12 +1,18 @@
-local h = {}
+local h = _G._bfredl_helmsman or {}
+_G._bfredl_helmsman = h
+_G.hm = _G._bfredl_helmsman
+
 local curl = require'plenary.curl'
 
 h.API_TOKEN = os.getenv "hugtoken"
 
+h.model_name = "birgermoell/swedish-gpt"
+h.model_name = "flax-community/swe-gpt-wiki"
+h.model_name = "EleutherAI/gpt-neo-2.7B"
 
 function h.doit(input, cb)
   local tzero = vim.loop.gettimeofday()
-  local res = curl.post("https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B", {
+  local res = curl.post("https://api-inference.huggingface.co/models/"..h.model_name, {
     body = vim.fn.json_encode(input);
     headers = {
       Authorization = "Bearer "..h.API_TOKEN;
@@ -29,7 +35,7 @@ function h.testtext(prompt, cb)
     parameters={
       top_p=0.9;
       repetition_penalty=1.9;
-      max_new_tokens=80;
+      max_new_tokens=120;
       max_time=30;
       num_return_sequences=3;
     };
@@ -55,7 +61,7 @@ function h.visual()
   print("trigger the text "..vim.inspect(text))
   h.testtext(text, vim.schedule_wrap(function(time, res, err)
     if err ~= nil then
-      return error("FÄÄÄääLLL "..tostring(err))
+      return error("FÄÄÄääLLL "..tostring(err)..'\n'..tostring(res))
     end
     local r = vim.fn.json_decode(res)
     h.dump_res(time, r)
@@ -63,6 +69,7 @@ function h.visual()
 end
 
 vim.cmd [[vnoremap <plug>ch:ht :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
+vim.cmd [[nmap <plug>ch:ht V<plug>ch:ht]]
 
 
 -- FUBBIT
