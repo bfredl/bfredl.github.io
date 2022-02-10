@@ -4,18 +4,15 @@ _G.hm = _G._bfredl_helmsman
 
 local curl = require'plenary.curl'
 
-h.API_TOKEN = os.getenv "hugtoken"
+h.API_TOKEN_HUG = os.getenv "hugtoken"
 
-h.model_name = "birgermoell/swedish-gpt"
-h.model_name = "flax-community/swe-gpt-wiki"
-h.model_name = "EleutherAI/gpt-neo-2.7B"
 
-function h.doit(input, cb)
+function h.doer(url, api_token, input, cb)
   local tzero = vim.loop.gettimeofday()
-  local res = curl.post("https://api-inference.huggingface.co/models/"..h.model_name, {
+  local res = curl.post(url, {
     body = vim.fn.json_encode(input);
     headers = {
-      Authorization = "Bearer "..h.API_TOKEN;
+      Authorization = "Bearer "..api_token;
     };
     callback = function(res)
       local time = vim.loop.gettimeofday() - tzero
@@ -35,12 +32,27 @@ function h.testtext(prompt, cb)
     parameters={
       top_p=0.9;
       repetition_penalty=1.9;
-      max_new_tokens=120;
+      max_new_tokens=220;
       max_time=30;
       num_return_sequences=3;
     };
   }
-  return h.doit(input, cb)
+  model_name = "birgermoell/swedish-gpt"
+  model_name = "flax-community/swe-gpt-wiki"
+  model_name = "EleutherAI/gpt-neo-2.7B"
+  return h.doer("https://api-inference.huggingface.co/models/"..model_name, h.API_TOKEN_HUG, input, cb)
+end
+
+function h.testtext_goose(prompt, cb)
+  local input = {
+    prompt=prompt;
+    max_tokens=120;
+    top_p=0.9;
+    echo=true;
+    frequency_penalty=0.5;
+  }
+  model_name = "gaaa"
+  return h.doer("https://api.goose.ai/v1/engines/"..model_name.."/completions", h.API_TOKEN_GOOSE, input, cb)
 end
 
 function h.dump_res(time, res)
@@ -55,9 +67,8 @@ function h.dump_res(time, res)
   print("=FIN=\n")
 end
 
-function h.visual()
+function h.trigger(text)
   local print = require'luadev'.print
-  local text = vim.fn["bfredl#get_selection"](false)
   print("trigger the text "..vim.inspect(text))
   h.testtext(text, vim.schedule_wrap(function(time, res, err)
     if err ~= nil then
@@ -68,8 +79,21 @@ function h.visual()
   end))
 end
 
-vim.cmd [[vnoremap <plug>ch:ht :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
-vim.cmd [[nmap <plug>ch:ht V<plug>ch:ht]]
+function h.visual()
+  local text = vim.fn["bfredl#get_selection"](false)
+  h.trigger(text)
+end
+
+function h.file()
+  local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), '\n')
+  h.trigger(text)
+end
+
+function h.buffermap()
+  vim.cmd [[vnoremap <plug>ch:un :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
+  vim.cmd [[nmap <plug>ch:un V<plug>ch:un]]
+  vim.cmd [[nnoremap <plug>ch:uc :<c-u>lua require'bfredl.helmsman'.file()<cr>]]
+end
 
 
 -- FUBBIT

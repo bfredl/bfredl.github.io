@@ -346,7 +346,7 @@ func! bfredl#spacey()
 endfunc
 cnoremap <expr> / wildmenumode() ? bfredl#spacey()."/<c-z>" : "/"
 
-cnoremap <expr> = getcmdline() == "" ? "lua=" : "="
+cnoremap <expr> = (getcmdline() == "" && getcmdtype() == ":") ? "lua=" : "="
 
 cnoremap <c-t> <c-f>
 cnoremap <c-h> <c-f>0
