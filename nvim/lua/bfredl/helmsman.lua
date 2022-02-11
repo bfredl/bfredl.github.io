@@ -5,6 +5,7 @@ _G.hm = _G._bfredl_helmsman
 local curl = require'plenary.curl'
 
 h.API_TOKEN_HUG = os.getenv "hugtoken"
+h.API_TOKEN_GOOSE = os.getenv "goosetoken"
 
 
 function h.doer(url, api_token, input, cb)
@@ -25,14 +26,14 @@ function h.doer(url, api_token, input, cb)
   })
 end
 
-function h.testtext(prompt, cb)
+function h.testtext_hug(prompt, cb)
   local input = {
     inputs=prompt;
     options={use_cache=false;};
     parameters={
       top_p=0.9;
       repetition_penalty=1.9;
-      max_new_tokens=220;
+      max_new_tokens=250;
       max_time=30;
       num_return_sequences=3;
     };
@@ -49,20 +50,33 @@ function h.testtext_goose(prompt, cb)
     max_tokens=120;
     top_p=0.9;
     echo=true;
-    frequency_penalty=0.5;
+    repetition_penalty=1.9;
   }
-  model_name = "gaaa"
+  model_name = "gpt-neo-20b"
   return h.doer("https://api.goose.ai/v1/engines/"..model_name.."/completions", h.API_TOKEN_GOOSE, input, cb)
 end
 
+h.testtext = h.testtext_goose
+
 function h.dump_res(time, res)
   local print = require'luadev'.print
-  print("RESULTS: ("..tostring(time)..")\n")
-  for i,item in ipairs(res) do
-    if i > 1 then
-      print("=======\n")
+  print("RESULTS: ("..tostring(time).." s)\n")
+  if res.choices then
+    -- HONK
+    for i,item in ipairs(res.choices) do
+      if i > 1 then
+        print("=======\n")
+      end
+      -- TODO: print fancy stuff using item.logprobs, like likeliness of each token?
+      print(item.text)
     end
-    print(item.generated_text)
+  else
+    for i,item in ipairs(res) do
+      if i > 1 then
+        print("=======\n")
+      end
+      print(item.generated_text)
+    end
   end
   print("=FIN=\n")
 end
@@ -74,10 +88,12 @@ function h.trigger(text)
     if err ~= nil then
       return error("FÄÄÄääLLL "..tostring(err)..'\n'..tostring(res))
     end
+    h.rawres = res
     local r = vim.fn.json_decode(res)
     h.dump_res(time, r)
   end))
 end
+
 
 function h.visual()
   local text = vim.fn["bfredl#get_selection"](false)
@@ -90,9 +106,9 @@ function h.file()
 end
 
 function h.buffermap()
-  vim.cmd [[vnoremap <plug>ch:un :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
-  vim.cmd [[nmap <plug>ch:un V<plug>ch:un]]
-  vim.cmd [[nnoremap <plug>ch:uc :<c-u>lua require'bfredl.helmsman'.file()<cr>]]
+  vim.cmd [[vnoremap <buffer> <plug>ch:un :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
+  vim.cmd [[nmap <buffer> <plug>ch:un V<plug>ch:un]]
+  vim.cmd [[nnoremap <buffer> <plug>ch:uc :<c-u>lua require'bfredl.helmsman'.file()<cr>]]
 end
 
 
