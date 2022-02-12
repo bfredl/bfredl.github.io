@@ -47,7 +47,7 @@ end
 function h.testtext_goose(prompt, cb)
   local input = {
     prompt=prompt;
-    max_tokens=120;
+    max_tokens=250;
     top_p=0.9;
     echo=true;
     repetition_penalty=1.9;
@@ -57,6 +57,7 @@ function h.testtext_goose(prompt, cb)
 end
 
 h.testtext = h.testtext_goose
+h.testtext = h.testtext_hug
 
 function h.dump_res(time, res)
   local print = require'luadev'.print
