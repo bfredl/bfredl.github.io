@@ -10,7 +10,7 @@ h.API_TOKEN_GOOSE = os.getenv "goosetoken"
 
 function h.doer(url, api_token, input, cb)
   local tzero = vim.loop.gettimeofday()
-  local res = curl.post(url, {
+  curl.post(url, {
     body = vim.fn.json_encode(input);
     headers = {
       Authorization = "Bearer "..api_token;
