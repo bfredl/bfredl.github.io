@@ -133,8 +133,20 @@ end
 
 -- }}}
 -- them basic bindings {{{
+
+-- CURRY NAM NAM, CURRY CURRY NAM NAM
+function h.mapmode(mode)
+  return function(lhs)
+    return function(rhs)
+      return a.set_keymap(mode, lhs, rhs, {})
+    end
+  end
+end
+
+local map = h.mapmode ''
+
 -- test
-v [[map <Plug>ch:mw <cmd>lua print("howdy")<cr>]]
+map '<Plug>ch:mw' '<cmd>lua print "HAJ!"<cr>'
 
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[
