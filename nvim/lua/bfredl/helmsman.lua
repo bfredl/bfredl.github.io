@@ -102,6 +102,40 @@ function h.trigger(text)
   end))
 end
 
+function h.cont_buf()
+  local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), '\n')..'\n'
+  local print = require'luadev'.print
+  h.testtext(text, vim.schedule_wrap(function(time, res, err)
+    if err ~= nil then
+      return error("FÄÄÄääLLL "..tostring(err)..'\n'..tostring(res))
+    end
+    h.rawres = res
+    local r = vim.fn.json_decode(res)
+    local cuts = {}
+    print '\n\n'
+    for i,item in ipairs(r) do
+      cuts[i] = vim.split(item.generated_text, "\n")[1]
+      print(i, cuts[i])
+    end
+    h.cuts = cuts
+    h.encut()
+  end))
+end
+
+function h.encut()
+  local item = {"Vilket av följande beskriver ditt val bäst:"}
+  for i,it in ipairs(h.cuts) do
+    item[i+1] = tostring(i)..': '..it
+  end
+  local val = vim.fn.inputlist(item)
+  if val == 0 then
+    return
+  end
+  vim.api.nvim_buf_set_lines(0, -1, -1, false, {h.cuts[val]})
+  h.old_cuts = h.cuts
+  h.cuts = nil
+  h.cont_buf()
+end
 
 function h.visual()
   local text = vim.fn["bfredl#get_selection"](false)
@@ -117,6 +151,8 @@ function h.buffermap()
   vim.cmd [[vnoremap <buffer> <plug>ch:un :<c-u>lua require'bfredl.helmsman'.visual()<cr>]]
   vim.cmd [[nmap <buffer> <plug>ch:un V<plug>ch:un]]
   vim.cmd [[nnoremap <buffer> <plug>ch:uc :<c-u>lua require'bfredl.helmsman'.file()<cr>]]
+  vim.cmd [[nnoremap <buffer> <plug>ch:ur :<c-u>lua require'bfredl.helmsman'.cont_buf()<cr>]]
+  vim.cmd [[nnoremap <buffer> <plug>ch:ur :<c-u>lua require'bfredl.helmsman'.encut()<cr>]]
 end
 
 
