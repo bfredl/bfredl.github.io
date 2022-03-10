@@ -26,6 +26,7 @@ function h.doer(url, api_token, input, cb)
   })
 end
 
+local shorty = true
 function h.testtext_hug(prompt, cb)
   local input = {
     inputs=prompt;
@@ -33,9 +34,10 @@ function h.testtext_hug(prompt, cb)
     parameters={
       top_p=0.9;
       repetition_penalty=1.9;
-      max_new_tokens=250;
+      return_full_text=(not shorty);
+      max_new_tokens=(shorty and 55 or 250);
       max_time=30;
-      num_return_sequences=3;
+      num_return_sequences=(shorty and 10 or 3);
     };
   }
   model_name = "birgermoell/swedish-gpt"
@@ -59,6 +61,7 @@ end
 h.testtext = h.testtext_goose
 h.testtext = h.testtext_hug
 
+
 function h.dump_res(time, res)
   local print = require'luadev'.print
   print("RESULTS: ("..tostring(time).." s)\n")
@@ -73,10 +76,14 @@ function h.dump_res(time, res)
     end
   else
     for i,item in ipairs(res) do
-      if i > 1 then
-        print("=======\n")
+      if not shorty then
+        if i > 1 then
+          print("=======\n")
+        end
+        print(item.generated_text)
+      else
+        print(vim.split(item.generated_text, "\n")[1])
       end
-      print(item.generated_text)
     end
   end
   print("=FIN=\n")
