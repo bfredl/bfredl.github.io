@@ -26,7 +26,7 @@ function h.doer(url, api_token, input, cb)
   })
 end
 
-local shorty = true
+local shorty = false
 function h.testtext_hug(prompt, cb)
   local input = {
     inputs=prompt;
