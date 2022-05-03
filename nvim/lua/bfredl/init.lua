@@ -39,7 +39,7 @@ do each (packer.use)
   'jose-elias-alvarez/null-ls.nvim'
 
   {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-
+  {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 -- TODO(packer): this should not be an error:
 -- 'nvim-lua/plenary.nvim'
 
