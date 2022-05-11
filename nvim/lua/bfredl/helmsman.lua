@@ -58,8 +58,8 @@ function h.testtext_goose(prompt, cb)
   return h.doer("https://api.goose.ai/v1/engines/"..model_name.."/completions", h.API_TOKEN_GOOSE, input, cb)
 end
 
-h.testtext = h.testtext_hug
 h.testtext = h.testtext_goose
+h.testtext = h.testtext_hug
 
 
 function h.dump_res(time, res)
