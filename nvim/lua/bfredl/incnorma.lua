@@ -2,10 +2,8 @@
 plug_key = vim.api.nvim_replace_termcodes("<Plug>", true, true, true)
 
 s_cursors = {}
-countt = 0
 
 function docursor()
-  countt = countt + 1
   table.insert(s_cursors, vim.fn.getpos'.')
   return ''
 end
