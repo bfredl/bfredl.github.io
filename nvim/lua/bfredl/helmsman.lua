@@ -42,6 +42,8 @@ function h.testtext_hug(prompt, cb)
   }
   model_name = "birgermoell/swedish-gpt"
   model_name = "flax-community/swe-gpt-wiki"
+  model_name = "EleutherAI/gpt-neox-20b"
+  model_name = "EleutherAI/gpt-j-6B"
   model_name = "EleutherAI/gpt-neo-2.7B"
   return h.doer("https://api-inference.huggingface.co/models/"..model_name, h.API_TOKEN_HUG, input, cb)
 end
@@ -168,5 +170,13 @@ if false then
   end))
 end
 
+
+function h.quickstart()
+  vim.cmd [[
+    Luadev
+    call bfredl#nlua()
+  ]]
+  h.buffermap()
+end
 
 return h
