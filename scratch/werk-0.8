@@ -38,3 +38,16 @@
   - [ ] Dict(foo) with types
   - [ ] merge collisions
   - [ ] replace all uses of hardcoded Map(str, method) and gperf.c++
+
+MEMORY ALLOCATION
+=====
+
+starting point:
+@xfree:s inside API Object:s: 44871810
+            all other xfrees: 35605900
+
+The former is presumably mostly with regards to msgpack-rpc, mostly remote UI.
+
+After recieved API objects are fixed, implement direct msgpack-packing of
+grid_line.
+

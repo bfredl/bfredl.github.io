@@ -369,6 +369,7 @@ augroup Filetypes
   au FileType vim call bfredl#vim_ft()
   au FileType zig lua require'bfredl.lint'.zig()
   au FileType lua lua require'bfredl.lint'.lua()
+  au FileType gitcommit hi diffRemoved guifg=#ff40aa
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
   "au FileType lua 1match Grupp /^\[\[.\+]]/
   "au FileType lua 2match Option /^\s*'[a-z]\+'/
