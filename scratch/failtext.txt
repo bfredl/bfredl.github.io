@@ -1,0 +1,4 @@
+Some text causing invalid UTF-8 in the screen grid:
+e ü’…™¸y
+f ü’Š¯z
+== FIN ==
