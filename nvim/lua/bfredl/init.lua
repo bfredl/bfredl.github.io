@@ -107,6 +107,8 @@ local v, set = vim.cmd, h.set
 'ts' (2)
 'sts' (2)
 
+'belloff' ""
+
 'linebreak'
 
 'incsearch'
