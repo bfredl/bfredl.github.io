@@ -1,0 +1,14 @@
+BEGIN {
+  @count = 0;
+  @megacount = 0;
+
+}
+
+usdt:build/bin/nvim:neovim:xfree_nonnull {
+  @count++;
+  if (@count == 1000000) {
+    @count = 0;
+    @megacount++;
+    printf("%d 000 000! that's NUMBERWANG!\n", @megacount);
+  }
+}

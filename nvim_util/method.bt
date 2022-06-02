@@ -1,0 +1,17 @@
+
+
+// usdt:build/bin/nvim:neovim:method {
+//   printf("%s ", str(arg0));
+// }
+
+usdt:build/bin/nvim:neovim:meth_arg {
+  printf("type[%d] %s YARG[%d]\n", arg0, str(arg1), arg2);
+}
+
+usdt:build/bin/nvim:neovim:advance {
+  printf("ADVANCEZ %d %d\n", arg0, arg1);
+}
+
+usdt:build/bin/nvim:neovim:toky {
+  printf("toky %d %d\n", arg0, arg1);
+}

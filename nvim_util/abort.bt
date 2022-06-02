@@ -1,0 +1,20 @@
+BEGIN {
+}
+
+uprobe:/lib/libc.so.6:abort {
+  printf("%s", ustack);
+}
+
+usdt:build/bin/nvim:neovim:logmsg {
+  // printf("LOG %s:%d >>> %s\n", str(arg1), arg2, str(arg3));
+}
+
+usdt:build/bin/nvim:neovim:chanerr {
+  printf("BPLAA %s\n", str(arg0));
+  printf("%s", ustack);
+}
+
+usdt:build/bin/nvim:neovim:gof {
+  printf("UUUU UUU %d %s", arg0, ustack);
+}
+

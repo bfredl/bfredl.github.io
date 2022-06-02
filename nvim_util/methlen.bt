@@ -1,0 +1,10 @@
+BEGIN {
+}
+
+usdt:build/bin/nvim:neovim:msg_size {
+  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
+  @byte_histo = hist(arg1);
+  @alloc_histo = hist(arg2);
+  @allocsiz_histo = hist(arg3);
+}
+

@@ -1,0 +1,3 @@
+usdt:build/bin/nvim:neovim:xfree_nonnull {
+  printf("%s", ustack);
+}

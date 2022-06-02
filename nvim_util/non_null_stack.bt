@@ -1,0 +1,13 @@
+BEGIN {
+
+@counter = 0;
+}
+
+usdt:build/bin/nvim:neovim:xfree_nonnull {
+  // @[ustack(3)] = count();
+  @counter++;
+  if (@counter == 1000) {
+    printf("%s", ustack(perf));
+    @counter = 0;
+  }
+}

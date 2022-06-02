@@ -1,0 +1,12 @@
+usdt:build/bin/nvim:neovim:start_convert {
+  printf("\n\nCONVERT: %d\n", arg1);
+}
+
+usdt:build/bin/nvim:neovim:parse_enter {
+  printf("dumdum: %d\n", arg0);
+}
+
+usdt:build/bin/nvim:neovim:parse_exit { printf("HUMHMM: %d\n", arg0); }
+usdt:build/bin/nvim:neovim:parse_array { printf("yarr: %d[%d]\n", arg0, arg1); }
+
+usdt:build/bin/nvim:neovim:parse_dict { printf("dic: %d KEY?[%d]\n", arg0, arg1); }
