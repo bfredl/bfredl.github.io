@@ -1,0 +1,11 @@
+BEGIN {
+}
+
+uprobe:/lib/libc.so.6:abort {
+  printf("%s", ustack);
+}
+
+usdt:build/bin/nvim:neovim:logrec {
+  printf("LFAILOG %s:%d >>> %s\n", str(arg0), arg1, str(arg2));
+  printf("%s", ustack);
+}

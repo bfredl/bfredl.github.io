@@ -2,14 +2,13 @@ BEGIN {
 }
 
 usdt:build/bin/nvim:neovim:dofree {
-  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
-  @levelfree[arg0] = count();
   
   @apifree[arg0>0] = count();
+  @levelfree[arg0] = count();
 }
 
-usdt:build/bin/nvim:neovim:api_bulk {
-  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
-  @api_allocs = hist(arg0);
-}
+//usdt:build/bin/nvim:neovim:api_bulk {
+//  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
+//  @api_allocs = hist(arg0);
+//}
 

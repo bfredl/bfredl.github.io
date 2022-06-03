@@ -43,11 +43,17 @@ MEMORY ALLOCATION
 =====
 
 starting point:
-@xfree:s inside API Object:s: 44871810
-            all other xfrees: 35605900
+@xfree:s inside API Object:s: 44,871,810
+            all other xfrees: 35,605,900
 
 The former is presumably mostly with regards to msgpack-rpc, mostly remote UI.
 
 After recieved API objects are fixed, implement direct msgpack-packing of
 grid_line.
+
+NOTE: of these:
+ 3,843,859 are RPC nvim -> embedder
+  ~250,000 are RPC embedder > nvim
+
+so where is the ~40,000,000 API freese??
 
