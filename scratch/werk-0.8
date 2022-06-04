@@ -45,6 +45,9 @@ MEMORY ALLOCATION
 starting point:
 @xfree:s inside API Object:s: 44,871,810
             all other xfrees: 35,605,900
+                      total:  80,477,710
+========================================
+
 
 The former is presumably mostly with regards to msgpack-rpc, mostly remote UI.
 
@@ -56,4 +59,13 @@ NOTE: of these:
   ~250,000 are RPC embedder > nvim
 
 so where is the ~40,000,000 API freese??
+
+ 5744 vim.api.nvim_get_all_options_info calls
+7067 allocations each
+
+      40592848 allocations!
+
+ASAN before 703436 ms 706374 ms 787381 ms 721673 ms 729445 ms
+ASAN after: 757230 ms 613047 ms 
+
 
