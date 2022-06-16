@@ -1,0 +1,6 @@
+
+uprobe:build/bin/nvim:nvim_get_all_options_info {
+  // printf("%s", ustack);
+  @allopt = count();
+}
+

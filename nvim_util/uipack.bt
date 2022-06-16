@@ -1,0 +1,13 @@
+BEGIN {
+}
+
+usdt:build/bin/nvim:neovim:push_call {
+  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
+  @uipack_allocs[str(arg0)] = hist(arg1);
+}
+
+usdt:build/bin/nvim:neovim:flush_buf {
+  // printf("type %d: rawlen[%d bytes] ==> %d bytes in %d allocs\n", arg0, arg1, arg3, arg2);
+  @buf_put = hist(arg0);
+}
+

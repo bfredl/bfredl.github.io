@@ -1,0 +1,6 @@
+
+
+usdt:build/bin/nvim:neovim:ui_flush {
+  // printf("grid_line go brrr >>> %d\n", arg0);
+  @summa = sum(arg0);
+}

@@ -1,0 +1,6 @@
+
+
+
+usdt:build/bin/nvim:neovim:fakeline {
+  printf("FAKER %r\n", buf(arg0, arg1));
+}
