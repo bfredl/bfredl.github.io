@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-lines = list(open("wabang"))
+lines = list(open("maaaa"))
 
 lines
 
@@ -11,7 +11,7 @@ allcount = 0
 i = 0
 while i < len(lines):
     line = lines[i]
-    if line.startswith("@whereto["):
+    if line.startswith("@freeto["):
         kollect = []
         while True:
             i = i + 1
@@ -27,8 +27,19 @@ while i < len(lines):
         ival = int(y)
         allcount += ival
         tracecount[drr] += ival
-        onecount[kollect[-1]] += ival
+        position = 1
+        onecount[kollect[position]] += ival
     i = i + 1
 print(allcount)
 
-onecount
+sum(onecount.values())
+
+laa = sorted(onecount.items(), key=lambda x: x[1])
+laa[-10:]
+
+print()
+for item,jtem in laa:
+    print(item)
+    #print(f'0x{int(item, base=0)-0x13362fb:x}')
+    print("count_"+str(jtem))
+f'0x{0x555556ef307e-0x199f07e:x}'
