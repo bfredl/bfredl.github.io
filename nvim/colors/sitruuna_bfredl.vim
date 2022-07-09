@@ -35,6 +35,7 @@ let s:col.function   = ['#68d0d8', 104]
 let s:col.lightfun   = ['#98a0d8', 104]
 let s:col.constant   = ['#ca70d6', 170]
 let s:col.error      = ['#c15959', 131]
+let s:col.pmenu      = ['#281855', 236]
 let s:col.none       = ['NONE', 'NONE']
 " }}}
 " Highlighting Function from https://github.com/sjl/badwolf {{{
@@ -99,7 +100,7 @@ call s:HL('String',          'string',     'stringbg')
 call s:HL('Todo',            'background', 'string')
 call s:HL('Type',            'type',       'none',       'none')
 call s:HL('Underlined',      'function',   'none')
-call s:HL('Pmenu',           'foreground', 'light_bg')
+call s:HL('Pmenu',           'foreground', 'pmenu')
 call s:HL('PmenuSbar',       'light_bg',   'light_bg')
 call s:HL('PmenuSel',        'background', 'lemon')
 call s:HL('PmenuThumb',      'function')
