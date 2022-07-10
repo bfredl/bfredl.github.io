@@ -23,13 +23,23 @@ function h.clint(bufnr)
   vim.diagnostic.set(ns, 0, diags, {})
 end
 
-function h.astcheck()
+function h.zigcheck()
   local lines = a.buf_get_lines(0, 0, -1, true)
   local data = table.concat(lines, '\n') .. '\n'
   local aout = {}
+  local args
+  if hyperzig then
+    -- DANSE TILL PIPÅ VÅR TILS DU BLØR
+    args = { 'build-exe', '-fno-stage1', '-fno-emit-bin', '/tmp/pipa.zig'}
+    local fil = io.open('/tmp/pipa.zig', 'wb')
+    fil:write(data)
+    fil:close()
+  else
+    args = { 'ast-check' }
+  end
   local job = Job:new {
     command = 'zig';
-    args = { 'ast-check' };
+    args = args;
     on_exit = vim.schedule_wrap(function(j, ret)
       local lines = j:stderr_result()
       for i,l in ipairs(lines) do
@@ -42,7 +52,7 @@ function h.astcheck()
       vim.diagnostic.set(ns, 0, diags, {})
 
     end);
-    writer = data;
+    writer = ((not hyperzig) and data or nil);
     enable_recording = true;
   };
 
@@ -65,10 +75,10 @@ end
 
 
 function h.zig()
-  -- vim.cmd [[autocmd InsertLeave,CursorHold,CursorHoldI,BufWritePre <buffer> lua require'bfredl.lint'.astcheck()]]
+  -- vim.cmd [[autocmd InsertLeave,CursorHold,CursorHoldI,BufWritePre <buffer> lua require'bfredl.lint'.zigcheck()]]
   -- Nooo! you cannot run an external process as a linter on each keypress. Nooo!
   -- haha, astgen go brrr
-  vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.astcheck()]]
+  vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.zigcheck()]]
 end
 
 function h.lua()

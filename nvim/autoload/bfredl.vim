@@ -186,7 +186,7 @@ imap <buffer> <Plug>ch:,d <cmd>lua vim.lsp.buf.signature_help()<cr>
 nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
 nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
-nmap <buffer> <Plug>ch:mv <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
+nmap <buffer> <Plug>ch:mv <cmd>lua vim.diagnostic.open_popup()<cr>
 setl omnifunc=v:lua.vim.lsp.omnifunc
 let b:did_lspmap = v:true
 " ic does not work, delete ic->char ?
@@ -364,7 +364,7 @@ augroup Filetypes
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
-  au FileType c,cpp,python call bfredl#lspmap()
+  au FileType c,cpp,python,zig call bfredl#lspmap()
   au FileType c call bfredl#nvim_c_ft()
   au FileType vim call bfredl#vim_ft()
   au FileType zig lua require'bfredl.lint'.zig()
