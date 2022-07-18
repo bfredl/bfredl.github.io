@@ -93,9 +93,7 @@ map <Leader>l <Plug>(miniyank-toline)
 map <Leader>k <Plug>(miniyank-tochar)
 " }}}
 " motion and selection {{{
-map <Plug>ch:jh <Plug>(easymotion-j)
-map <Plug>ch:kh <Plug>(easymotion-k)
-let g:EasyMotion_keys = "aoeidtn',.pgljkbmuh:cr"
+"let g:EasyMotion_keys = "aoeidtn',.pgljkbmuh:cr"
 
 map <Space> <plug>Sneak_s
 nmap S <plug>Sneak_S

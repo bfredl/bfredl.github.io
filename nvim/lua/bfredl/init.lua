@@ -40,7 +40,7 @@ do each (packer.use)
 
   {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
   {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
--- TODO(packer): this should not be an error:
+-- todo(packer): this should not be an error:
 -- 'nvim-lua/plenary.nvim'
 
   '~/dev/nvim-miniyank'
@@ -57,7 +57,7 @@ do each (packer.use)
 
   'mileszs/ack.vim'
 
-  'Lokaltog/vim-easymotion'
+  'phaazon/hop.nvim'
   'justinmk/vim-sneak'
   'tommcdo/vim-exchange'
 
@@ -146,9 +146,11 @@ function h.mapmode(mode)
 end
 
 local map = h.mapmode ''
+local plugmap = function(x) return map('<Plug>ch:'..x) end
 
 -- test
-map '<Plug>ch:mw' '<cmd>lua print "HAJ!"<cr>'
+plugmap 'mw' '<cmd>lua print "HAJ!"<cr>'
+
 
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[
@@ -157,6 +159,17 @@ v [[
   augroup END
 ]]
 
+-- }}}
+-- hop.nvim {{{
+  require'hop'.setup {
+    keys = [[aoeidtnspcrgljkwbmuhfqvxyz]];
+    -- keys = [[asdghklqwertyuiopzxcvbnmfj]];
+    -- keys = [[aoeusdghklqwrtyipzxcvbnmfj]];
+  }
+  plugmap 'jh' '<cmd>HopLineAC<cr>'
+  plugmap 'kh' '<cmd>HopLineBC<cr>'
+  plugmap 'jw' '<cmd>HopWordAC<cr>'
+  plugmap 'kw' '<cmd>HopWordBC<cr>'
 -- }}}
 -- vimenter stuff {{{
 function h.vimenter(startup)
@@ -233,7 +246,7 @@ function h.ts_setup()
     };
   }
   v [[
-    nmap <plug>ch:ht grn
+   " nmap <plug>ch:ht grn
   ]]
 end
 if true or h.did_ts then
