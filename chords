@@ -293,7 +293,7 @@ keymap['cstyle'] = {
     'ad': s('false', 'NULL'),
     'km': s(') {\n', '{\n'),
     '.m': s('}\n', '\n}'),
-    'ih': s('int ', 'int* '),
+    'ih': s('int ', 'int *'),
     'ig': 'unsigned ',
     'il': 'bool',
     'id': s('double', 'float'),
@@ -313,7 +313,9 @@ keymap['c'] = {
     'kd': s('#define ', '#ifdef '),
 }
 parents['cpp'] = ('c',)
-keymap['cpp'] = {}
+keymap['cpp'] = {
+    'yr': s('try {', '} catch ('),
+}
 
 parents['zig'] = ('insert',)
 keymap['zig'] = {
@@ -322,9 +324,11 @@ keymap['zig'] = {
     'kl': 'while (',
     'ek': s('} else {\n', '} else if ('),
     'ak': 'break;',
-    # 'ks': s('static ', 'const '),
+    'ks': s('var ', 'const '),
     'kn': 'return ',
+    'kt': 'pub const ',
     'ud': 'true',
+    'il': 'bool',
     'ad': s('false', 'null'),
     'km': s(') {\n', '{\n'),
     '.m': s('}\n', '\n}'),
@@ -332,7 +336,15 @@ keymap['zig'] = {
     'pr': 'print("',
     '.p': s('", .{', '});'),
     '.r': '.{',
-    
+    'im': '@import("',
+    'yr': s('try ', ' catch '),
+    'un': 'undefined',
+    'ur': 'unreachable',
+    'er': s('error.', 'return error.'),
+    'ub': s('pub ', 'pub fn '),
+    'it': s('void', '*void'),
+    'ez': ') |',
+    'uz': '| {\n',
 }
 
 

@@ -58,6 +58,7 @@ do each (packer.use)
   'mileszs/ack.vim'
 
   'phaazon/hop.nvim'
+  'ggandor/leap.nvim'
   'justinmk/vim-sneak'
   'tommcdo/vim-exchange'
 
@@ -162,7 +163,7 @@ v [[
 -- }}}
 -- hop.nvim {{{
   require'hop'.setup {
-    keys = [[aoeidtnspcrgljkwbmuhfqvxyz]];
+    keys = [[aoeipcrgljkwbmuhfqvxyzdtns]];
     -- keys = [[asdghklqwertyuiopzxcvbnmfj]];
     -- keys = [[aoeusdghklqwrtyipzxcvbnmfj]];
   }
