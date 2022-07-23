@@ -41,9 +41,31 @@ $0
   julia = newsym
 }
 
+local ls = require'luasnip'
+local lse = require'luasnip.extras'
+local s = ls.snippet
+local sn = ls.snippet_node
+local t = ls.text_node
+local i = ls.insert_node
+local f = ls.function_node
+local c = ls.choice_node
+local d = ls.dynamic_node
+local res = ls.restore_node
+local r = lse.rep
+local l = lse.lambda
+local p = ls.parser.parse_snippet
+local fmt = require'luasnip.extras.fmt'.fmt
+
+-- s("for", { t"for (", i(1, "int"), t" ", i(2, "i"), t" = ", i(3, "0"), t"; ", r(2), t' < ', i(4, 'len'), t'; ', r(2), t{'++) {', '\t'}, i(0), t{'','}'}});
 function h.setup() -- {{{
-  local s = require'snippets'
-  s.use_suggested_mappings()
-  s.snippets = h.snippets
+  ls.config.set_config {
+    history = true;
+    updateevents = 'TextChanged,TextChangedI';
+  }
+  ls.add_snippets("c", {
+    s("for", fmt("for ({} {} = {}; {} < {}; {}++) {{\n\t{}\n}}",
+                 { i(1, "int"), i(2, "i"), i(3, "0"), r(2), i(4, 'len'), r(2), i(0)}));
+    p("while", "while (${1:true}) {\n\t$0\n}");
+  })
 end
 return h

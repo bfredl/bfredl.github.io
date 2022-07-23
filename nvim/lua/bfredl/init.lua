@@ -26,7 +26,8 @@ local packer = require'packer'
 packer.init {}
 packer.reset()
 do each (packer.use)
-  'norcalli/snippets.nvim'
+  -- 'norcalli/snippets.nvim'
+  'L3MON4D3/LuaSnip'
   'norcalli/nvim-colorizer.lua'
   'vim-conf-live/pres.vim'
   --use 'norek/bbbork'
@@ -147,10 +148,11 @@ function h.mapmode(mode)
 end
 
 local map = h.mapmode ''
-local plugmap = function(x) return map('<Plug>ch:'..x) end
+local imap = h.mapmode 'i'
+local chmap = function(x) return map('<Plug>ch:'..x) end
 
 -- test
-plugmap 'mw' '<cmd>lua print "HAJ!"<cr>'
+chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
 
 
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
@@ -162,15 +164,13 @@ v [[
 
 -- }}}
 -- hop.nvim {{{
-  require'hop'.setup {
-    keys = [[aoeipcrgljkwbmuhfqvxyzdtns]];
-    -- keys = [[asdghklqwertyuiopzxcvbnmfj]];
-    -- keys = [[aoeusdghklqwrtyipzxcvbnmfj]];
-  }
-  plugmap 'jh' '<cmd>HopLineAC<cr>'
-  plugmap 'kh' '<cmd>HopLineBC<cr>'
-  plugmap 'jw' '<cmd>HopWordAC<cr>'
-  plugmap 'kw' '<cmd>HopWordBC<cr>'
+require'hop'.setup {
+  keys = [[aoeipcrgljkwbmuhfqvxyzdtns]];
+}
+chmap 'jh' '<cmd>HopLineAC<cr>'
+chmap 'kh' '<cmd>HopLineBC<cr>'
+chmap 'jw' '<cmd>HopWordAC<cr>'
+chmap 'kw' '<cmd>HopWordBC<cr>'
 -- }}}
 -- vimenter stuff {{{
 function h.vimenter(startup)
@@ -185,7 +185,10 @@ function h.vimenter(startup)
     end
   end
 end -- }}}
+-- snippets {{{
+vim.keymap.set({'i', 's'}, '<c-k>', "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'", {expr=true})
 require'bfredl.snippets'.setup()
+-- }}}
 -- LSP {{{
 if not vim.g.bfredl_nolsp then
   local lspconfig = require'lspconfig'

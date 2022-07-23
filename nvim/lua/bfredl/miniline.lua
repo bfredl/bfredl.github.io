@@ -21,7 +21,7 @@ local elements = u.namelist()
 [[ViMode]] {
   expr = function()
     if not current() then return vim.fn.winnr() end
-    local alias = {n = 'NORMAL',i = 'INSERT',c= 'C-LINE',v= 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
+    local alias = {n = 'NORMAL',i = 'INSERT',c= 'C-LINE',v= 'VISUAL', V= 'VISUAL', [''] = 'VISUAL', s = 'SELEKT'}
     return alias[vim.fn.mode()]
   end;
   bg = c.vic7;
