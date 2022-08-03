@@ -58,5 +58,8 @@ publishDir = "../docs"
     missingBackButtonLabel = "Back to home page"
 
     [languages.en.params.logo]
-      logoText = "Terminal"
+      logoText = "bfredl"
       logoHomeLink = "/"
+
+[markup.goldmark.renderer]
+    unsafe = true

@@ -96,6 +96,8 @@ for k,v in pairs(require'bfredl.util') do h[k] = v end
 local a, buf, win, tabpage = h.a, h.buf, h.win, h.tabpage
 _G.a = a
 
+_G.__devcolors = not not (os.getenv'NVIM_DEV' and not os.getenv'NVIM_COLORDEV')
+
 local v, set = vim.cmd, h.set
 -- }}}
 -- basic options {{{
@@ -187,7 +189,20 @@ function h.vimenter(startup)
 end -- }}}
 -- snippets {{{
 vim.keymap.set({'i', 's'}, '<c-k>', "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'", {expr=true})
+vim.keymap.set({'i', 's'}, '<c-j>', "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<c-j>'", {expr=true})
 require'bfredl.snippets'.setup()
+
+do local ns = a.create_namespace 'selekt-color'
+  a.set_hl(ns, "Visual", {bg='#006600'})
+  local function on_win(_, winid, bufnr, row)
+    if winid == a.get_current_win() and ({s=true,S=true,['']=true})[vim.fn.mode():sub(1,1)] then
+      --(a._set_hl_ns or a.set_hl_ns)(ns)
+    else
+      --(a._set_hl_ns or a.set_hl_ns)(0)
+    end
+  end
+  vim.api.nvim_set_decoration_provider(ns, {on_win=on_win})
+end
 -- }}}
 -- LSP {{{
 if not vim.g.bfredl_nolsp then
@@ -293,7 +308,7 @@ v [[
   augroup END
 ]]
 -- }}}
-if os.getenv'NVIM_INSTANCE' and not os.getenv'NVIM_DEV' then
+if os.getenv'NVIM_INSTANCE' and not __devcolors then
   v [[ color sitruuna_bfredl ]]
 end
 v [[ hi MsgArea blend=15 guibg=#281811]]

@@ -65,7 +65,7 @@ h.cdef = {
 local c = h.cdef
 
 local basebg, endbg, tonebg
-if os.getenv'NVIM_DEV' then
+if __devcolors then
   basebg, endbg = c.vic6a, c.vic6b
   tonebg = c.vicda
 else

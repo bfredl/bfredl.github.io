@@ -57,15 +57,20 @@ local p = ls.parser.parse_snippet
 local fmt = require'luasnip.extras.fmt'.fmt
 
 -- s("for", { t"for (", i(1, "int"), t" ", i(2, "i"), t" = ", i(3, "0"), t"; ", r(2), t' < ', i(4, 'len'), t'; ', r(2), t{'++) {', '\t'}, i(0), t{'','}'}});
-function h.setup() -- {{{
+function h.setup()
   ls.config.set_config {
     history = true;
     updateevents = 'TextChanged,TextChangedI';
   }
   ls.add_snippets("c", {
     s("for", fmt("for ({} {} = {}; {} < {}; {}++) {{\n\t{}\n}}",
-                 { i(1, "int"), i(2, "i"), i(3, "0"), r(2), i(4, 'len'), r(2), i(0)}));
+                 { i(1, "size_t"), i(2, "i"), i(3, "0"), r(2), i(4, 'len'), r(2), i(0)}));
     p("while", "while (${1:true}) {\n\t$0\n}");
-  })
+  }, {key="c"})
+  ls.add_snippets("zig", {
+    p("ifc", "if (${1:true}) |${2:x}| {\n\t$0\n}");
+    p("c", "const $1 = $0;");
+    p("bb", "${1:label}: {\n\t$0\n\tbreak :$1 null;\n}");
+  }, {key="zig"})
 end
 return h

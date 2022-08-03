@@ -363,7 +363,9 @@ augroup Filetypes
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,cpp,python,zig call bfredl#lspmap()
-  au FileType c call bfredl#nvim_c_ft()
+  au FileType zig call bfredl#zigmap()
+  au FileType c,cpp call bfredl#nvim_c_ft()
+  au FileType c,cpp call bfredl#cmap()
   au FileType vim call bfredl#vim_ft()
   au FileType zig lua require'bfredl.lint'.zig()
   au FileType lua lua require'bfredl.lint'.lua()
@@ -407,6 +409,23 @@ func bfredl#nvim_c_ft()
   setlocal cinoptions=0(
   setlocal commentstring=//\ %s
 endfunc
+
+func bfredl#cmap()
+  inoremap <buffer> ¶) )
+  inoremap <buffer> ¶, ,
+  inoremap <buffer> ¶<space> <space>
+  inoremap <buffer> ¶ <space>
+endfunc
+if &ft == "c"
+  call bfredl#cmap()
+end
+
+func bfredl#zigmap()
+  inoremap <buffer> <plug>ch:kh ifc<Plug>luasnip-expand-snippet
+endfunc
+if &ft == "zig"
+  call bfredl#zigmap()
+end
 
 function! bfredl#vim_ft() "{{{
     noremap <silent> <buffer> <Plug>ch:un <cmd>execute getline('.')<cr>

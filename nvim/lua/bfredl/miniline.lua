@@ -19,15 +19,34 @@ local elements = u.namelist()
 }
 
 [[ViMode]] {
-  expr = function()
-    if not current() then return vim.fn.winnr() end
-    local alias = {n = 'NORMAL',i = 'INSERT',c= 'C-LINE',v= 'VISUAL', V= 'VISUAL', [''] = 'VISUAL', s = 'SELEKT'}
-    return alias[vim.fn.mode()]
+  func = function()
+    if not current() then
+      return nil
+    end
+    local alias = {
+      n = 'NORMAL';
+      i = 'INSERT';
+      niI = 'CTRL-O';
+      R = 'REPLAC';
+      c= 'C-LINE';
+      v= 'VISUAL';
+      V= 'V-LINE';
+      [''] = 'VBLOCK';
+      s = 'SELEKT';
+      S = 'S-LINE';
+      [''] = 'SBLOCK';
+      t = 'TERMNL';
+      nt = 'NORM-L';
+      ntT = 'C-\\C-O';
+    }
+    local mode = vim.fn.mode(1)
+    return {
+      stl = alias[mode] or alias[string.sub(mode,1,1)] or '??????';
+      bg = c.vic7;
+      fg = c.vic4;
+      bold=true;
+    }
   end;
-  bg = c.vic7;
-  fg = c.vic4;
-  attr={bold=true};
-  active = function() return current() end;
 }
 
 [[FileName]] {
@@ -84,7 +103,7 @@ local elements = u.namelist()
 
 [[Ruler]] {
   stl = '%-14.(%l,%c%V%) %P';
-  bg = (os.getenv'NVIM_DEV' and c.vic8 or c.vic6b);
+  bg = (__devcolors and c.vic8 or c.vic6b);
   fg = c.vicca;
 }
 local separator
@@ -98,7 +117,10 @@ _G._LL = h.expr
 -- TODO: temas will not require colors to be pre-defined
 local lastbg = nil
 for i,e in ipairs(elements()) do
-  local attr = {bg=e.bg, fg=e.fg}
+  if e.func then
+    e = e.func() or {}
+  end
+  local attr = {bg=e.bg, fg=e.fg, bold=e.bold}
   if next(attr) then
     a.set_hl(ns, e.name, attr)
     e._cdef = "%#"..e.name..'#'
@@ -114,12 +136,18 @@ end
 
 
 function h.render()
+  (a.set_hl_ns_fast or function() end)(ns)
   local pieces = {}
   local lastbg = nil
   context = true -- nonlocal
   local put = function(a) table.insert(pieces, a) end
   for i,e in ipairs(elements()) do
-    local inactive = e.active and not e.active()
+    if e.func then
+      local name = e.name
+      e = e.func()
+      if e then e.name = name end
+    end
+    local inactive = (e == nil) or (e.active and not e.active())
     if not inactive then
       if lastbg ~= nil then
         if lastbg ~= e.bg then
@@ -143,7 +171,7 @@ end
 h.expr._render = h.render
 
 function h.setup()
-  (a._set_hl_ns or a.set_hl_ns)(ns)
+  (a.set_hl_ns_fast or a._set_hl_ns)(ns)
   u.a.set_option('statusline', '%!v:lua._LL._render()')
 end
 
