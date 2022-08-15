@@ -72,5 +72,8 @@ function h.setup()
     p("c", "const $1 = $0;");
     p("bb", "${1:label}: {\n\t$0\n\tbreak :$1 null;\n}");
   }, {key="zig"})
+  ls.add_snippets("lua", {
+    p("snap", "screen:snapshot_util()");
+  }, {key="zig"})
 end
 return h
