@@ -15,6 +15,7 @@ let s:col.lemon      = ['#FAC03B', 220]
 let s:col.special    = ['#ffb354', 215]
 let s:col.preproc    = ['#a2abae', 147]
 let s:col.type       = ['#a3db81', 117]
+let s:col.sparkly    = ['#e2e2e2', 188]
 let s:col.foreground = ['#d1d1d1', 188]
 let s:col.fg_alt     = ['#a1a1a1', 145]
 let s:col.fg_dark    = ['#919191', 145]
@@ -138,6 +139,8 @@ call s:HL('Operator',        'none',   'none',       'none')
 call s:HL('htmlTagName',     'lemon',      'none',       'bold')
 call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')
+call s:HL('StandOut',          'sparkly', 'none', 'bold')
+call s:HL('Inverter',         'darkbg',    'foreground', 'bold')
 
 
 call s:HL('IncSearch',  'special', 'background', 'reverse,bold')

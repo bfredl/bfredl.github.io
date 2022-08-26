@@ -357,6 +357,7 @@ filetype plugin indent on
 set shortmess-=F
 augroup Filetypes
   au!
+  au BufRead,BufNewFile *.h set filetype=c "go fuck yourself please
   au FileType python call bfredl#python()
   au FileType rmd let b:ipy_celldef = ['^```{r\( \a*\)\?}$', '^```$']
   au FileType rmd set isk+=_
