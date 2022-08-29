@@ -139,8 +139,8 @@ call s:HL('Operator',        'none',   'none',       'none')
 call s:HL('htmlTagName',     'lemon',      'none',       'bold')
 call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')
-call s:HL('StandOut',          'sparkly', 'none', 'bold')
-call s:HL('Inverter',         'darkbg',    'foreground', 'bold')
+call s:HL('@extern',          'sparkly', 'none', 'bold')
+call s:HL('@attribute',         'darkbg',    'foreground', 'bold')
 
 
 call s:HL('IncSearch',  'special', 'background', 'reverse,bold')
