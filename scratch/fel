@@ -1,0 +1,132 @@
+
+FAILED   45 tests, listed below:
+FAILED   test/functional/legacy/019_smarttab_expandtab_spec.lua @ 12: performing "r<Tab>" w'expandtab' set/not set, and "dv_" is working
+test/functional/legacy/019_smarttab_expandtab_spec.lua:45: Expected objects to be the same.Passed in:
+(string) 'start text
+                    ome test text
+test text
+                    ther test text
+                                            de
+                                                        hi
+test text
+{
+        x
+  with whitespace'
+Expected:
+(string) 'start text
+                    ome test text
+test text
+                    ther test text
+    a cde
+                hi
+test text
+{
+        x
+  with whitespace'
+
+stack traceback:
+        test/functional/legacy/019_smarttab_expandtab_spec.lua:45: in function <test/functirttab_expandtab_spec.lua:12>
+
+FAILED   test/functional/legacy/033_lisp_indent_spec.lua @ 13: lisp indent is working
+test/functional/legacy/033_lisp_indent_spec.lua:50: Expected objects to be the same.
+Passed in:
+(string) '(defun html-file (base)
+  (format nil "~(~A~).html" base))
+
+(defmacro page (name title &rest body)
+  (let ((ti (gensym)))
+    `(with-open-file (*standard-output*
+                       (html-file ,name)
+                       :direction :output
+                       :if-exists :supersede)
+       (let ((,ti ,title))
+         (as title ,ti)
+         (with center
+          (as h2 (string-upcase ,ti)))
+         (brs 3)
+         ,@body))))
+
+;;; Utilities for generating links
+
+(defmacro with-link (dest &rest body)
+  `(progn
+     (format t "<a href=\"~A\">" (html-file ,dest))
+     ,@body
+     (princ "</a>")))'
+Expected:
+(string) '(defun html-file (base)
+  (format nil "~(~A~).html" base))
+
+(defmacro page (name title &rest body)
+  (let ((ti (gensym)))
+    `(with-open-file (*standard-output*
+                       (html-file ,name)
+                       :direction :output
+                       :if-exists :supersede)
+       (let ((,ti ,title))
+         (as title ,ti)
+         (with center
+               (as h2 (string-upcase ,ti)))
+         (brs 3)
+         ,@body))))
+
+;;; Utilities for generating links
+
+(defmacro with-link (dest &rest body)
+  `(progn
+     (format t "<a href=\"~A\">" (html-file ,dest))
+     ,@body
+     (princ "</a>")))'
+
+stack traceback:
+        test/functional/legacy/033_lisp_indent_spec.lua:50: in function <test/functional/let_spec.lua:13>
+
+FAILED   ...unctional/legacy/039_visual_block_mode_commands_spec.lua @ 221: Visual block mopaces in front of the block with tabs
+...unctional/legacy/039_visual_block_mode_commands_spec.lua:231: Expected objects to be thePassed in:
+(string) '#define BO_ALL                                                                0x0#define BO_BS                                                           0x0002
+#define BO_CRSR                                                         0x0004'
+Expected:
+(string) '#define BO_ALL                0x0001
+#define BO_BS           0x0002
+#define BO_CRSR         0x0004'
+
+stack traceback:
+        ...unctional/legacy/039_visual_block_mode_commands_spec.lua:231: in function <...unvisual_block_mode_commands_spec.lua:221>
+
+FAILED   test/functional/lua/buffer_updates_spec.lua @ 773: lua: nvim_buf_attach on_bytes (s tab with noexpandtab and softtabstop
+test/functional/helpers.lua:640: unexpected byte updates received.
+
+received events:
+  { "test1", "bytes", 1, 5, 0, 2, 2, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 6, 0, 3, 3, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 7, 0, 0, 0, 0, 4, 4, 0, 3, 3 };
+
+expected events:
+  { "test1", "bytes", 1, 5, 0, 2, 2, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 6, 0, 3, 3, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 7, 0, 0, 0, 0, 4, 4, 0, 1, 1 };
+
+
+stack traceback:
+        test/functional/helpers.lua:640: in function 'expect_events'
+        test/functional/lua/buffer_updates_spec.lua:330: in function 'check_events'
+        test/functional/lua/buffer_updates_spec.lua:790: in function <test/functional/lua/blua:773>
+
+FAILED   test/functional/lua/buffer_updates_spec.lua @ 773: lua: nvim_buf_attach on_bytes (dles tab with noexpandtab and softtabstop
+test/functional/helpers.lua:640: unexpected byte updates received.
+
+received events:
+  { "test1", "bytes", 1, 5, 0, 2, 2, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 6, 0, 3, 3, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 7, 0, 0, 0, 0, 4, 4, 0, 3, 3 };
+
+expected events:
+  { "test1", "bytes", 1, 5, 0, 2, 2, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 6, 0, 3, 3, 0, 0, 0, 0, 1, 1 };
+  { "test1", "bytes", 1, 7, 0, 0, 0, 0, 4, 4, 0, 1, 1 };
+
+
+stack traceback:
+        test/functional/helpers.lua:640: in function 'expect_events'
+        test/functional/lua/buffer_updates_spec.lua:330: in function 'check_events'
+        test/functional/lua/buffer_updates_spec.lua:790: in function <test/functional/lua/blua:773>

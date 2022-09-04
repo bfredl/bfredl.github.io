@@ -28,15 +28,7 @@ function h.zigcheck()
   local data = table.concat(lines, '\n') .. '\n'
   local aout = {}
   local args
-  if hyperzig then
-    -- DANSE TILL PIPÅ VÅR TILS DU BLØR
-    args = { 'build-exe', '-fno-stage1', '-fno-emit-bin', '/tmp/pipa.zig'}
-    local fil = io.open('/tmp/pipa.zig', 'wb')
-    fil:write(data)
-    fil:close()
-  else
-    args = { 'ast-check' }
-  end
+  args = { 'ast-check' }
   local job = Job:new {
     command = 'zig';
     args = args;
@@ -52,7 +44,7 @@ function h.zigcheck()
       vim.diagnostic.set(ns, 0, diags, {})
 
     end);
-    writer = ((not hyperzig) and data or nil);
+    writer = data;
     enable_recording = true;
   };
 
@@ -78,7 +70,8 @@ function h.zig()
   -- vim.cmd [[autocmd InsertLeave,CursorHold,CursorHoldI,BufWritePre <buffer> lua require'bfredl.lint'.zigcheck()]]
   -- Nooo! you cannot run an external process as a linter on each keypress. Nooo!
   -- haha, astgen go brrr
-  vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.zigcheck()]]
+  -- TODO: disable this when enabling ghostzig
+  -- vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.zigcheck()]]
 end
 
 function h.lua()

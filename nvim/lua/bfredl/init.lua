@@ -239,7 +239,7 @@ function h.ts_setup()
     return
   end
   h.did_ts = true
-  require'nvim-treesitter.configs'.setup {
+  if false then require'nvim-treesitter.configs'.setup {
     --ensure_installed = "all",     -- one of "all", "language", or a list of languages
     highlight = {
       enable = true; -- false will disable the whole extension
@@ -263,7 +263,7 @@ function h.ts_setup()
       updatetime = 25, -- Debounced time for highlighting nodes in the playground from source cod;
       persist_queries = false; -- Whether the query persists across vim sessions
     };
-  }
+  } end
   v [[
    " nmap <plug>ch:ht grn
   ]]
