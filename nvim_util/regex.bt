@@ -1,0 +1,7 @@
+BEGIN {
+}
+
+usdt:build/bin/nvim:neovim:veryerr {
+  printf("very err: '%s' as into '%s' ", str(arg0), str(arg1));
+}
+

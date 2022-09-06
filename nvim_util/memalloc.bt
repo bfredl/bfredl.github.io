@@ -1,0 +1,16 @@
+
+usdt:build/bin/nvim:neovim:memalloc {
+  @wherefrom[ustack] = count();
+  @totcount = count();
+}
+
+usdt:build/bin/nvim:neovim:memcalloc {
+  @wherefrom[ustack] = count();
+  @totcount = count();
+}
+
+usdt:build/bin/nvim:neovim:memrealloc {
+  @wherefrom[ustack] = count();
+  @recount = count();
+}
+

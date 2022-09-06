@@ -1,0 +1,11 @@
+BEGIN {
+}
+
+usdt:build/bin/nvim:neovim:hall {
+  printf("HALLLL!\n");
+}
+
+usdt:build/bin/nvim:neovim:fin {
+  printf("GRIDDY %d == [%d, %d]\n", (arg0), arg1, (arg2));
+  printf("%s", ustack);
+}
