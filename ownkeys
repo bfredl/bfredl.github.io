@@ -87,7 +87,7 @@ xkb_symbols "standard" {
     //  type[Group1]="ONE_LEVEL",
     //  symbols[Group1] = [ Super_L ]
     //};
-    include "level3(modifier_mapping)"
+    // include "level3(modifier_mapping)"
 
 
     key <CAPS> { [  Escape ] };

@@ -74,7 +74,7 @@ do each (packer.use)
   'vim-scripts/a.vim'
 
 -- filetypes
-  'numirias/semshi'
+  -- 'numirias/semshi'
   -- {'davidhalter/jedi-vim', ft = {'python'}}
 
   'ziglang/zig.vim'

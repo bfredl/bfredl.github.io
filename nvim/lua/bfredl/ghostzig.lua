@@ -21,13 +21,22 @@ function h.ghostwrite()
 end
 
 function h.ghostbuild(entrypoint)
+  if h.state == "running" or h.state == "throttled" then
+    -- require'luadev'.print("THROTTLE")
+    h.state = "throttled"
+    return
+  end
+  h.state = "running"
   h.ghostwrite()
   -- TODO: throttle running jobs
   args = { 'build-exe', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
+  local start_time = vim.fn.reltime()
+  -- require'luadev'.print("START")
   local job = Job:new {
     command = 'zig';
     args = args;
     on_exit = vim.schedule_wrap(function(j, ret)
+      local time = vim.fn.reltime(start_time)
       local lines = j:stderr_result()
       for i,l in ipairs(lines) do
         -- TODO: translate BACK from the ghost to REALITi
@@ -38,6 +47,14 @@ function h.ghostbuild(entrypoint)
       local items = vim.fn.getqflist{lines=lines}
       local diags = vim.diagnostic.fromqflist(items.items)
       vim.diagnostic.set(ns, 0, diags, {})
+
+      if h.state == "throttled" then
+        h.state = nil
+        h.ghostbuild(entrypoint)
+      else
+        h.state = "done"
+      end
+      require'luadev'.print("JOB", h.state, vim.fn.reltimefloat(time))
     end);
     enable_recording = true;
   };
