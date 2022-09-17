@@ -39,14 +39,26 @@ function h.ghostbuild(entrypoint)
       local time = vim.fn.reltime(start_time)
       local lines = j:stderr_result()
       for i,l in ipairs(lines) do
-        -- TODO: translate BACK from the ghost to REALITi
-        -- u.unprefix(l, "<stdin>:", function(p)
-          --lines[i] = p
-        -- end)
+         u.unprefix(l, h.ghostpath..'/', function(p)
+          lines[i] = p
+         end)
       end
       local items = vim.fn.getqflist{lines=lines}
+      h.last_clist = items.items
       local diags = vim.diagnostic.fromqflist(items.items)
-      vim.diagnostic.set(ns, 0, diags, {})
+      _G.lurka = vim.deepcopy(diags)
+      bufdiag = {}
+      for k,_ in pairs(h.ghosted_bufs) do
+        bufdiag[k] = {}
+      end
+      for _,d in ipairs(diags) do
+        bufdiag[d.bufnr] = bufdiag[d.bufnr] or {}
+        table.insert(bufdiag[d.bufnr], d)
+      end
+      for b,d in pairs(bufdiag) do
+        h.ghosted_bufs[b] = true
+        vim.diagnostic.set(ns, b, d, {})
+      end
 
       if h.state == "throttled" then
         h.state = nil
@@ -63,6 +75,7 @@ end
 
 function h.ghostzig(entrypoint)
   cwd = vim.fn.getcwd()
+  h.ghosted_bufs = {}
   -- TODO: only .zig files?
   vim.fn.system({'cp', '-r', cwd, h.ghostpath})
   a.create_autocmd({'TextChanged', 'TextChangedI'}, {
