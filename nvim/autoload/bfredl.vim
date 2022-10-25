@@ -358,22 +358,21 @@ set shortmess-=F
 augroup Filetypes
   au!
   au BufRead,BufNewFile *.h set filetype=c  " go fuck yourself please
-  au FileType python call bfredl#python()
   au FileType rmd let b:ipy_celldef = ['^```{r\( \a*\)\?}$', '^```$']
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
   au FileType c,cpp,python,zig call bfredl#lspmap()
   au FileType zig call bfredl#zigmap()
-  au FileType c,cpp call bfredl#nvim_c_ft()
+  au FileType c call bfredl#nvim_c_ft()
   au FileType c,cpp call bfredl#cmap()
   au FileType vim call bfredl#vim_ft()
   au FileType zig lua require'bfredl.lint'.zig()
   au FileType lua lua require'bfredl.lint'.lua()
   au FileType gitcommit hi diffRemoved guifg=#ff40aa
   "exe "au BufReadPost ".bfredl#rt("lua/bfredl/miniline.lua")." match Grupp /^\[\[.\+]]/"
-  "au FileType lua 1match Grupp /^\[\[.\+]]/
-  "au FileType lua 2match Option /^\s*'[a-z]\+'/
+  au FileType lua 1match Grupp /^\[\[.\+]]/
+  au FileType lua 2match Option /^\s*'[a-z]\+'/
 
   " after filetypes have been setup
   au BufReadPost *
@@ -382,14 +381,6 @@ augroup Filetypes
     \ | endif
 augroup END
 
-func! bfredl#python() "{{{
-  "imap <buffer> <Plug>CH:kd dm<c-e>
-  "imap <buffer> <Plug>CH:ic ci<c-e>
-
-  "call SemshiHighlight()
-
-"map <buffer>  <Plug>ch:jt :<c-u>let g:jedi#show_call_signatures=1-g:jedi#show_call_signatures<cr>
-endfunc
 
 " }}}
 " semshi {{{

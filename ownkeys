@@ -29,7 +29,7 @@ xkb_symbols "base" {
     key <AD05> { [ y,          Y] };
     key <AD06> { [ f,          F] };
     key <AD07> { [ g,          G, at] };
-    key <AD08> { [ c,          C, ampersand, Up] };
+    key <AD08> { [ c,          C, ampersand] };
     key <AD09> { [ r,          R, quotedbl ] };
     key <AD10> { [ l,          L ] };
     key <AD11> { [ NoSymbol] };
@@ -41,9 +41,9 @@ xkb_symbols "base" {
     key <AC04> { [ u,         U, slash, bar ] };
     key <AC05> { [ i,         I, backslash  ] };
     key <AC06> { [ d,         D, question, exclam ] };
-    key <AC07> { [ h,         H, parenleft, Left] };
-    key <AC08> { [ t,         T, parenright, Down] };
-    key <AC09> { [ n,         N, bracketleft, Right] };
+    key <AC07> { [ h,         H, parenleft] };
+    key <AC08> { [ t,         T, parenright] };
+    key <AC09> { [ n,         N, bracketleft] };
     key <AC10> { [ s,         S, bracketright, numbersign ] };
     key <AC11> { [ colon,     ssharp, grave ] };
     key <BKSL> { [ aring, Aring, bar ] };
