@@ -68,7 +68,7 @@ do each (packer.use)
   'tpope/vim-surround'
   'tpope/vim-fugitive'
 
-  'airblade/vim-gitgutter'
+  'lewis6991/gitsigns.nvim'
   'hotwatermorning/auto-git-diff'
 
   'vim-scripts/a.vim'
@@ -173,6 +173,12 @@ chmap 'jh' '<cmd>HopLineAC<cr>'
 chmap 'kh' '<cmd>HopLineBC<cr>'
 chmap 'jw' '<cmd>HopWordAC<cr>'
 chmap 'kw' '<cmd>HopWordBC<cr>'
+-- }}}
+-- git signs {{{
+require('gitsigns').setup {
+   current_line_blame_formatter = '  <author_time:%Y-%m-%d> - <summary>, <author>',
+}
+chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 -- }}}
 -- vimenter stuff {{{
 function h.vimenter(startup)

@@ -172,6 +172,7 @@ endif
 " }}}
 " telescope {{{
 nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
+nnoremap <Plug>CH:.u <cmd>Telescope find_files<cr>
 nnoremap <Plug>ch:ig <cmd>Telescope live_grep<cr>
 nnoremap <Plug>ch:am :Telescope <c-z>
 " }}}
@@ -195,7 +196,7 @@ if get(b:, "did_lspmap")
 end
 command! ASAN set efm=%*[^/]%f:%l:%c | cfile /tmp/theasanfile
 " }}}
-" fugutive and gitgutter {{{
+" fugutive and diff {{{
 command! Gc Gcommit -va
 command! Gcm Gcommit -v
 command! Gw Gwrite
@@ -204,21 +205,10 @@ command! -nargs=* Gd Gdiff <args>
 command! Gdp Gdiff HEAD^
 command! Gb Git blame
 
-let g:gitgutter_map_keys = 0 " no u
-map <Plug>ch:tn :GitGutterNextHunk<cr>
-map <Plug>CH:tn :GitGutterPrevHunk<cr>
-
-" intentional no<cr>
-map <Plug>CH:tr :GitGutterRevertHunk
-map <Plug>ch:ts :GitGutterStageHunk
-
 " diffput/diffget
-noremap <Plug>ch:pd dp
-noremap <Plug>ch:od do
-
-augroup diffy
-  au BufWritePre,InsertLeave * GitGutter
-augroup END
+" TODO: i don't use these. 
+"noremap <Plug>ch:pd dp
+"noremap <Plug>ch:od do
 
 " }}}
 " a brief interchange {{{
@@ -382,11 +372,6 @@ augroup Filetypes
 augroup END
 
 
-" }}}
-" semshi {{{
-let g:semshi#simplify_markup = v:false
-let g:semshi#excluded_hl_groups = ['self', 'local']
-let g:semshi#mark_selected_nodes = 2
 " }}}
 " julia {{{
 let g:latex_to_unicode_tab = 0

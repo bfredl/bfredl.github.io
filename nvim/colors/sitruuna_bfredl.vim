@@ -151,6 +151,8 @@ call s:HL('SpellCap',   'error',   'none',       'bold,underline')
 call s:HL('SpellLocal', 'special', 'none',       'bold,underline')
 call s:HL('SpellRare',  'special', 'none',       'bold,underline')
 
+call s:HL('GitSignsCurrentLineBlame',  'fg_dark', 'none',       'none')
+
 hi link Terminal                 Normal
 hi link CursorIM                 Cursor
 hi link Boolean                  Constant
