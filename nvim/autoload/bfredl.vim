@@ -204,6 +204,7 @@ command! Gr Gread
 command! -nargs=* Gd Gdiff <args>
 command! Gdp Gdiff HEAD^
 command! Gb Git blame
+command! -nargs=* Gm GMove <args>
 
 " diffput/diffget
 " TODO: i don't use these. 

@@ -152,6 +152,7 @@ end
 local map = h.mapmode ''
 local imap = h.mapmode 'i'
 local chmap = function(x) return map('<Plug>ch:'..x) end
+local CHmap = function(x) return map('<Plug>CH:'..x) end
 
 -- test
 chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
@@ -178,6 +179,8 @@ chmap 'kw' '<cmd>HopWordBC<cr>'
 require('gitsigns').setup {
    current_line_blame_formatter = '  <author_time:%Y-%m-%d> - <summary>, <author>',
 }
+chmap 'tn' '<cmd>Gitsigns next_hunk<cr>'
+CHmap 'tn' '<cmd>Gitsigns prev_hunk<cr>'
 chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 -- }}}
 -- vimenter stuff {{{
