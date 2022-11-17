@@ -121,7 +121,7 @@ function h.f(args)
       vim.fn.termopen(args.term)
     end
     if args.ft then
-      v ([[set ft=]]..args.ft)
+      vim.cmd ([[set ft=]]..args.ft)
     end
     -- already curwin/curbuf but be nice
     if args.fn then

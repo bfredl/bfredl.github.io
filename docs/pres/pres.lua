@@ -1,5 +1,5 @@
 --local h = require'bfredl.moonwatch'
-local m = dofile'/home/bjorn/config2/nvim/lua/bfredl/moonwatch.lua'
+local m = dofile'/home/bfredl/config2/nvim/lua/bfredl/moonwatch.lua'
 _G.m = m
 local a = bfredl.a
 
@@ -200,5 +200,5 @@ _G.s = s
 vim.cmd [[hi String guifg=#ddaaDD]]
 vim.cmd [[hi Orangj guifg=#ef8008 gui=bold]]
 vim.cmd [[command! -nargs=1 M lua s:show '<args>']]
-vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr> ]]
-vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr> ]]
+vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr>]]
+vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr>]]

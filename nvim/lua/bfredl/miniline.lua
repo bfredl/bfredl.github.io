@@ -10,7 +10,6 @@ a.set_decoration_provider(ns, {on_win = function()
 -- TODO: this should not be needed
 a.set_hl_ns_fast(0)
 end})
-
 local context = false
 local function current()
   -- PGA ORSAKER

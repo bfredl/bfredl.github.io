@@ -2,6 +2,7 @@ _G._moonwatch = _G._moonwatch or {}
 local m = _G._moonwatch
 local b = _G.bfredl
 local sbuf, stage
+local a = bfredl.a
 
 m.ephemeral = m.ephemeral or {}
 
@@ -16,8 +17,8 @@ end
 
 function m.cls()
   for w,_ in pairs(m.ephemeral) do
-    if win.is_valid(w) then
-      win.close(w, false)
+    if a.win_is_valid(w) then
+      a.win_close(w, false)
     end
     m.ephemeral[w] = nil
   end
