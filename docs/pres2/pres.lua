@@ -11,6 +11,14 @@ _G.s = s
 m.prepare()
 m.cls()
 
+dgreen = "#338844"
+dred = "#880000"
+
+function arrow(args)
+  local r2,c2 = args.r2 or args.r, args.c2 or args.c
+  sf {r=args.r, c=args.c, bg="#aaaaaa", h = r2-args.r+1, w=1}
+end
+
 s:slide("intro", function()
   m.header 'intro'
   sf {r=3, text=[[halloj]]}
@@ -28,7 +36,20 @@ end)
 
 s:slide("event", function()
   m.header 'event handling'
-  -- TODO: make this a table or something??
+  sf {r=8, h=5, text=[[
+    internal refactor: replace internal event handling with livuv
+
+uv_loop_xx()
+
+  ]], bg=dgreen}
+  arrow {r=14,c=35, r2=18}
+  sf {r=20, c=20, h=5, text=[[
+    event/os interface for lua plugins
+
+vim.loop.pipe()
+vim.loop.spawn("subprocess")
+...
+  ]], bg=dred}
   sf {r=3, text=[[
  - from libuv internally to get vim.loop _plugin_ interface "for free"
  - c.f. RealWaitForChar just for the lulz?
@@ -98,6 +119,15 @@ s:slide("evo4", function()
   sf {r=5, c=15, w=50, bg=protobg, text=[[
 FYLL I
 ...]]}
+end)
+
+s:slide("evo5", function()
+  m.header 'Evolution of the UI protocol: widgets in TUI'
+  sf {r=3, h=8, w=50, text=[[SCREENSHOT OF NOICE.NIVM]], bg=dgreen}
+
+  sf {r=15, text=[[
+this approaches a lua reimplementation of the TUI based on multigrid
+]], fg="#FF0000"}
 end)
 
 s:slide("deco", function()
