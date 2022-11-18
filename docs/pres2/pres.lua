@@ -21,7 +21,23 @@ end
 
 s:slide("intro", function()
   m.header 'intro'
-  sf {r=3, text=[[ The goals of the the Neovim project]]}
+  sf {r=2, c=3, text=[[According to the website:]]}
+  sf {r=4, text=[[
+Neovim is a project that seeks to aggressively refactor Vim in order to:
+
+- Simplify maintenance and encourage contributions
+- Split the work between multiple developers
+- Enable advanced UIs without modifications to the core
+- Maximize extensibility
+  ]], bg="#CCCCCC", fg="#000022"}
+-- TODO: add highlights
+
+  sf {r=12, c=3, text=[[
+- Neovim is often compared w vim and other on features
+- but what is the internal refactors and improvements which..
+
+  ]]}
+
 end)
 
 s:slide("early", function()
