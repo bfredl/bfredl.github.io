@@ -176,9 +176,9 @@ chmap 'jw' '<cmd>HopWordAC<cr>'
 chmap 'kw' '<cmd>HopWordBC<cr>'
 -- }}}
 -- git signs {{{
-require('gitsigns').setup {
-   current_line_blame_formatter = '  <author_time:%Y-%m-%d> - <summary>, <author>',
-}
+--require('gitsigns').setup {
+--   current_line_blame_formatter = '  <author_time:%Y-%m-%d> - <summary>, <author>',
+--}
 chmap 'tn' '<cmd>Gitsigns next_hunk<cr>'
 CHmap 'tn' '<cmd>Gitsigns prev_hunk<cr>'
 chmap 'og' ':<c-u>Gitsigns toggle<c-z>'

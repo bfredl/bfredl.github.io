@@ -5,7 +5,7 @@ local a = bfredl.a
 local sf = m.float
 _G.sf = sf
 
-local s = m.make_show("Neovim 0.5: a vision", _G.s)
+local s = m.make_show("Neovim internals: past and future", _G.s)
 _G.s = s
 
 m.prepare()
@@ -21,7 +21,7 @@ end
 
 s:slide("intro", function()
   m.header 'intro'
-  sf {r=3, text=[[halloj]]}
+  sf {r=3, text=[[ The goals of the the Neovim project]]}
 end)
 
 s:slide("early", function()
@@ -132,7 +132,7 @@ end)
 
 s:slide("deco", function()
   m.header 'decorations'
-  sf {r=3, text=[[
+  sf {r=3, w=60, text=[[
  - 2015: per buffer highlights ("bufhl")
    (primitive, only updates to lines!)
 
@@ -148,7 +148,7 @@ end)
 
 s:slide("marktree", function()
   m.header 'The marktree'
-  sf {r=3, text=[[
+  sf {r=3, w=50, text=[[
  - kbtree
  - atom markers
  - profit
@@ -175,7 +175,7 @@ end)
 
 s:slide("rtp", function()
   m.header 'runtime path'
-  sf {r=3, text=[[
+  sf {r=3, w=70, text=[[
  - packpath vs rtp
  - problem: rtp becomes looong
  - problem: parsing string/regex is slow
@@ -206,6 +206,40 @@ s:slide("code", function()
  - get rid of char_u, long, etc (WIP)
  - better tooling for linting/styling
 ]]}
+end)
+
+s:slide("futu", function()
+  m.header 'future work: text data structure'
+  sf {r=4, w=70, text=[[
+PROBLEM:
+
+    internal buffer storage "the memline"
+  ]], bg=dred}
+
+  sf {r=9, c=10, w=60, text=[[
+ char *line = ml_get_buf(buf, linenr, /* modify */ false);
+ // all the text on "line" must be represented as a NUL
+ // terminated string!
+ lenght = strlen(line);]], bg="#FFFFFF", fg="#080808"}
+
+  sf {r=14, w=70, text=[[
+This literally DESTROYS all performance for really long lines
+a large line must be duplicated for undo
+  ]], bg=dred}
+  -- arrow {r=14,c=35, r2=18}
+  sf {r=20, w=50, text=[[
+Future refactor
+
+- use a modern data structure as a rope
+- but "char *" line is all over the place
+- opt-in per buffer?
+
+  if (buf->is_rope) {
+    /* do rope based processing */
+  } else {
+    /* do memline-based processing */
+  }
+  ]], bg="#000000"}
 
 end)
 
