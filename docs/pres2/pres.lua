@@ -165,6 +165,21 @@ s:slide("deco", function()
 ]]}
 end)
 
+s:slide("decostate", function()
+  m.header 'state of the art: 2000'
+  sf {r=3, w=60, text=[[
+-- easymotion/vim-jedi: edit buffer text to show inline text
+  messing with undo state, icky!
+--matchparen: add temporary highlights matchaddpos()
+  does not move with inserted text
+  ]]}
+
+  sf {r=10, w=60, bg=dred, text=[[
+    need a precise way to track inserts on the byte level
+    need a way to associate metadata with text]]}
+
+end)
+
 s:slide("marktree", function()
   m.header 'The marktree'
   sf {r=3, w=50, text=[[
@@ -177,8 +192,6 @@ s:slide("marktree", function()
  - quick lookup by id
  - quick lookp marks by position
  - quick lookp intersecting ranges by position (WIP)
-
- - problem: homogenous Decoration struct
 ]]}
 end)
 
@@ -187,30 +200,68 @@ nod_bg = "#338844"
 s:slide("marktree_graf", function()
   m.header 'The marktree'
   sf {r=3, c=30, w=20, h=3, bg=nod_bg, text=[[nod]]}
-  sf {r=8, c=10, w=20, h=3, bg=nod_bg, text=[[nod]]}
-  sf {r=8, c=35, w=20, h=3, bg=nod_bg, text=[[nod]]}
-  sf {r=8, c=60, w=20, h=3, bg=nod_bg, text=[[nod]]}
+  arrow {r=6,c=20, r2=7} sf {r=8, c=10, w=20, h=3, bg=nod_bg, text=[[nod]]}
+  arrow {r=6,c=40, r2=7} sf {r=8, c=35, w=20, h=3, bg=nod_bg, text=[[nod]]}
+  arrow {r=6,c=65, r2=7} sf {r=8, c=60, w=20, h=3, bg=nod_bg, text=[[nod]]}
+
+  sf{r=20, w=50, text=[[
+ + items themselves are compact in memory
+ - problem: homogenous/humongous Decoration struct
+ ]]}
 end)
 
 s:slide("rtp", function()
   m.header 'runtime path'
-  sf {r=3, w=70, text=[[
- - packpath vs rtp
- - problem: rtp becomes looong
+  sf {r=3, text=[[
+ - before packages (the pathogen/vundle/vim-plug world)
+ ]]}
+
+  sf {r=5, bg="#00aa66", text=[[
+call plug#begin('~/.config/nvim/bundle')
+plug 'some/example'
+call plug#end()]]}
+
+  sf {r=9, h=13, w=60, bg="#0033aa",
+  text= -- {{{
+  [[
+set rtp=/home/bfredl/.config/nvim,/home/bfredl/.config/nvim/start/luarefvim,/etc/xdg/nvim,/home/bfredl/.local/share/nvim/site,/home/bfredl/.config/nvim/bundle/zig.vim,/home/bfredl/.config/nvim/bundle/vimtex,/home/bfredl/.config/nvim/bundle/vim-surround,/home/bfredl/.config/nvim/bundle/vim-sneak,/home/bfredl/.config/nvim/bundle/vim-repeat,/home/bfredl/.config/nvim/bundle/vim-gitgutter,/home/bfredl/.config/nvim/bundle/vim-fugitive,/home/bfredl/.config/nvim/bundle/vim-exchange,/home/bfredl/.config/nvim/bundle/vim-argclinic,/home/bfredl/.config/nvim/bundle/telescope.nvim,/home/bfredl/.config/nvim/bundle/telescope-fzf-native.nvim,/home/bfredl/.config/nvim/bundle/sitruuna.vim,/home/bfredl/.config/nvim/bundle/pres.vim,/home/bfredl/.config/nvim/bundle/popup.nvim,/home/bfredl/.config/nvim/bundle/plenary.nvim,/home/bfredl/.config/nvim/bundle/playground,/home/bfredl/.config/nvim/bundle/nvim-treesitter,/home/bfredl/.config/nvim/bundle/nvim-miniyank,/home/bfredl/.config/nvim/bundle/nvim-luadev,/home/bfredl/.config/nvim/bundle/nvim-lspconfig,/home/bfredl/.config/nvim/bundle/nvim-ipy,/home/bfredl/.config/nvim/bundle/nvim-colorizer.lua,/home/bfredl/.config/nvim/bundle/null-ls.nvim,/home/bfredl/.config/nvim/bundle/leap.nvim,/home/bfredl/.config/nvim/bundle/julia-vim,/home/bfredl/.config/nvim/bundle/ibus-chords,/home/bfredl/.config/nvim/bundle/hop.nvim,/home/bfredl/.config/nvim/bundle/gruvbox,/home/bfredl/.config/nvim/bundle/auto-git-diff,/home/bfredl/.config/nvim/bundle/ack.vim,/home/bfredl/.config/nvim/bundle/a.vim,/home/bfredl/.config/nvim/bundle/LuaSnip,/usr/local/share/nvim/site,/usr/share/nvim/site,/home/bfredl/dev/neovim/runtime,/home/bfredl/dev/neovim/runtime/pack/dist/opt/matchit,/usr/local/lib/nvim,/home/bfredl/.config/nvim/bundle/vimtex/after,/home/bfredl/.config/nvim/bundle/playground/after,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/home/bfredl/.local/share/nvim/site/after,/etc/xdg/nvim/after,/home/bfredl/.config/nvim/after,/home/bfredl/dev/neovim/build/runtime/
+  ]]
+--}}}
+  }
+
+ sf {r=24, w=70, text=[[
  - problem: parsing string/regex is slow
- - solution: calculate an internal search path as an array of strings
+ - solution: calculate an internal search path
+             as an array of strings
  - show new rtp with globs vs old rtp!
  - faster require'' lookups
  - tangent: precompiled bytecodes
 ]]}
 end)
 
-s:slide("performance", function()
-  m.header 'things to talk about'
+vim.cmd [[hi StarLight guifg=#ef8008 gui=bold]]
+s:slide("rtp2", function()
+  m.header 'packpath/runtime path'
   sf {r=3, text=[[
+ - the Brave New World
+ ]]}
+
+  sf {r=9, h=13, w=60, bg="#0033aa", text=[[
+set rtp=/home/bfredl/.config/nvim,/home/bfredl/.config/nvim/start/*,/etc/xdg/nvim,/home/bfredl/.local/share/nvim/site,/home/bfredl/.local/share/nvim/site/pack/*/start/*,/usr/local/share/nvim/site,/usr/share/nvim/site,/usr/local/share/nvim/runtime,/usr/local/share/nvim/runtime/pack/dist/opt/matchit,/usr/local/lib/nvim,/home/bfredl/.local/share/nvim/site/pack/*/start/*/after,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/home/bfredl/.local/share/nvim/site/after,/etc/xdg/nvim/after,/home/bfredl/.config/nvim/after
+  ]], fn=function()
+    a.buf_add_highlight(0, 0, "StarLight", 0, 34, 67)
+    a.buf_add_highlight(0, 0, "StarLight", 0, 118, 168)
+    a.buf_add_highlight(0, 0, "StarLight", 0, 319, 375)
+end}
+end)
+
+s:slide("performance", function()
+  m.header 'performance '
+  sf {r=3, text=[[
+ - ?? possible to implement tree-sitter in lua
  - profiling work
- - 80 000 000 xfree calls
  - keysets (remove strcpy/strequal)
+ - 80 000 000 xfree calls
  - allocation free msgpack parsing
  - allocation free ui events
 
