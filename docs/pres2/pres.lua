@@ -43,7 +43,9 @@ end)
 s:slide("early", function()
   m.header 'early internal refactors'
   -- TODO: make this a table or something??
-  sf {r=3, text=[[
+  sf {r=3, text=[[First wave of refactors: maintainability]]}
+  sf {r=5, w=50, text=[[
+ - remove most #ifdef FEAT_XXXX
  - platform specific code -> libuv
  - multiple makefiles -> CMake
  - custom tools (proto etc??) -> lua scripts
@@ -75,7 +77,7 @@ end)
 s:slide("ui", function()
   m.header 'long running theme: GUI and TUI'
   -- TODO: make this a table or something??
-  sf {r=3, text=[[
+  sf {r=3, c=2, w=68, text=[[
  - 2014: introduce internal UI interface
    from "gvim as fancy terminal emulator"
    to "TUI is yet another UI"
@@ -84,7 +86,8 @@ s:slide("ui", function()
  - 2018: linegrid, multigrid (GSOC!), ext_messages
  - 2019: floating windows. external TUI prototype (GSOC)
  - 2022: internal UI "client". vim.ui_attach (showcase noice.nvim !)
- - 2023: Simplify core by reducing "layers" (screen -> grid -> UI > external ui)
+ - 2023(?): Simplify core by reducing "layers"
+            (screen -> grid -> UI > external ui)
 ]]}
 end)
 
