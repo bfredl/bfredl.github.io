@@ -402,18 +402,18 @@ end)
 
 s:slide("sum", function()
   m.header 'summary'
-  sf {r=4, w=70, text=[[
+  sf {r=3, w=70, text=[[
 TBD
   ]]}
 
-  sf {r=4, w=70, text=[[
-            
-QUESTIONS
-  ]], bg=dgreen}
+  sf {r=10, w=17, center='c', h=3, text=[[
+              
+    QUESTIONS
+              ]], bg=dgreen}
 end)
 
 
-s:show (s.cur or "intro")
+s:show (s.cur or "titlepage")
 
 vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr>]]
 vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr>]]
