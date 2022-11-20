@@ -19,6 +19,10 @@ function arrow(args)
   sf {r=args.r, c=args.c, bg="#aaaaaa", h = r2-args.r+1, w=1}
 end
 
+s:slide("titlepage", function()
+  m.header 'Title of the presentation'
+end)
+
 s:slide("intro", function()
   m.header 'intro'
   sf {r=2, c=3, text=[[According to the website:]]}
@@ -91,6 +95,28 @@ s:slide("ui", function()
 ]]}
 end)
 
+s:slide("intredraw", function()
+  m.header 'redrawing: internals'
+  sf {r=3, text=[[
+phase 1: mark redrawing as needed
+redraw_win_later(win, NOT_VALID);
+...
+
+phase 2: at $PLACES, redraw all parts of the screen:
+update_screen()
+update_window() ??
+update_single_line() ?? from old sign code
+win_update(): XX lines
+win_line(): YY lines
+  ]]}
+end)
+
+s:slide("intredraw_line", function()
+  m.header 'redrawing: internals'
+  -- LURING? show the vim 7.4 version with #ifdefs first?
+  sf {r=3, text=[[ win_line() code
+  ]]}
+end)
 s:slide("evo", function()
   m.header 'Evolution of the UI protocol'
 end)
@@ -148,6 +174,50 @@ s:slide("evo5", function()
 this approaches a lua reimplementation of the TUI based on multigrid
 ]], fg="#FF0000"}
 end)
+
+s:slide("redraw_chain", function()
+  m.header 'redrawing the ui: LAYERS'
+  sf {r=3, text=[[ STACK MORE LAYERS!]]}
+function box(line, c) return function(text)
+  sf {r=line, c=c, bg="#1111bb", center="c", text=text}
+end end
+function line(at, c)
+  sf {r=at, c=c, center="c", text="|"}
+end
+box (5) [[update_screen()]]
+line (6)
+box (7) [[win_update()]]
+line (8)
+box (9) [[win_line():]]
+line (10)
+box (11) [[grid_line() ??]]
+line (12)
+box (13) [[ui_line() ??]]
+line (14)
+box (15) [[ui->raw_line(ui, ...);]]
+sf {r=16, c=31, text="/"}
+sf {r=16, c=48, text="\\"}
+
+local c1 = 26
+box (17,c1) [[ui_comp_rawline()]]
+line (18,c1)
+box (19,c1) [[ui_bridge_rawline()]]
+line (20,c1)
+box (21,c1) [[tui_raw_line()]]
+
+local c2 = 56
+box (17,c2) [[remote_ui_raw_line()]]
+line (18,c2)
+box (19,c2) [[rpc_send_event()]]
+line (20,c2)
+box (21,c2) [[remote ui goes here]]
+--# gör snygg splitt
+--ui_comp_rawline        .. remote_ui_grid_line
+--ui_bridge_rawline         rpc_send_event
+--tui_rawli                 [external ui goes here
+  --]]}
+end)
+
 
 s:slide("deco", function()
   m.header 'decorations'

@@ -58,7 +58,11 @@ function h.f(args)
     args.r = (p_rows - height) / 2
   end
   if args.center == true or args.center == "c" then
-    args.c = (p_cols - width) / 2
+    if args.c then
+      args.c = args.c - width / 2
+    else
+      args.c = (p_cols - width) / 2
+    end
   end
 	local relative = args.relative
   if not relative then
