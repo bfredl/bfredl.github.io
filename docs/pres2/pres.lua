@@ -20,7 +20,7 @@ function arrow(args)
 end
 
 s:slide("titlepage", function()
-  m.header 'Title of the presentation'
+  m.header 'Neovim internals: past and future'
 end)
 
 s:slide("intro", function()
@@ -36,10 +36,11 @@ Neovim is a project that seeks to aggressively refactor Vim in order to:
   ]], bg="#CCCCCC", fg="#000022"}
 -- TODO: add highlights
 
-  sf {r=12, c=3, text=[[
+  sf {r=12, w=70, c=3, text=[[
 - Neovim is often compared w vim and other on features
-- but what is the internal refactors and improvements which..
-
+- Let's talk about the internal refactors which enables
+  - maintenance of exiting code
+  - add more features
   ]]}
 
 end)
@@ -52,7 +53,8 @@ s:slide("early", function()
  - remove most #ifdef FEAT_XXXX
  - platform specific code -> libuv
  - multiple makefiles -> CMake
- - custom tools (proto etc??) -> lua scripts
+ - custom tools, macros -> lua scripts
+ - multiple "script hosts" -> unifdied API
 ]]}
 end)
 
@@ -74,7 +76,7 @@ vim.loop.spawn("subprocess")
   ]], bg=dred}
   sf {r=3, text=[[
  - from libuv internally to get vim.loop _plugin_ interface "for free"
- - c.f. RealWaitForChar just for the lulz?
+[TODO: c.f. RealWaitForChar in vim as well ?]
 ]]}
 end)
 
@@ -187,17 +189,18 @@ end end
 function line(at, c)
   sf {r=at, c=c, center="c", text="|"}
 end
-box (5) [[update_screen()]]
-line (6)
-box (7) [[win_update()]]
-line (8)
-box (9) [[win_line():]]
-line (10)
-box (11) [[grid_line() ??]]
-line (12)
-box (13) [[ui_line() ??]]
-line (14)
-box (15) [[ui->raw_line(ui, ...);]]
+local c0 = 42
+box (5,c0) [[update_screen()]]
+line (6,c0)
+box (7,c0) [[win_update()]]
+line (8,c0)
+box (9,c0) [[win_line():]]
+line (10,c0)
+box (11,c0) [[grid_line() ??]]
+line (12,c0)
+box (13,c0) [[ui_line() ??]]
+line (14,c0)
+box (15,c0) [[ui->raw_line(ui, ...);]]
 sf {r=16, c=31, text="/"}
 sf {r=16, c=48, text="\\"}
 
@@ -214,13 +217,7 @@ line (18,c2)
 box (19,c2) [[rpc_send_event()]]
 line (20,c2)
 box (21,c2) [[remote ui goes here]]
---# gör snygg splitt
---ui_comp_rawline        .. remote_ui_grid_line
---ui_bridge_rawline         rpc_send_event
---tui_rawli                 [external ui goes here
-  --]]}
 end)
-
 
 s:slide("deco", function()
   m.header 'decorations'
@@ -255,7 +252,7 @@ end)
 
 s:slide("marktree", function()
   m.header 'The marktree'
-  sf {r=3, w=50, text=[[
+  sf {r=3, w=60, text=[[
  - kbtree
  - atom markers
  - profit
@@ -263,8 +260,8 @@ s:slide("marktree", function()
  - support quick insertion/deletion of marks
  - support quick insertion/deletion of TEXT
  - quick lookup by id
- - quick lookp marks by position
- - quick lookp intersecting ranges by position (WIP)
+ - quick lookup marks by position
+ - quick lookup intersecting ranges by position (WIP)
 ]]}
 end)
 
@@ -289,7 +286,7 @@ s:slide("rtp", function()
  - before packages (the pathogen/vundle/vim-plug world)
  ]]}
 
-  sf {r=5, bg="#00aa66", text=[[
+  sf {r=5, bg="#007711", text=[[
 call plug#begin('~/.config/nvim/bundle')
 plug 'some/example'
 call plug#end()]]}
@@ -326,14 +323,20 @@ set rtp=/home/bfredl/.config/nvim,/home/bfredl/.config/nvim/start/*,/etc/xdg/nvi
 end}
 
   sf {r=17, w=60, text=[[- faster require'' lookups ]]}
-  sf {r=19, w=60, bg="#003388", text=[[
-/xxx/1      --
-/xxx/2      lua
-/xxx/3      lua
-/xxx/4      --
+  sf {r=19, w=68, bg="#003388", text=[[
+ ~/.config/nvim                                                 lua
+ ~/.local/share/nvim/site                                       ---
+ ~/.local/share/nvim/site/pack/packer/start/vim-fugitive        ---
+ ~/.local/share/nvim/site/pack/packer/start/vim-surround        ---
+ ~/.local/share/nvim/site/pack/packer/start/LuaSnip             lua
+ ~/.local/share/nvim/site/pack/packer/start/auto-git-diff       ---
+ ~/.local/share/nvim/site/pack/packer/start/gitsigns.nvim       lua
+ ~/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua  lua
 ]], fn=function()
-    a.buf_add_highlight(0, 0, "HasLua", 1, 12, -1)
-    a.buf_add_highlight(0, 0, "HasLua", 2, 12, -1)
+    a.buf_add_highlight(0, 0, "HasLua", 0, 64, -1)
+    a.buf_add_highlight(0, 0, "HasLua", 4, 64, -1)
+    a.buf_add_highlight(0, 0, "HasLua", 6, 64, -1)
+    a.buf_add_highlight(0, 0, "HasLua", 7, 64, -1)
 end}
 
   sf {r=25, w=60, text=[[- tangent: precompiled bytecodes ]]}
@@ -395,6 +398,18 @@ Future refactor
   }
   ]], bg="#000000"}
 
+end)
+
+s:slide("sum", function()
+  m.header 'summary'
+  sf {r=4, w=70, text=[[
+TBD
+  ]]}
+
+  sf {r=4, w=70, text=[[
+            
+QUESTIONS
+  ]], bg=dgreen}
 end)
 
 
