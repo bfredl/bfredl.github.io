@@ -97,18 +97,21 @@ end)
 
 s:slide("intredraw", function()
   m.header 'redrawing: internals'
-  sf {r=3, text=[[
+  sf {r=3, w=55, text=[[
 phase 1: mark redrawing as needed
 redraw_win_later(win, NOT_VALID);
 ...
 
 phase 2: at $PLACES, redraw all parts of the screen:
 update_screen()
-update_window() ??
-update_single_line() ?? from old sign code
-win_update(): XX lines
-win_line(): YY lines
-  ]]}
+gui_update_screen()
+update_curbuf()
+update_single_line()
+update_debug_sign()
+
+win_update(): 1000 lines
+win_line(): 2200 lines
+]]}
 end)
 
 s:slide("intredraw_line", function()
@@ -303,26 +306,37 @@ set rtp=/home/bfredl/.config/nvim,/home/bfredl/.config/nvim/start/luarefvim,/etc
  - problem: parsing string/regex is slow
  - solution: calculate an internal search path
              as an array of strings
- - show new rtp with globs vs old rtp!
- - faster require'' lookups
- - tangent: precompiled bytecodes
 ]]}
 end)
 
 vim.cmd [[hi StarLight guifg=#ef8008 gui=bold]]
+vim.cmd [[hi HasLua guifg=#00FF00 gui=bold]]
 s:slide("rtp2", function()
   m.header 'packpath/runtime path'
   sf {r=3, text=[[
  - the Brave New World
  ]]}
 
-  sf {r=9, h=13, w=60, bg="#0033aa", text=[[
+  sf {r=6, h=10, w=60, bg="#003388", text=[[
 set rtp=/home/bfredl/.config/nvim,/home/bfredl/.config/nvim/start/*,/etc/xdg/nvim,/home/bfredl/.local/share/nvim/site,/home/bfredl/.local/share/nvim/site/pack/*/start/*,/usr/local/share/nvim/site,/usr/share/nvim/site,/usr/local/share/nvim/runtime,/usr/local/share/nvim/runtime/pack/dist/opt/matchit,/usr/local/lib/nvim,/home/bfredl/.local/share/nvim/site/pack/*/start/*/after,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/home/bfredl/.local/share/nvim/site/after,/etc/xdg/nvim/after,/home/bfredl/.config/nvim/after
   ]], fn=function()
     a.buf_add_highlight(0, 0, "StarLight", 0, 34, 67)
     a.buf_add_highlight(0, 0, "StarLight", 0, 118, 168)
     a.buf_add_highlight(0, 0, "StarLight", 0, 319, 375)
 end}
+
+  sf {r=17, w=60, text=[[- faster require'' lookups ]]}
+  sf {r=19, w=60, bg="#003388", text=[[
+/xxx/1      --
+/xxx/2      lua
+/xxx/3      lua
+/xxx/4      --
+]], fn=function()
+    a.buf_add_highlight(0, 0, "HasLua", 1, 12, -1)
+    a.buf_add_highlight(0, 0, "HasLua", 2, 12, -1)
+end}
+
+  sf {r=25, w=60, text=[[- tangent: precompiled bytecodes ]]}
 end)
 
 s:slide("performance", function()
