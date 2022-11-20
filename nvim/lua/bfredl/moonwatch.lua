@@ -72,6 +72,7 @@ function Show:show(id)
   id = id or self.order[1]
   self.slides[id]()
   self.cur = id
+  print(" ")
 end
 
 function Show:mov(d)
