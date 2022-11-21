@@ -20,7 +20,7 @@ function h.ghostwrite()
   ghostpipe:close()
 end
 
-function h.ghostbuild(entrypoint)
+function h.ghostbuild(entrypoint, test)
   if h.state == "running" or h.state == "throttled" then
     -- require'luadev'.print("THROTTLE")
     h.state = "throttled"
@@ -28,8 +28,9 @@ function h.ghostbuild(entrypoint)
   end
   h.state = "running"
   h.ghostwrite()
-  -- TODO: throttle running jobs
-  args = { 'build-exe', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
+
+  local subcmd = test and 'test' or 'build-exe'
+  args = { subcmd, '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
   local start_time = vim.fn.reltime()
   -- require'luadev'.print("START")
   local job = Job:new {
@@ -73,14 +74,14 @@ function h.ghostbuild(entrypoint)
   job:start()
 end
 
-function h.ghostzig(entrypoint)
+function h.ghostzig(entrypoint, test)
   cwd = vim.fn.getcwd()
   h.ghosted_bufs = {}
   -- TODO: only .zig files?
   vim.fn.system({'cp', '-r', cwd, h.ghostpath})
   a.create_autocmd({'TextChanged', 'TextChangedI'}, {
     pattern = "*.zig";
-    callback = function() h.ghostbuild(entrypoint) end;
+    callback = function() h.ghostbuild(entrypoint, test) end;
   })
 end
 return h
