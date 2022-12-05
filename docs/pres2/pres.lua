@@ -42,7 +42,19 @@ Neovim is a project that seeks to aggressively refactor Vim in order to:
   - maintenance of exiting code
   - add more features
   ]]}
+end)
 
+s:slide("whoami", function()
+  m.header 'Whoami'
+  sf {r=4, w=55, text=[[
+- Regular contributor to Neovim since early 2015
+- Doing paid work for Neovim since this Fall.
+- "One of multiple dictators like Bram" for the project
+  ]]}
+
+  sf {r=12, text=[[
+- github.com/bfredl
+  ]]}
 end)
 
 s:slide("early", function()
@@ -58,17 +70,31 @@ s:slide("early", function()
 ]]}
 end)
 
+s:slide("preevent", function()
+  m.header 'event handling in vim 2014'
+  local waitbuf = vim.fn.bufadd 'waitchar.c'
+  sf {r=3, bg="#000033", h=25, w=70, buf=waitbuf, focusable=true}
+
+  sf {r=29, text=[[
+Note: event handling in vim8/9 has also evolved (but
+      in different directions)]]}
+end)
+
+
 s:slide("event", function()
   m.header 'event handling'
-  sf {r=8, h=5, text=[[
-    internal refactor: replace internal event handling with livuv
+  sf {r=8, h=8, w=72, text=[[
+                        internal refactor:
+    replace internal event handling and plattform support with libuv
 
-uv_loop_xx()
-
+uv_run()
+uv_pipe_open()
+uv_spawn()
+uv_fs_*() 
   ]], bg=dgreen}
-  arrow {r=14,c=35, r2=18}
-  sf {r=20, c=20, h=5, text=[[
-    event/os interface for lua plugins
+  arrow {r=14,c=35, r2=22}
+  sf {r=23, c=20, h=5, text=[[
+    event/os interface for lua plugins    
 
 vim.loop.pipe()
 vim.loop.spawn("subprocess")
@@ -119,8 +145,8 @@ end)
 s:slide("intredraw_line", function()
   m.header 'redrawing: internals'
   -- LURING? show the vim 7.4 version with #ifdefs first?
-  sf {r=3, text=[[ win_line() code
-  ]]}
+  local winbuf = vim.fn.bufadd 'winline.c'
+  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true}
 end)
 s:slide("evo", function()
   m.header 'Evolution of the UI protocol'
