@@ -14,6 +14,11 @@ m.cls()
 dgreen = "#338844"
 dred = "#880000"
 
+vim.cmd [[au! lspconfig FileType c]]
+vim.lsp.stop_client(vim.lsp.get_active_clients())
+vim.cmd [[set shortmess+=F]]
+vim.cmd [[set winblend=0]]
+
 function arrow(args)
   local r2,c2 = args.r2 or args.r, args.c2 or args.c
   sf {r=args.r, c=args.c, bg="#aaaaaa", h = r2-args.r+1, w=1}
@@ -146,7 +151,9 @@ s:slide("intredraw_line", function()
   m.header 'redrawing: internals'
   -- LURING? show the vim 7.4 version with #ifdefs first?
   local winbuf = vim.fn.bufadd 'winline.c'
-  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true}
+  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true, fn=function()
+    vim.cmd [[1]]
+  end}
 end)
 s:slide("evo", function()
   m.header 'Evolution of the UI protocol'
@@ -164,37 +171,61 @@ clear()
 cursor_goto(0,0)
 put[('h'), ('e'), ('l'), ('l'), ('o')]
 cursor_goto(1,0)
-highlight_set({foreground=0x0000FF, bold=true})
-put('~')
+put[('w'), ('o'), ('r'), ('l'), ('d')]
 cursor_goto(2,0)
-put('~')
-...]]}
+highlight_set({foreground=0x0000FF, bold=true})
+put[('~'), (' '), (' '), (' '), (' '), ...]
+cursor_goto(3,0)
+put[('~'), (' '), (' '), (' '), (' '), ...]
+...
+cursor_goto(0,5)
+]]}
 end)
 
 s:slide("evo2", function()
   m.header 'Evolution of the UI protocol: "linegrid"'
   sf {r=3, text=[[nvim_ui_attach(20,50,{rgb=true, ext_linegrid=true}) =>]]}
-  sf {r=5, c=15, w=50, bg=protobg, text=[[
+  sf {r=5, c=15, w=50, bg=protobg, text=[=[
 grid_resize(1,20,50)
 grid_clear(1)
-FYLL I
-...]]}
+grid_line[
+  (0, 0, ['h', 'e', 'l', 'l', 'o']),
+  (1, 0, ['w', 'o', 'r', 'l', 'd']),
+  (2, 0, [['~', 1, 7], [' ', 49]]),
+]
+grid_cursor_goto(1,0,5)
+]=]}
 end)
 
-s:slide("evo3", function()
+s:slide_multi("evo3", 3,  function(i)
   m.header 'Evolution of the UI protocol: "multigrid"'
   sf {r=3, text=[[nvim_ui_attach(20,50,{rgb=true, ext_multigrid=true}) =>]]}
   sf {r=5, c=15, w=50, bg=protobg, text=[[
-FYLL I
+win_float_pos(2, 10002
+grid_resize(2,2,20)
+grid_line[
+-- contents of float
+  
+]
 ...]]}
+
+if i > 1 then
+  sf {r=0, h=80, c=30, w=10, bg="#00cc00", blend=70, zindex=(i > 2 and 99 or 1), fn=function()
+    vim.cmd [[ set winblend=70]]
+  end}
+end
 end)
 
 s:slide("evo4", function()
   m.header 'Evolution of the UI protocol: widgets'
   sf {r=3, text=[[nvim_ui_attach(20,50,{..., ext_popupmenu=true, ext_cmdline=true}) =>]]}
-  sf {r=5, c=15, w=50, bg=protobg, text=[[
-FYLL I
-...]]}
+  sf {r=5, c=15, w=70, bg=protobg, text=[[
+grid_line(1, row, col, ["e","d"])
+popupmenu_show(grid, row, col, ["edit", "editor", "edible"], 1)
+popupmenu_select(2)
+popupmenu_hide()
+grid_line(1, row, col, ["e","d","i","t","o","r"])
+]]}
 end)
 
 s:slide("evo5", function()

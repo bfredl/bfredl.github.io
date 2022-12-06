@@ -67,6 +67,15 @@ function Show:slide(key, fn)
   self.unorder[key] = #self.order
 end
 
+function Show:slide_multi(key, n, fn)
+  for i = 1,n do
+    local idx = i
+    self:slide(key.."_"..tostring(i), function()
+      fn(idx)
+    end)
+  end
+end
+
 function Show:show(id)
   cls()
   id = id or self.order[1]

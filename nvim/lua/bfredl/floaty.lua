@@ -100,7 +100,7 @@ function h.f(args)
     if string.sub(args.bg, 1, 1) == "#" then
       -- TODO(bfredl):be smart and reuse hl ids.
       bg = "XXTMP"..u.id()
-      colors.def_hi(bg, {bg=args.bg, fg=args.fg})
+      colors.def_hi(bg, {bg=args.bg, fg=args.fg, blend=args.blend})
     else
       bg = args.bg
     end
