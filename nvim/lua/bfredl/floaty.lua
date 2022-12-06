@@ -82,6 +82,7 @@ function h.f(args)
     style=args.style or "minimal";
     focusable=args.focusable;
     border=args.border;
+    title=args.title;
     zindex=args.zindex;
   }
   if w then

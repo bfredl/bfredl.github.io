@@ -72,6 +72,7 @@ do each (packer.use)
   'hotwatermorning/auto-git-diff'
 
   'vim-scripts/a.vim'
+  {'folke/noice.nvim', requires ={'MunifTanjim/nui.nvim', "rcarriga/nvim-notify"}}
 
 -- filetypes
   -- 'numirias/semshi'

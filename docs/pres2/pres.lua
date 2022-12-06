@@ -107,7 +107,6 @@ vim.loop.spawn("subprocess")
   ]], bg=dred}
   sf {r=3, text=[[
  - from libuv internally to get vim.loop _plugin_ interface "for free"
-[TODO: c.f. RealWaitForChar in vim as well ?]
 ]]}
 end)
 
@@ -162,6 +161,7 @@ end)
 protobg = "#280055"
 
 s:slide("evo1", function()
+  vim.cmd "set wd=0 rdb="
   m.header 'Evolution of the UI protocol: initial version'
   sf {r=3, text=[[ui_attach(20,50,rgb=true) =>]]}
   sf {r=5, c=15, w=50, bg=protobg, text=[[
@@ -184,8 +184,14 @@ end)
 
 s:slide("evo2", function()
   m.header 'Evolution of the UI protocol: "linegrid"'
+  vim.cmd "set wd=50 rdb=compositor"
   sf {r=3, text=[[nvim_ui_attach(20,50,{rgb=true, ext_linegrid=true}) =>]]}
-  sf {r=5, c=15, w=50, bg=protobg, text=[=[
+  local bufid
+  sf {r=5, c=15, w=50, h=9, bg=protobg, blend=0,
+      fn=function() bufid = vim.api.nvim_get_current_buf() end,
+      text=""}
+  vim.cmd "redraw"
+  vim.api.nvim_buf_set_text(bufid, 0, 0, 0, 0, vim.split([=[
 grid_resize(1,20,50)
 grid_clear(1)
 grid_line[
@@ -194,14 +200,18 @@ grid_line[
   (2, 0, [['~', 1, 7], [' ', 49]]),
 ]
 grid_cursor_goto(1,0,5)
-]=]}
+]=], '\n'))
+  vim.cmd "redraw"
+
+  vim.cmd "set wd=0 rdb="
 end)
 
-s:slide_multi("evo3", 3,  function(i)
+s:slide_multi("evo3", 5,  function(i)
+  vim.cmd "set wd=0 rdb="
   m.header 'Evolution of the UI protocol: "multigrid"'
   sf {r=3, text=[[nvim_ui_attach(20,50,{rgb=true, ext_multigrid=true}) =>]]}
   sf {r=5, c=15, w=50, bg=protobg, text=[[
-win_float_pos(2, 10002
+win_float_pos(2, 1000)
 grid_resize(2,2,20)
 grid_line[
 -- contents of float
@@ -209,14 +219,23 @@ grid_line[
 ]
 ...]]}
 
-if i > 1 then
-  sf {r=0, h=80, c=30, w=10, bg="#00cc00", blend=70, zindex=(i > 2 and 99 or 1), fn=function()
+if i > 1 and i <= 4 then
+  sf {r=0, h=80, c=30, w=10, bg="#00cc00", blend=70, zindex=(i == 3 and 99 or 1), fn=function()
     vim.cmd [[ set winblend=70]]
   end}
+end
+if i > 3 then
+  sf {r=15, c=05, w=50, bg="#FFFFFF", fg="#080808", text=[[set rdb=compositor wd=100]]}
+end
+vim.cmd "set wd=0 rdb="
+if i == 4 then
+  vim.cmd "set wd=100 rdb=compositor"
+  vim.cmd "redraw"
 end
 end)
 
 s:slide("evo4", function()
+  vim.cmd "set wd=0 rdb="
   m.header 'Evolution of the UI protocol: widgets'
   sf {r=3, text=[[nvim_ui_attach(20,50,{..., ext_popupmenu=true, ext_cmdline=true}) =>]]}
   sf {r=5, c=15, w=70, bg=protobg, text=[[
@@ -230,10 +249,16 @@ end)
 
 s:slide("evo5", function()
   m.header 'Evolution of the UI protocol: widgets in TUI'
-  sf {r=3, h=8, w=50, text=[[SCREENSHOT OF NOICE.NIVM]], bg=dgreen}
+  vim.cmd [[hi FloatBorder guibg=#2222FF guifg=#DDDDDD]]
+  vim.cmd [[hi FloatTitle guibg=#2222FF guifg=#DDDDDD]]
+  sf {r=3, c=6, h=18, w=66, border='double', title='| folke/noice.nvim |', fn=function()
+    local term = vim.api.nvim_open_term(0, {})
+    local ros = io.open'rosen.cat':read'*a'
+    vim.api.nvim_chan_send(term, ros)
+  end}
 
-  sf {r=15, text=[[
-this approaches a lua reimplementation of the TUI based on multigrid
+  sf {r=25, text=[[
+This approaches a lua reimplementation of the TUI based on multigrid!
 ]], fg="#FF0000"}
 end)
 
@@ -251,11 +276,11 @@ box (5,c0) [[update_screen()]]
 line (6,c0)
 box (7,c0) [[win_update()]]
 line (8,c0)
-box (9,c0) [[win_line():]]
+box (9,c0) [[win_line(): ]]
 line (10,c0)
-box (11,c0) [[grid_line() ??]]
+box (11,c0) [[grid_line()]]
 line (12,c0)
-box (13,c0) [[ui_line() ??]]
+box (13,c0) [[ui_line()]]
 line (14,c0)
 box (15,c0) [[ui->raw_line(ui, ...);]]
 sf {r=16, c=31, text="/"}
@@ -274,6 +299,13 @@ line (18,c2)
 box (19,c2) [[rpc_send_event()]]
 line (20,c2)
 box (21,c2) [[remote ui goes here]]
+
+sf {r=25, w=60, text=[[
+plan: get rid of ui_bridge and "virtual" UI in server
+move TUI and perhaps also "compositor" to separate process
+
+longer time plan: refactor andsplit up win_update/win_line
+]]}
 end)
 
 s:slide("deco", function()
@@ -470,7 +502,7 @@ TBD
 end)
 
 
-s:show (s.cur or "titlepage")
+s:show (s.slides[s.cur] and s.cur or "titlepage")
 
 vim.cmd [[map <pageDown> <cmd>lua s:mov(1)<cr>]]
 vim.cmd [[map <pageUp> <cmd>lua s:mov(-1)<cr>]]
