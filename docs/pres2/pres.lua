@@ -251,11 +251,22 @@ s:slide("evo5", function()
   m.header 'Evolution of the UI protocol: widgets in TUI'
   vim.cmd [[hi FloatBorder guibg=#2222FF guifg=#DDDDDD]]
   vim.cmd [[hi FloatTitle guibg=#2222FF guifg=#DDDDDD]]
-  sf {r=3, c=6, h=18, w=66, border='double', title='| folke/noice.nvim |', fn=function()
+  sf {r=3, c=6, h=18, w=66, border='double', title='══| folke/noice.nvim |', fn=function()
     local term = vim.api.nvim_open_term(0, {})
     local ros = io.open'rosen.cat':read'*a'
     vim.api.nvim_chan_send(term, ros)
   end}
+
+  sf {r=25, text=[[
+This approaches a lua reimplementation of the TUI based on multigrid!
+]], fg="#FF0000"}
+end)
+
+s:slide("evo5b", function()
+  m.header 'Evolution of the UI protocol: widgets in TUI'
+  sf {r=3, text=[[trouble in paradise:]]}
+  -- LIST weird issues caused by noice vs event loop
+
 
   sf {r=25, text=[[
 This approaches a lua reimplementation of the TUI based on multigrid!

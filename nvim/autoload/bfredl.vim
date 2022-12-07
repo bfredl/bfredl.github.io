@@ -372,6 +372,13 @@ augroup Filetypes
     \ | endif
 augroup END
 
+func bfredl#brackety()
+   noremap <buffer> [[ ?{<CR>w99[{
+   noremap <buffer> ][ /}<CR>b99]}
+   noremap <buffer> ]] j0[[%/{<CR>
+   noremap <buffer> [] k$][%?}<CR>
+endfunc
+
 
 " }}}
 " julia {{{
@@ -400,6 +407,7 @@ end
 
 func bfredl#zigmap()
   inoremap <buffer> <plug>ch:kh ifc<Plug>luasnip-expand-snippet
+  call bfredl#brackety()
 endfunc
 if &ft == "zig"
   call bfredl#zigmap()
