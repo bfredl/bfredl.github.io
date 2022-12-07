@@ -26,6 +26,8 @@ end
 
 s:slide("titlepage", function()
   m.header 'Neovim internals: past and future'
+
+  -- IMAGEN
 end)
 
 s:slide("intro", function()
@@ -42,9 +44,9 @@ Neovim is a project that seeks to aggressively refactor Vim in order to:
 -- TODO: add highlights
 
   sf {r=12, w=70, c=3, text=[[
-- Neovim is often compared w vim and other on features
+- Neovim is often compared w/vim and other editors on features
 - Let's talk about the internal refactors which enables
-  - maintenance of exiting code
+  - maintenance of existing code
   - add more features
   ]]}
 end)
@@ -57,6 +59,8 @@ s:slide("whoami", function()
 - "One of multiple dictators like Bram" for the project
   ]]}
 
+  -- IMAGEN
+
   sf {r=12, text=[[
 - github.com/bfredl
   ]]}
@@ -66,12 +70,13 @@ s:slide("early", function()
   m.header 'early internal refactors'
   -- TODO: make this a table or something??
   sf {r=3, text=[[First wave of refactors: maintainability]]}
-  sf {r=5, w=50, text=[[
+  sf {r=5, w=70, text=[[
  - remove most #ifdef FEAT_XXXX
  - platform specific code -> libuv
  - multiple makefiles -> CMake
  - custom tools, macros -> lua scripts
- - multiple "script hosts" -> unifdied API
+ - multiple "script hosts" -> unified API and RPC protocol
+ - TUI/GUI code in main process -> UI protocol (on top of RPC)
 ]]}
 end)
 
@@ -112,53 +117,25 @@ end)
 
 s:slide("ui", function()
   m.header 'long running theme: GUI and TUI'
-  -- TODO: make this a table or something??
-  sf {r=3, c=2, w=68, text=[[
- - 2014: introduce internal UI interface
-   from "gvim as fancy terminal emulator"
-   to "TUI is yet another UI"
- - refactor TUI implementation as a separate thread
- - 2016: introduce external widgets: popupmenu, cmdline, wildmenu
- - 2018: linegrid, multigrid (GSOC!), ext_messages
- - 2019: floating windows. external TUI prototype (GSOC)
- - 2022: internal UI "client". vim.ui_attach (showcase noice.nvim !)
- - 2023(?): Simplify core by reducing "layers"
-            (screen -> grid -> UI > external ui)
-]]}
+
+  -- IMAGEN
 end)
 
-s:slide("intredraw", function()
-  m.header 'redrawing: internals'
-  sf {r=3, w=55, text=[[
-phase 1: mark redrawing as needed
-redraw_win_later(win, NOT_VALID);
-...
-
-phase 2: at $PLACES, redraw all parts of the screen:
-update_screen()
-gui_update_screen()
-update_curbuf()
-update_single_line()
-update_debug_sign()
-
-win_update(): 1000 lines
-win_line(): 2200 lines
-]]}
-end)
-
-s:slide("intredraw_line", function()
-  m.header 'redrawing: internals'
-  -- LURING? show the vim 7.4 version with #ifdefs first?
-  local winbuf = vim.fn.bufadd 'winline.c'
-  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true, fn=function()
-    vim.cmd [[1]]
-  end}
-end)
 s:slide("evo", function()
-  m.header 'Evolution of the UI protocol'
+  m.header 'First refactor: the UI protocol'
+
+  sf {r=3, w=60, text=[[
+Tarrudas initial redesign in 2014: 
+  - move terminal and gui code out of the core thread
+
+  - TUI runs in-process, but as a separate thread
+
+  - external GUI:s run as separate processes
+    using RPC calls and events]]}
 end)
 
 protobg = "#280055"
+
 
 s:slide("evo1", function()
   vim.cmd "set wd=0 rdb="
@@ -180,6 +157,12 @@ put[('~'), (' '), (' '), (' '), (' '), ...]
 ...
 cursor_goto(0,5)
 ]]}
+
+  sf {r=21, w=60, text=[[
+- VT100 commands but now in msgpack (yay!)
+- text is drawn at the cursor just like a terminal
+- cycles of cursor_goto/highlight_set/put .. commands
+  ]]}
 end)
 
 s:slide("evo2", function()
@@ -187,20 +170,29 @@ s:slide("evo2", function()
   vim.cmd "set wd=50 rdb=compositor"
   sf {r=3, text=[[nvim_ui_attach(20,50,{rgb=true, ext_linegrid=true}) =>]]}
   local bufid
-  sf {r=5, c=15, w=50, h=9, bg=protobg, blend=0,
+  sf {r=5, c=15, w=55, h=11, bg=protobg, blend=0,
       fn=function() bufid = vim.api.nvim_get_current_buf() end,
       text=""}
   vim.cmd "redraw"
   vim.api.nvim_buf_set_text(bufid, 0, 0, 0, 0, vim.split([=[
 grid_resize(1,20,50)
+hl_attr_define(7, {foreground=0x0000FF, bold=true})
 grid_clear(1)
 grid_line[
   (0, 0, ['h', 'e', 'l', 'l', 'o']),
   (1, 0, ['w', 'o', 'r', 'l', 'd']),
   (2, 0, [['~', 1, 7], [' ', 49]]),
+  (3, 0, [['~', 1, 7], [' ', 49]]),
 ]
 grid_cursor_goto(1,0,5)
 ]=], '\n'))
+
+  sf {r=18, w=75, text=[[
+- Same contents, but now drawing text is separated from the cursor
+- cached color/highlight definitions
+- we are operating on grid "1"
+  ]]}
+
   vim.cmd "redraw"
 
   vim.cmd "set wd=0 rdb="
@@ -219,13 +211,20 @@ grid_line[
 ]
 ...]]}
 
+
+  sf {r=13, w=65, text=[[
+- now we can use multiple grids
+- ext_multigrid: different text size per window
+- floats: draw overlays like separate layers
+  ]]}
+
 if i > 1 and i <= 4 then
   sf {r=0, h=80, c=30, w=10, bg="#00cc00", blend=70, zindex=(i == 3 and 99 or 1), fn=function()
     vim.cmd [[ set winblend=70]]
   end}
 end
 if i > 3 then
-  sf {r=15, c=05, w=50, bg="#FFFFFF", fg="#080808", text=[[set rdb=compositor wd=100]]}
+  sf {r=18, c=05, w=50, bg="#FFFFFF", fg="#080808", text=[[set rdb=compositor wd=100]]}
 end
 vim.cmd "set wd=0 rdb="
 if i == 4 then
@@ -245,6 +244,15 @@ popupmenu_select(2)
 popupmenu_hide()
 grid_line(1, row, col, ["e","d","i","t","o","r"])
 ]]}
+
+  sf {r=13, w=65, text=[[
+- From glorified terminal to UI components!
+- popupmenu
+- cmdline
+- messages
+- tabline
+]]}
+
 end)
 
 s:slide("evo5", function()
@@ -257,8 +265,9 @@ s:slide("evo5", function()
     vim.api.nvim_chan_send(term, ros)
   end}
 
-  sf {r=25, text=[[
-This approaches a lua reimplementation of the TUI based on multigrid!
+  sf {r=25, w=75, text=[[
+- lua plugins can process ui widget events internally
+- This approaches a lua reimplementation of the TUI based on multigrid!
 ]], fg="#FF0000"}
 end)
 
@@ -285,9 +294,9 @@ end
 local c0 = 42
 box (5,c0) [[update_screen()]]
 line (6,c0)
-box (7,c0) [[win_update()]]
+box (7,c0) [[win_update(): 1000 lines]]
 line (8,c0)
-box (9,c0) [[win_line(): ]]
+box (9,c0) [[win_line(): 2200 lines ]]
 line (10,c0)
 box (11,c0) [[grid_line()]]
 line (12,c0)
@@ -319,6 +328,35 @@ longer time plan: refactor andsplit up win_update/win_line
 ]]}
 end)
 
+if false then
+s:slide("intredraw", function()
+  m.header 'redrawing: internals'
+  sf {r=3, w=55, text=[[
+phase 1: mark redrawing as needed
+redraw_win_later(win, NOT_VALID);
+...
+
+phase 2: at $PLACES, redraw all parts of the screen:
+update_screen()
+gui_update_screen()
+update_curbuf()
+update_single_line()
+update_debug_sign()
+
+win_update(): 1000 lines
+win_line(): 2200 lines
+]]}
+end)
+end
+
+s:slide("intredraw_line", function()
+  m.header 'redrawing: internals'
+  -- LURING? show the vim 7.4 version with #ifdefs first?
+  local winbuf = vim.fn.bufadd 'winline.c'
+  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true, fn=function()
+    vim.cmd [[1]]
+  end}
+end)
 s:slide("deco", function()
   m.header 'decorations'
   sf {r=3, w=60, text=[[
