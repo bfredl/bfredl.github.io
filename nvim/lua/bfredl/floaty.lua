@@ -84,6 +84,7 @@ function h.f(args)
     border=args.border;
     title=args.title;
     zindex=args.zindex;
+    anchor=args.anchor;
   }
   if w then
     win.set_config(w, config)
