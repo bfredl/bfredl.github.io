@@ -13,6 +13,7 @@ m.cls()
 
 dgreen = "#338844"
 dred = "#880000"
+dblueish = "#0848C8"
 
 vim.cmd [[au! lspconfig FileType c]]
 vim.lsp.stop_client(vim.lsp.get_active_clients())
@@ -46,17 +47,18 @@ end)
 s:slide("intro", function()
   m.header 'intro'
   sf {r=2, c=3, text=[[According to the website:]]}
-  sf {r=4, text=[[
-Neovim is a project that seeks to aggressively refactor Vim in order to:
+  sf {r=4, w=74, text=[[
 
-- Simplify maintenance and encourage contributions
-- Split the work between multiple developers
-- Enable advanced UIs without modifications to the core
-- Maximize extensibility
+ Neovim is a project that seeks to aggressively refactor Vim in order to: 
+
+ - Simplify maintenance and encourage contributions
+ - Split the work between multiple developers
+ - Enable advanced UIs without modifications to the core
+ - Maximize extensibility
   ]], bg="#CCCCCC", fg="#000022"}
 -- TODO: add highlights
 
-  sf {r=12, w=70, c=3, text=[[
+  sf {r=13, w=70, c=3, text=[[
 - Neovim is often compared w/vim and other editors on features
 - Let's talk about the internal refactors which enables
   - maintenance of existing code
@@ -69,14 +71,16 @@ s:slide("whoami", function()
   sf {r=4, w=55, text=[[
 - Regular contributor to Neovim since early 2015
 - Doing paid work for Neovim since this Fall.
+  Thanks to our sponsors!
 - "One of multiple dictators like Bram" for the project
   ]]}
 
   -- IMAGEN
 
   sf {r=12, text=[[
-- github.com/bfredl
-  ]]}
+- github.com/bfredl                matrix.to/#/@bfredl:matrix.org
+- twitter.com/bfredlbfredl         mastodon: suedi.club/@bfredl
+  ]], bg="#", fg="#EE8822"}
 end)
 
 s:slide("early", function()
@@ -88,41 +92,51 @@ s:slide("early", function()
  - platform specific code -> libuv
  - multiple makefiles -> CMake
  - custom tools, macros -> lua scripts
- - multiple "script hosts" -> unified API and RPC protocol
- - TUI/GUI code in main process -> UI protocol (on top of RPC)
+ - multiple "script hosts" -> API over msgpack RPC protocol
 ]]}
 end)
 
+vim.cmd [[hi GreenText guifg=#008800 gui=bold]]
 s:slide("preevent", function()
   m.header 'event handling in vim 2014'
   local waitbuf = vim.fn.bufadd 'waitchar.c'
-  sf {r=3, bg="#000033", h=25, w=70, buf=waitbuf, focusable=true}
+  sf {r=3, bg="#000033", h=25, w=80, buf=waitbuf, focusable=true, fn=function()
+    vim.cmd [[1]]
+  end}
 
   sf {r=29, text=[[
-Note: event handling in vim8/9 has also evolved (but
-      in different directions)]]}
+Note: event handling in vim8/vim9 has also evolved (but
+      in different directions)]],fn=function()
+    a.buf_add_highlight(0, 0, "GreenText", 0, 24, 33)
+
+
+      end}
 end)
 
 
 s:slide("event", function()
   m.header 'event handling'
-  sf {r=8, h=8, w=72, text=[[
+  sf {r=6, h=9, w=72, text=[[
+
                         internal refactor:
     replace internal event handling and plattform support with libuv
 
-uv_run()
-uv_pipe_open()
-uv_spawn()
-uv_fs_*() 
-  ]], bg=dgreen}
-  arrow {r=14,c=35, r2=22}
-  sf {r=23, c=20, h=5, text=[[
-    event/os interface for lua plugins    
+ uv_run()
+ uv_pipe_open()
+ uv_spawn()
+ uv_fs_*() 
+  ]], bg=dblueish}
+  --arrow {r=14,c=35, r2=22}
+  sf {r=17, c=38, text="┃\n┃\n┃\n┃\n▼"}
+  sf {r=23, c=20, w=42, h=8, text=[[
 
-vim.loop.pipe()
-vim.loop.spawn("subprocess")
+    event/os interface for lua plugins
+    and lua runtime code (LSP client)
+
+ vim.loop.pipe()
+ vim.loop.spawn("subprocess")
 ...
-  ]], bg=dred}
+  ]], bg=dgreen}
   sf {r=3, text=[[
  - from libuv internally to get vim.loop _plugin_ interface "for free"
 ]]}
@@ -291,26 +305,26 @@ end)
 
 s:slide("evo5b", function()
   m.header 'Evolution of the UI protocol: widgets in TUI'
-  sf {r=3, h=15, w=80, text=[[trouble in paradise:
+  sf {r=3, w=80, text=[[trouble in paradise: ]]}
 
-#20463: redraw doesn't update the UI during substitute
+  sf {r=5, h=13, w=82, bg="#221111", fg="#FF5533", text=[[
+ #20463: redraw doesn't update the UI during substitute
 
-#17810: Wrong incsearch highlighting when calling nvim_buf_set_lines from timer in cmdline with conceallevel
+ #17810: Wrong incsearch highlighting when calling nvim_buf_set_lines from timer in cmdline with conceallevel
 
-#20416: No way to know if a message was sent because of a redraw. vim.ui_attach with ext_messages 
+ #20416: No way to know if a message was sent because of a redraw. vim.ui_attach with ext_messages 
 
-#20715: Formatting of msg_show for map is missing newlines with ext_messages
+ #20715: Formatting of msg_show for map is missing newlines with ext_messages
 
-#20715: cmdheight=0: unsuccessful search is prompting for ENTER to continu
+ #20715: cmdheight=0: unsuccessful search is prompting for ENTER to continu
 
-#21018: setting 'guicursor' to empty too quickly leads to unexpected results
-
-Now UI implementation is back in main thread. this causes some problems
-  ]]}
+ #21018: setting 'guicursor' to empty too quickly leads to unexpected results
+]]}
   -- LIST weird issues caused by noice vs event loop
 
 
-  sf {r=20, text=[[
+  sf {r=19, text=[[
+Now UI implementation is back in main thread. this causes some problems
 This approaches a lua reimplementation of the TUI based on multigrid!
 ]], fg="#FF0000"}
 end)
@@ -319,7 +333,7 @@ s:slide("redraw_chain", function()
   m.header 'redrawing the ui: LAYERS'
   sf {r=3, text=[[ STACK MORE LAYERS!]]}
 function box(line, c) return function(text)
-  sf {r=line, c=c, bg="#1111bb", center="c", text=text}
+  sf {r=line, c=c, bg=dblueish, center="c", text=text}
 end end
 function line(at, c)
   sf {r=at, c=c, center="c", text="|"}
@@ -386,7 +400,7 @@ s:slide("intredraw_line", function()
   m.header 'redrawing: internals'
   -- LURING? show the vim 7.4 version with #ifdefs first?
   local winbuf = vim.fn.bufadd 'winline.c'
-  sf {r=3, bg="#000033", h=25, w=70, buf=winbuf, focusable=true, fn=function()
+  sf {r=3, bg="#000033", h=25, w=80, buf=winbuf, focusable=true, fn=function()
     vim.cmd [[1]]
   end}
 end)
@@ -398,13 +412,14 @@ vim.cmd [[hi JediPoppis gui=NONE guifg=#8888FF guibg=#444488]]
 vim.cmd [[hi JediField guifg=#DDDDDD gui=bold,italic,underline]]
 
 s:slide_multi("deco", 3, function(n)
-  m.header 'decorations'
+  m.header 'Decorations'
   sf {r=3, w=60, text=[[
  - Extra annotations to add informations around buffer text
  - since forever: "debug signs"
+
  - early hacks: just edit buffer text!
  - vim-jedi: python intel before LSP]]}
-   sf {r=8, c=8, w=40, bg="#222222", text=[[
+   sf {r=9, c=8, w=40, bg="#222222", text=[[
 x = np.array([2, 5, 3])
       (axis, kind, order) 
 x.sort( 
@@ -419,7 +434,7 @@ x.sort(
     a.buf_add_highlight(0, 0, "TermCursor", 2, 7, 8)
 end}
 
-  sf {r=13, w=60, text=[[
+  sf {r=14, w=60, text=[[
  - Easymotion: change text to display jump markers]], fn=function()
    if n ~= 2 then return end
    a.buf_set_lines(0, 0, -1, true, {[[ - Ehsymotion: chtnge text to displny jump msrkers]]})
@@ -430,14 +445,22 @@ end}
  end}
 
 if n>=3 then
-  sf {r=14, w=60, text=[[
- - use undo to restore text (fragile!)]]}
+  sf {r=15, w=60, text=[[
+ - use undo to restore text (fragile!)
+ - vim marks: only 27-ish per buffer. only tracks lines!
+
+ ]]}
 end
-  sf {r=17, w=60, bg=dred, text=[[
-    need a precise way to track inserts on the byte level
-    need a way to associate metadata with text]]}
+  sf {r=19, w=70, bg=dred, text=[[
+  - need a precise way to track inserts on the byte level
+  - need a way to associate metadata with text ("extended marks") ]]}
+
+  sf {r=22, w=60, text=[[
+  - Then we could add arbitrary decoration to these marks:
+  - virtual text, virtual lines, highlights, etc etc]]}
 
 end)
+
 
 
 nod_bg = "#2870DD"
@@ -494,18 +517,43 @@ sf{r=31, c=1, bg="#000000", fg="#FF8800", text=[[
 [1] blog.atom.io/2015/06/16/optimizing-an-important-atom-primitive.html]]}
 end)
 
+vim.cmd [[hi SuperIdent gui=bold guifg=#9977FF]]
 s:slide("bufferchange", function()
   m.header 'tracking of buffer changes'
 --matchparen: add temporary highlights matchaddpos()
   --does not move with inserted text
 
- sf {r=5, w=60, text=[[
- - prata om hur detta överlappar extmarks, tree-sitter, LSP
+ sf {r=4, w=80, text=[[
+ - Q: How do we accurately track text changes on the byte level?
+ - A: By Doing All Of The Work]]}
 
- - 2019: Treesitter! byte-level change tracking
- - 2021: virtual lines
- - 2022-23: inline text (bram patches!)
+ sf {r=7, c=8, w=70, bg=dred, text=[[
+ - insert text in insert mode
+ - delete text (chars, lines, blocks)
+ - join and split lines
+ - nvim_buf_set_lines() and nvim_buf_set_text()
+ - put register contents: (also over a selection)
+   - charwise register
+   - linewise register in charwise visual mode
+   - blockwise register,
+ - change indentation with tabs and spaces(complex!)
+   - vim: whatabout a mixture of tabs and spaces]],fn=function()
+    a.buf_add_highlight(0, 0, "SuperIdent", 3, 3, 23)
+    a.buf_add_highlight(0, 0, "SuperIdent", 3, 28, 47)
+    a.buf_add_highlight(0, 0, "GreenText", 9, 5, 9)
+ end}
+
+ sf {r=19, w=60, text=[[
+ Payoff: now we can use this for a lot of stuff:
 ]]}
+
+ sf {r=21, c=8, w=70, bg = dgreen, text=[[
+ - extended marks and decorations
+   - semantic highlights
+   - virtual text and lines
+ - tree-sitter!
+ - LSP (note: reduced to lines by default as LSP is a mess)
+ - later on: more effecient undo representation?]]}
 end)
 
 s:slide("rtp", function()
@@ -571,7 +619,7 @@ end)
 
 s:slide("performance", function()
   m.header 'performance '
-  sf {r=3, text=[[
+  sf {r=3, w=70, text=[[
  - ?? possible to implement tree-sitter in lua
  - profiling work
  - keysets (remove strcpy/strequal)
@@ -598,7 +646,7 @@ s:slide("futu", function()
 PROBLEM:
 
     internal buffer storage "the memline"
-  ]], bg=dred}
+  ]]}
 
   sf {r=9, c=10, w=60, text=[[
  char *line = ml_get_buf(buf, linenr, /* modify */ false);
