@@ -29,6 +29,7 @@ function sl(args) sf (vim.tbl_extend("keep", args, {h=1, c=0})) end
 function sh(args) sf (vim.tbl_extend("keep", args, {h=1, c=100, anchor='NE'})) end
 
 s:slide("titlepage", function()
+  vim.cmd [[ hi Normal guibg=#182024]]
   m.header 'Neovim internals: past and future'
 
 sl {r=5, bg="#EEEEEE", w=100}
@@ -642,47 +643,56 @@ end)
 
 s:slide("futu", function()
   m.header 'future work: text data structure'
-  sf {r=4, w=70, text=[[
-PROBLEM:
+  sf {r=4, w=70, bg=dred, text=[[
+PROBLEM: internal buffer storage, "the memline"]], fn=function()
+  end}
 
-    internal buffer storage "the memline"
-  ]]}
+  sf {r=6, c=10, w=60, text=[[
 
-  sf {r=9, c=10, w=60, text=[[
  char *line = ml_get_buf(buf, linenr, /* modify */ false);
- // all the text on "line" must be represented as a NUL
- // terminated string!
- lenght = strlen(line);]], bg="#FFFFFF", fg="#080808"}
+
+ // All of the text of entire "line" must be
+ // represented as a single NUL terminated string!
+ lenght = strlen(line);
+ ]], bg="#FFFFFF", fg="#080808"}
 
   sf {r=14, w=70, text=[[
-This literally DESTROYS all performance for really long lines
-a large line must be duplicated for undo
-  ]], bg=dred}
+- This literally DESTROYS all performance for really long lines
+- a large line must be duplicated for undo! ]], bg=dred}
   -- arrow {r=14,c=35, r2=18}
-  sf {r=20, w=50, text=[[
-Future refactor
-
-- use a modern data structure as a rope
-- but "char *" line is all over the place
-- opt-in per buffer?
-
-  if (buf->is_rope) {
-    /* do rope based processing */
-  } else {
-    /* do memline-based processing */
-  }
+  sf {r=18, w=70, bg=dgreen, text=[[
+ Future refactor?
+ 
+ - use a modern data structure as a rope
+ - but "char *" line is all over the place
+ - opt-in per buffer?
   ]], bg="#000000"}
 
+  sf {r=25, c= 10, w=60, text=[[
+
+ if (buf->is_rope) {
+   /* do rope based processing */
+ } else {
+   /* do memline-based processing */
+ }
+  ]], bg="#000000"}
+
+  vim.cmd [[ hi Normal guibg=#182024]]
 end)
 
 s:slide("sum", function()
-  m.header 'summary'
-  sf {r=3, w=70, text=[[
-TBD
+  vim.cmd [[ hi Normal guibg=#000000]]
+  
+  m.header 'Summary'
+  sf {r=3, w=70, bg="#", fg="#FFFFFF", text=[[
+ - adding more features is fun
+ - but refactors and maintance are needed
+ - then we can add even more features
+   without making an even bigger mess.
   ]]}
 
-sf {r=11, c=0, w=100, h=25, bg="#000000", zindex=30}
-sl {r=8, bg="#BB1100", w=20}
+--sf {r=11, c=0, w=100, h=25, bg="#000000", zindex=30}
+sh {r=8, bg="#BB1100", w=20}
 sl {r=16, bg="#6622FF", w=72}
 sh {r=20, bg="#BB1100", w=65}
 sl {r=23, bg="#6622FF", w=85}
