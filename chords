@@ -29,10 +29,10 @@ keymap['tasks'] = {}
 parents['base'] =  ()
 keymap['base'] = {
     #Sym('Shift_L'): s(Sym('Escape'),Sym('Escape')),
-    'ah': Sym('Down'),
-    'as': Sym('Up'),
-    'ac': s(Sym('Left'),Sym('Home')),
-    'ar': s(Sym('Right'),Sym('End')),
+    #'ah': Sym('Down'),
+    #'as': Sym('Up'),
+    #'ac': s(Sym('Left'),Sym('Home')),
+    #'ar': s(Sym('Right'),Sym('End')),
     # I don't even middleclick
     'qj': Sym(SHIFT, 'Insert'),
     'oh': '0', 'ot': '1',

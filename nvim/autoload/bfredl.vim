@@ -174,6 +174,7 @@ endif
 nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
 nnoremap <Plug>CH:.u <cmd>Telescope find_files<cr>
 nnoremap <Plug>ch:ig <cmd>Telescope live_grep<cr>
+nnoremap <Plug>ch:uc <cmd>Telescope current_buffer_fuzzy_find<cr>
 nnoremap <Plug>ch:am :Telescope <c-z>
 " }}}
 " LSP {{{
@@ -186,6 +187,7 @@ nmap <buffer> <Plug>ch:id <cmd>lua vim.lsp.buf.definition()<cr>
 nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
 nmap <buffer> <Plug>ch:mv <cmd>lua vim.diagnostic.open_float()<cr>
+nmap <buffer> <Plug>ch:ac <cmd>lua vim.lsp.buf.code_action()<cr>
 setl omnifunc=v:lua.vim.lsp.omnifunc
 let b:did_lspmap = v:true
 " ic does not work, delete ic->char ?
@@ -373,10 +375,17 @@ augroup Filetypes
 augroup END
 
 func bfredl#brackety()
-   noremap <buffer> [[ ?{<CR>w99[{
-   noremap <buffer> ][ /}<CR>b99]}
-   noremap <buffer> ]] j0[[%/{<CR>
-   noremap <buffer> [] k$][%?}<CR>
+  nnoremap <silent> <buffer> [[ :call rust#Jump('n', 'Back')<CR>
+  nnoremap <silent> <buffer> ]] :call rust#Jump('n', 'Forward')<CR>
+  xnoremap <silent> <buffer> [[ :call rust#Jump('v', 'Back')<CR>
+  xnoremap <silent> <buffer> ]] :call rust#Jump('v', 'Forward')<CR>
+  onoremap <silent> <buffer> [[ :call rust#Jump('o', 'Back')<CR>
+  onoremap <silent> <buffer> ]] :call rust#Jump('o', 'Forward')<CR>
+
+  "noremap <buffer> [[ ?{<CR>w99[{
+  " noremap <buffer> ][ /}<CR>b99]}
+  "noremap <buffer> ]] j0[[%/{<CR>
+  " noremap <buffer> [] k$][%?}<CR>
 endfunc
 
 
