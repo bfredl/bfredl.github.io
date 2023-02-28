@@ -249,7 +249,7 @@ function h.ts_setup()
     return
   end
   h.did_ts = true
-  if false then require'nvim-treesitter.configs'.setup {
+  if true then require'nvim-treesitter.configs'.setup {
     --ensure_installed = "all",     -- one of "all", "language", or a list of languages
     highlight = {
       enable = true; -- false will disable the whole extension

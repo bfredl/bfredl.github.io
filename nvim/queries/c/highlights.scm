@@ -1,3 +1,4 @@
+;; extends
 "EXTERN" @extern
 "INIT" @extern
 (EXTERN_declaration "(" @extern ")" @extern)

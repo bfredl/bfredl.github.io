@@ -92,7 +92,7 @@ call s:HL('Conceal',         'error',      'none')
 call s:HL('Constant',        'string',   'none')
 call s:HL('Number',          'string',     'none')
 call s:HL('Error',           'error',      'none',       'none')
-call s:HL('Identifier',      'none',       'none')
+call s:HL('Identifier',      'function',       'none')
 call s:HL('Ignore',          'comment',    'none')
 call s:HL('PreProc',         'preproc',    'none')
 call s:HL('Special',         'special',    'none')
@@ -141,6 +141,8 @@ call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')
 call s:HL('@extern',          'sparkly', 'none', 'bold')
 call s:HL('@attribute',         'darkbg',    'foreground', 'bold')
+call s:HL('@property',         'lightfun',    'none', 'none')
+call s:HL('@class',            'type',       'none',       'bold') " fooka amnitel
 
 
 call s:HL('IncSearch',  'special', 'background', 'reverse,bold')
@@ -222,6 +224,8 @@ hi link fugitiveHash Constant
 
 " C
 hi link cSpecial Constant
+hi link cSpecial Constant
+hi link @variable.c NONE " too noisy
 
 " Python
 hi link pythonBuiltin Constant
@@ -240,6 +244,9 @@ hi link NeomakeVirtualtextError ErrorMsg
 hi link NeomakeVirtualtextWarning WarningMsg
 hi link NeomakeVirtualtextMessage WarningMsg
 hi link NeomakeVirtualtextInfo Type
+
+" lua
+hi link @variable.lua NONE " too noisy
 
 " Fzf
 if get(g:, 'sitruuna_fzf', 1) == 1

@@ -18,7 +18,7 @@ function h.doer(url, api_token, input, cb)
     callback = function(res)
       local time = vim.loop.gettimeofday() - tzero
       if res.status ~= 200 then
-        cb(time, nil, res.status)
+        cb(time, res.body, res.status)
       else
         cb(time, res.body, nil)
       end
@@ -35,17 +35,20 @@ function h.testtext_hug(prompt, cb)
       top_p=0.9;
       repetition_penalty=1.9;
       return_full_text=(not shorty);
+      temperature=0.9;
       max_new_tokens=(shorty and 55 or 250);
-      max_time=30;
+      max_time=50;
       num_return_sequences=(shorty and 10 or 3);
+      do_sample=true;
     };
   }
   model_name = "birgermoell/swedish-gpt"
   model_name = "flax-community/swe-gpt-wiki"
-  model_name = "EleutherAI/gpt-neo-2.7B"
+  model_name = "EleutherAI/gpt-j-6B"
   model_name = "EleutherAI/gpt-neox-20b"
   model_name = "EleutherAI/pythia-6.7b-deduped"
-  model_name = "EleutherAI/gpt-j-6B"
+  model_name = "EleutherAI/pythia-2.8b-deduped"
+  model_name = "EleutherAI/gpt-neo-2.7B"
   return h.doer("https://api-inference.huggingface.co/models/"..model_name, h.API_TOKEN_HUG, input, cb)
 end
 
