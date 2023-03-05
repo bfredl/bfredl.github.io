@@ -158,6 +158,8 @@ local CHmap = function(x) return map('<Plug>CH:'..x) end
 -- test
 chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
 
+chmap 'in' '<cmd>Inspect<cr>' -- LORD inspector
+
 
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[

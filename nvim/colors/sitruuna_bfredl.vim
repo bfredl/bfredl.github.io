@@ -140,7 +140,7 @@ call s:HL('htmlTagName',     'lemon',      'none',       'bold')
 call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')
 call s:HL('@extern',          'sparkly', 'none', 'bold')
-call s:HL('@attribute',         'darkbg',    'foreground', 'bold')
+call s:HL('@attribute.c',         'darkbg',    'fg_alt', 'bold')
 call s:HL('@property',         'lightfun',    'none', 'none')
 call s:HL('@class',            'type',       'none',       'bold') " fooka amnitel
 
@@ -201,6 +201,9 @@ hi link diffAdded                DiffAdd
 hi link QuickFixLine             Search
 hi link ConId                    Type
 
+hi link @attribute Statement
+hi link @variable NONE " too noisy
+
 " Yaml
 hi link yamlBlockMappingKey Statement
 hi link yamlFlowIndicator   SpecialKey
@@ -246,7 +249,9 @@ hi link NeomakeVirtualtextMessage WarningMsg
 hi link NeomakeVirtualtextInfo Type
 
 " lua
-hi link @variable.lua NONE " too noisy
+
+"zig
+hi link @label.zig Function
 
 " Fzf
 if get(g:, 'sitruuna_fzf', 1) == 1

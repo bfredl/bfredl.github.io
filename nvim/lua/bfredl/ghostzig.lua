@@ -74,6 +74,40 @@ function h.ghostbuild(entrypoint, test)
   job:start()
 end
 
+local uv = vim.loop
+
+function h.ghostserver(entrypoint, test)
+  cwd = vim.fn.getcwd()
+  h.ghosted_bufs = {}
+  -- TODO: only .zig files?
+  vim.fn.system({'cp', '-r', cwd, h.ghostpath})
+
+  local self = {}
+  self.stdin = uv.new_pipe(false)
+  self.stdout = uv.new_pipe(false)
+  self.stderr = uv.new_pipe(false)
+
+  self.stderr:read_start(function(err,data)
+    if data then print("åh nej:", data) end
+  end)
+  self.stdout:read_start(function(err,data)
+    print("brus")
+  end)
+
+  local subcmd = test and 'test' or 'build-exe'
+  args = { subcmd, '-fno-emit-bin', h.ghostpath..'/'..entrypoint, "--listen=-"}
+  vim.pretty_print(args)
+
+  self.handle, self.pid = uv.spawn("zig", {
+    args = args,
+    stdio = {self.stdin, self.stdout, self.stderr}
+  }, function()
+    print("server exit")
+  end)
+
+  return self
+end
+
 function h.ghostzig(entrypoint, test)
   cwd = vim.fn.getcwd()
   h.ghosted_bufs = {}

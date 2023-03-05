@@ -269,7 +269,7 @@ func! bfredl#ipy()
   map <Plug>ch:rl :let g:ip_reload = '
   map <Plug>ch:hr :<c-u>call IPyRun(ip_reload)<cr><Plug>(IPy-Run)
   map <Plug>CH:hr :<c-u>call IPyRun(ip_reload)<cr>
-  map <Plug>ch:in :w<cr>:<c-u>call IPyRun(ip_reload)<cr>
+  "map <Plug>ch:in :w<cr>:<c-u>call IPyRun(ip_reload)<cr>
 
   map <Plug>CH:qu <Plug>(IPy-Interrupt)
   map <Plug>CH:qk <Plug>(IPy-Terminate)
