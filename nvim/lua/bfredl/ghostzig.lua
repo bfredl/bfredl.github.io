@@ -3,6 +3,7 @@ _G._bfredl_ghostzig = h
 local u = require'bfredl.util'
 local a = u.a
 local Job = require'plenary.job'
+_G.h = h
 
 local ns = a.create_namespace'ghostzig'
 h.ghostpath = vim.fn.stdpath'run'..'/ghostzig_'..vim.fn.getpid()
@@ -84,29 +85,106 @@ function h.ghostserver(entrypoint, test)
 
   local self = {}
   self.stdin = uv.new_pipe(false)
-  self.stdout = uv.new_pipe(false)
-  self.stderr = uv.new_pipe(false)
+  self.stdout_hnd = uv.pipe()
+  self.stdout = uv.new_pipe()
+  self.stdout:open(self.stdout_hnd.read)
+  self.stderr_hnd = uv.pipe()
+  self.stderr = uv.new_pipe()
+  self.stderr:open(self.stderr_hnd.read)
+
+  self.out_chunks = {}
 
   self.stderr:read_start(function(err,data)
-    if data then print("åh nej:", data) end
+    if data then print(data) end
   end)
   self.stdout:read_start(function(err,data)
-    print("brus")
+    if data then
+      print("brus")
+      table.insert(self.out_chunks, data)
+    end
   end)
 
   local subcmd = test and 'test' or 'build-exe'
-  args = { subcmd, '-fno-emit-bin', h.ghostpath..'/'..entrypoint, "--listen=-"}
+  args = {
+    subcmd;
+    -- '-fno-emit-bin';
+    h.ghostpath..'/'..entrypoint;
+    "--listen=-";
+  }
   vim.pretty_print(args)
 
   self.handle, self.pid = uv.spawn("zig", {
     args = args,
-    stdio = {self.stdin, self.stdout, self.stderr}
+    stdio = {self.stdin, self.stdout_hnd.write, self.stderr_hnd.write}
   }, function()
     print("server exit")
   end)
 
   return self
 end
+
+fuldata = "\0\0\0\0\25\0\0\0000.11.0-dev.1911+4f077b98a\1\0\0\0\175\1\0\0%\0\0\0\19\1\0\0\1\0\0\0$\0\0\0\n\0\0\0h\2\0\0\31\0\0\0\21Z\0\0\25Z\0\0\30Z\0\0\0\0\0\0\0\0\0\0[\0\0\0&\2\0\0!\0\0\0\134P\0\0\134P\0\0\142P\0\0\0\0\0\0\0\0\0\0\147\0\0\0!\0\0\0\23\0\0\0k\3\0\0q\3\0\0w\3\0\0\191\0\0\0\3\0\0\0\1\0\0\0\2\0\0\0B\0\0\0\n\0\0\0\0\0\0\0\0\0\0\0\222\0\0\0\1\0\0\0\18\0\0\0\0\0\0\0 \0\0\0\0callMain\0/home/bfredl/dev/zig/build/stage3/lib/zig/std/start.zig\0initEventLoopAndCallMain\0/home/bfredl/dev/zig/build/stage3/lib/zig/std/start.zig\0/run/user/1000/ghostzig_8403/src/run_ir.zig\0    const argv = std.os.argve;\0root struct of file 'os' has no member named 'argve'\0"
+-- data = fuldata
+--
+
+local ffi = require'ffi'
+function u32(bytes, where)
+  return ffi.cast('uint32_t*', bytes)[where or 0]
+end
+
+function parse_output(data)
+  if #data < 8 then
+    eof()
+  end
+  kinda = u32(string.sub(data, 1, 4))
+  lenny = u32(string.sub(data, 5, 8))
+  if #data < 8+lenny then
+    eof()
+  end
+
+  body = string.sub(data,9, 8+lenny) -- there's a body alright
+
+  if kinda == 1 then -- errors
+    extra_len = u32(body)
+    string_bytes_len = u32(body,1)
+    extra = string.sub(body,9,8+extra_len*4)
+    string_bytes = string.sub(body,8+extra_len*4+1)
+
+    eml_len = u32(extra, 0)
+    eml_start = u32(extra, 1)
+
+    first_at = u32(extra, eml_start)
+
+    msg_idx = u32(extra, first_at)
+    msg_count = u32(extra, first_at+1)
+    msg_src_loc = u32(extra, first_at+2)
+    msg_notes_len = u32(extra, first_at+3)
+    string.sub(string_bytes, msg_idx+1) -- todo: first \0
+
+    src_at = msg_src_loc
+    src_path_idx = u32(extra, src_at)
+    src_line = u32(extra, src_at+1)
+    src_col = u32(extra, src_at+2)
+    string.sub(string_bytes, src_path_idx+1) -- todo: first \0
+
+
+  end
+
+  nxt = string.sub(data,9+lenny)
+  data = nxt
+
+
+end
+
+--[[
+  ffi = require'ffi'
+s = h.ghostserver("src/run_ir.zig", false)
+table.concat(s.out_chunks) == fuldata
+s.stdin:write('\1\0\0\0')
+s.stdin:write('\0\0\0\0')
+s.out_chunks
+
+--]]
 
 function h.ghostzig(entrypoint, test)
   cwd = vim.fn.getcwd()
