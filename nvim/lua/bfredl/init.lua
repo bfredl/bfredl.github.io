@@ -291,6 +291,14 @@ require'telescope'.setup {
     border = false;
   };
 }
+chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
+chmap '.u' '<cmd>Telescope buffers<cr>'
+CHmap '.u' '<cmd>Telescope find_files<cr>'
+chmap 'ig' '<cmd>Telescope live_grep<cr>'
+chmap 'uc' '<cmd>Telescope current_buffer_fuzzy_find<cr>'
+chmap 'am' ':Telescope <c-z>'
+chmap 'cr' '<cmd>Telescope find_files cwd=~/config2/<cr>'
+
 -- }}}
 -- color {{{
 

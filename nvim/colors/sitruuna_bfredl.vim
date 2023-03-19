@@ -135,14 +135,14 @@ call s:HL('debugPC',         'error',      'none')
 call s:HL('debugBreakpoint', 'error',      'none')
 call s:HL('ColorColumn',     'none',       'constant')
 call s:HL('Delimiter',       'none',       'none')
-call s:HL('Operator',        'none',   'none',       'none')
+call s:HL('Operator',        'none',       'none',       'none')
 call s:HL('htmlTagName',     'lemon',      'none',       'bold')
 call s:HL('htmlTag',         'foreground', 'none')
 call s:HL('htmlArg',         'function',   'none')
-call s:HL('@extern',          'sparkly', 'none', 'bold')
-call s:HL('@attribute.c',         'darkbg',    'fg_alt', 'bold')
-call s:HL('@property',         'lightfun',    'none', 'none')
-call s:HL('@class',            'type',       'none',       'bold') " fooka amnitel
+call s:HL('@extern',         'sparkly',    'none',       'bold')
+call s:HL('@attribute.c',    'darkbg',     'fg_alt',     'bold')
+call s:HL('@property',       'lightfun',   'none',       'none')
+call s:HL('@class',          'type',       'none',       'bold') " fooka amnitel
 
 
 call s:HL('IncSearch',  'special', 'background', 'reverse,bold')
@@ -202,7 +202,9 @@ hi link QuickFixLine             Search
 hi link ConId                    Type
 
 hi link @attribute Statement
-hi link @variable NONE " too noisy
+
+hi link @lsp.type.variable NONE " too noisy
+hi link @lsp.type.property @property
 
 " Yaml
 hi link yamlBlockMappingKey Statement

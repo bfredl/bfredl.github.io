@@ -170,13 +170,6 @@ elseif executable("ag")
   let g:ackprg = 'ag --vimgrep'
 endif
 " }}}
-" telescope {{{
-nnoremap <Plug>ch:.u <cmd>Telescope buffers<cr>
-nnoremap <Plug>CH:.u <cmd>Telescope find_files<cr>
-nnoremap <Plug>ch:ig <cmd>Telescope live_grep<cr>
-nnoremap <Plug>ch:uc <cmd>Telescope current_buffer_fuzzy_find<cr>
-nnoremap <Plug>ch:am :Telescope <c-z>
-" }}}
 " LSP {{{
 function! bfredl#lspmap()
 " shiiny
