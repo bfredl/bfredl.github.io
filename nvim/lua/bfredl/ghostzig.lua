@@ -111,7 +111,7 @@ function h.ghostserver(entrypoint, test)
     h.ghostpath..'/'..entrypoint;
     "--listen=-";
   }
-  vim.pretty_print(args)
+  vim.print(args)
 
   self.handle, self.pid = uv.spawn("zig", {
     args = args,
@@ -141,45 +141,98 @@ function parse_output(data)
   if #data < 8+lenny then
     eof()
   end
+  print(kinda, lenny)
 
   body = string.sub(data,9, 8+lenny) -- there's a body alright
 
   if kinda == 1 then -- errors
-    extra_len = u32(body)
-    string_bytes_len = u32(body,1)
-    extra = string.sub(body,9,8+extra_len*4)
-    string_bytes = string.sub(body,8+extra_len*4+1)
-
-    eml_len = u32(extra, 0)
-    eml_start = u32(extra, 1)
-
-    first_at = u32(extra, eml_start)
-
-    msg_idx = u32(extra, first_at)
-    msg_count = u32(extra, first_at+1)
-    msg_src_loc = u32(extra, first_at+2)
-    msg_notes_len = u32(extra, first_at+3)
-    string.sub(string_bytes, msg_idx+1) -- todo: first \0
-
-    src_at = msg_src_loc
-    src_path_idx = u32(extra, src_at)
-    src_line = u32(extra, src_at+1)
-    src_col = u32(extra, src_at+2)
-    string.sub(string_bytes, src_path_idx+1) -- todo: first \0
-
-
+    parse_errors(body)
   end
 
   nxt = string.sub(data,9+lenny)
   data = nxt
-
-
 end
 
+function parse_errors(body)
+    extra_len = u32(body)
+    string_bytes_len = u32(body,1)
+    extra_data = string.sub(body,9,8+extra_len*4)
+    string_data = string.sub(body,8+extra_len*4+1)
+    extra = ffi.cast('uint32_t*', extra_data)
+    string_bytes = ffi.cast('char*', string_data)
+
+    eml_len = extra[0]
+    eml_start = extra[1]
+    eml_log_text = extra[2]
+
+    first_at = extra[eml_start]
+
+    msg_idx = extra[first_at]
+    msg_count = extra[first_at+1]
+    msg_src_loc = extra[first_at+2]
+    msg_notes_len = extra[first_at+3]
+    msg = ffi.string(string_bytes+msg_idx)
+
+    src_at = msg_src_loc
+
+    function src_loc(src_at)
+      local src_path = extra[src_at]
+      local source_line = extra[src_at+6]
+      local reference_trace_len = extra[src_at+7]
+      local srcref_at = src_at+8
+      local ref_trace = {}
+      local ref_hidden = nil
+      for i = 1,reference_trace_len do
+        ref_decl_name = extra[srcref_at+2*(i-1)+0]
+        ref_src_loc = extra[srcref_at+2*(i-1)+1]
+        if ref_src_loc ~= 0 then
+          ref_decl = ffi.string(string_bytes+ref_decl_name)
+          table.insert(ref_trace, {decl_name=ffi.string(string_bytes+ref_decl_name), src_loc=ref_src_loc})
+        else
+          ref_hidden = ref_decl_name
+        end
+      end
+      return {
+        line = extra[src_at+1];
+        col = extra[src_at+2];
+        span_start = extra[src_at+3];
+        span_main = extra[src_at+4];
+        span_end = extra[src_at+5];
+        src_path = ffi.string(string_bytes+src_path);
+        source_line = ffi.string(string_bytes+source_line);
+        ref_trace = ref_trace;
+        ref_hidden = ref_hidden;
+      }
+    end
+
+    loc = src_loc(src_at)
+    vim.print(loc)
+    for _,t in ipairs(loc.ref_trace) do
+      vim.print(src_loc(t.src_loc))
+    end
+
+    i = 1
+    string.sub(string_bytes, src_path_idx+1) -- todo: first \0
+end
+
+neodata = "\0\0\0\0\25\0\0\0000.11.0-dev.2158+c31007bb4\2\0\0\0\25\0\0\0Semantic Analysis [1892] \1\0\0\0\205\1\0\0&\0\0\0-\1\0\0\1\0\0\0%\0\0\0\0\0\0\0\18\0\0\0\27\0\0\0\26\0\0\0>\3\0\0E\3\0\0L\3\0\0\0\0\0\0\0\0\0\0_\0\0\0\\\0\0\0\20\0\0\0\213\t\0\0\219\t\0\0\225\t\0\0\0\0\0\0\0\0\0\0\151\0\0\0\201\0\0\0\17\0\0\0J\31\0\0J\31\0\0}\31\0\0\205\0\0\0\3\0\0\0\1\0\0\0\3\0\0\0N\0\0\0\v\0\0\0\0\0\0\0\0\0\0\0\19\1\0\0\1\0\0\0\19\0\0\0\0\0\0\0!\0\0\0\0print__anon_8817\0/home/bfredl/dev/zig/build/stage3/lib/zig/std/io/writer.zig\0print__anon_6687\0/home/bfredl/dev/zig/build/stage3/lib/zig/std/debug.zig\0/home/bfredl/dev/zig/build/stage3/lib/zig/std/fmt.zig\0            1 => @compileError(\"unused argument in '\" ++ fmt ++ \"'\"),\0unused argument in 'no.\n'\0"
+
+
 --[[
+data = neodata
   ffi = require'ffi'
 s = h.ghostserver("src/run_ir.zig", false)
-table.concat(s.out_chunks) == fuldata
+adata = table.concat(s.out_chunks)
+adata == fuldata
+adata == neodata
+xdata = vim.inspect(adata)
+for i = 129,255 do
+  xdata = string.gsub(xdata, string.char(i), "\\"..tostring(i))
+end
+print(xdata)
+print(vim.inspect(adata):gsub("Í", "\\205"):gsub("Õ", "\\213"))
+
+
 s.stdin:write('\1\0\0\0')
 s.stdin:write('\0\0\0\0')
 s.out_chunks
