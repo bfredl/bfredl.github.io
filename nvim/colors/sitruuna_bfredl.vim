@@ -206,6 +206,8 @@ hi link @attribute Statement
 hi link @lsp.type.variable NONE " too noisy
 hi link @lsp.type.property @property
 
+hi link @variable NONE " too noisy
+
 " Yaml
 hi link yamlBlockMappingKey Statement
 hi link yamlFlowIndicator   SpecialKey
@@ -230,7 +232,6 @@ hi link fugitiveHash Constant
 " C
 hi link cSpecial Constant
 hi link cSpecial Constant
-hi link @variable.c NONE " too noisy
 
 " Python
 hi link pythonBuiltin Constant
