@@ -61,15 +61,15 @@
 [ ] CMC—Complement Carry Flag    3-148
 [ ] CMOVcc—Conditional Move   3-149
 [ ] CMP—Compare Two Operands   3-153
-[ ] CMPPD—Compare Packed Double-Precision Floating-Point Values    3-155
-[ ] CMPPS—Compare Packed Single-Precision Floating-Point Values    3-162
+[x] CMPPD—Compare Packed Double-Precision Floating-Point Values    3-155
+[x] CMPPS—Compare Packed Single-Precision Floating-Point Values    3-162
 [ ] CMPS/CMPSB/CMPSW/CMPSD/CMPSQ—Compare String Operands    3-169
-[ ] CMPSD—Compare Scalar Double-Precision Floating-Point Value    3-173
-[ ] CMPSS—Compare Scalar Single-Precision Floating-Point Value    3-177
+[x] CMPSD—Compare Scalar Double-Precision Floating-Point Value    3-173
+[x] CMPSS—Compare Scalar Single-Precision Floating-Point Value    3-177
 [ ] CMPXCHG—Compare and Exchange    3-181
 [ ] CMPXCHG8B/CMPXCHG16B—Compare and Exchange Bytes    3-183
-[ ] COMISD—Compare Scalar Ordered Double-Precision Floating-Point Values and Set EFLAGS    3-186
-[ ] COMISS—Compare Scalar Ordered Single-Precision Floating-Point Values and Set EFLAGS    3-188
+[x] COMISD—Compare Scalar Ordered Double-Precision Floating-Point Values and Set EFLAGS    3-186
+[x] COMISS—Compare Scalar Ordered Single-Precision Floating-Point Values and Set EFLAGS    3-188
 [ ] CPUID—CPU Identification    3-190
 [ ] CRC32 — Accumulate CRC32 Value    3-225
 [ ] CVTDQ2PD—Convert Packed Doubleword Integers to Packed Double-Precision Floating-Point Values    3-228
@@ -108,7 +108,7 @@
 [ ] EMMS—Empty MMX Technology State    3-303
 [ ] ENTER—Make Stack Frame for Procedure Parameters   3-304
 [ ] EXTRACTPS—Extract Packed Floating-Point Values    3-307
-[ ] F2XM1—Compute 2x–1   3-309
+[ ] F2XM1—Compute 2^x–1   3-309
 [ ] FABS—Absolute Value    3-311
 [ ] FADD/FADDP/FIADD—Add    3-312
 [ ] FBLD—Load Binary Coded Decimal   3-315
@@ -425,8 +425,8 @@
 [ ] SYSRET—Return From Fast System Call   4-676
 [ ] TEST—Logical Compare    4-679
 [ ] TZCNT — Count the Number of Trailing Zero Bits   4-681
-[ ] UCOMISD—Unordered Compare Scalar Double-Precision Floating-Point Values and Set EFLAGS    4-683
-[ ] UCOMISS—Unordered Compare Scalar Single-Precision Floating-Point Values and Set EFLAGS    4-685
+[x] UCOMISD—Unordered Compare Scalar Double-Precision Floating-Point Values and Set EFLAGS    4-683
+[x] UCOMISS—Unordered Compare Scalar Single-Precision Floating-Point Values and Set EFLAGS    4-685
 [ ] UD2—Undefined Instruction    4-687
 [ ] UNPCKHPD—Unpack and Interleave High Packed Double-Precision Floating-Point Values    4-688
 [ ] UNPCKHPS—Unpack and Interleave High Packed Single-Precision Floating-Point Values    4-692
