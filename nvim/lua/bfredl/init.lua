@@ -330,6 +330,8 @@ v [[
 -- }}}
 if os.getenv'NVIM_INSTANCE' and not __devcolors then
   v [[ color sitruuna_bfredl ]]
+else
+  v [[ hi MsgArea blend=15 guibg=#281811]]
 end
-v [[ hi MsgArea blend=15 guibg=#281811]]
 return bfredl
+

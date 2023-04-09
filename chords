@@ -262,7 +262,7 @@ keymap['lua'] = {
     'Tz': h(' or '),
     'Tc': h(' and '),
     'ek': s('else\n', 'elseif '),
-    'in': ' in ',
+    'in': s(' in ', 'table.insert('),
     'ak': 'break\n',
     'im': "require('",
     'ur': ('pcall('),
@@ -275,9 +275,9 @@ keymap['lua'] = {
 
     'kv': 'local ',
 
-
     'pr': 'print(',
     'um': s('ipairs(', 'pairs('),
+
 }
 parents['cstyle'] = ('insert',)
 keymap['cstyle'] = {

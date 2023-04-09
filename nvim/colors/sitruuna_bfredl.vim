@@ -27,7 +27,8 @@ let s:col.linenrbg   = ['#303050', 233]
 let s:col.signbg     = ['#505080', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
-let s:col.selection  = ['#484848', 238]
+let s:col.selection  = ['#606870', 238]
+let s:col.msgsep     = ['#808080', 238]
 let s:col.trailwhite = ['#707070', 238]
 let s:col.comment    = ['#94a0d8', 244]
 let s:col.string     = ['#8b94e6', 72]
@@ -118,7 +119,8 @@ call s:HL('CursorColumn',    'none',       'light_bg')
 call s:HL('CursorLineNr',    'special',    'light_bg')
 call s:HL('CursorLine',      'none',       'light_bg',   'none')
 call s:HL('StatusLine',      'statusline', 'foreground')
-call s:HL('StatusLineNC',    'light_bg',     'comment')
+call s:HL('StatusLineNC',    'light_bg',   'comment')
+call s:HL('MsgSeparator',    'none',       'msgsep')
 call s:HL('Visual',          'none',       'selection')
 call s:HL('VisualNOS',       'foreground', 'background')
 call s:HL('VertSplit',       'lighter_bg', 'lighter_bg')
@@ -154,6 +156,11 @@ call s:HL('SpellLocal', 'special', 'none',       'bold,underline')
 call s:HL('SpellRare',  'special', 'none',       'bold,underline')
 
 call s:HL('GitSignsCurrentLineBlame',  'fg_dark', 'none',       'none')
+
+" add to above
+hi MsgSeparator blend=20
+" fuuuuu
+hi MsgArea blend=15 guibg=#281811
 
 hi link Terminal                 Normal
 hi link CursorIM                 Cursor
