@@ -98,6 +98,7 @@ call s:HL('Ignore',          'comment',    'none')
 call s:HL('PreProc',         'preproc',    'none')
 call s:HL('Special',         'special',    'none')
 call s:HL('Statement',       'lemon',      'none',       'bold')
+call s:HL('LightKeyword',    'lemon',      'none')
 call s:HL('String',          'string',     'stringbg')
 call s:HL('Todo',            'background', 'string')
 call s:HL('Type',            'type',       'none',       'none')
@@ -214,6 +215,12 @@ hi link @lsp.type.variable NONE " too noisy
 hi link @lsp.type.property @property
 
 hi link @variable NONE " too noisy
+
+hi link @type.definition.zig Type
+hi link ZigDefinition LightKeyword
+hi link @type.qualifier.zig ZigDefinition " bitch plz
+hi link @attribute.zig ZigDefinition
+hi link @keyword.function.zig ZigDefinition
 
 " Yaml
 hi link yamlBlockMappingKey Statement

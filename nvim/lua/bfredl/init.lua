@@ -34,9 +34,7 @@ do each (packer.use)
 
 
   'nvim-treesitter/nvim-treesitter'
-  'nvim-treesitter/playground'
 
-  'neovim/nvim-lspconfig'
   'jose-elias-alvarez/null-ls.nvim'
 
   {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
@@ -131,13 +129,19 @@ local v, set = vim.cmd, h.set
 'ttimeoutlen' (10)
 
 v 'set cpo-=_'
-v 'set diffopt+=vertical'
+v 'set diffopt+=vertical,linematch:60'
 
 if first_run then
   -- I liked this better:
   vim.o.dir = '.,'..vim.o.dir
 end
 
+-- }}}
+-- autocmds {{{
+h.augrp = a.create_augroup("bfredl_lua", { clear=true })
+function h.aucmd(event, pat, cb)
+  a.create_autocmd(event, { group = h.augrp, pattern = pat, callback = cb });
+end
 -- }}}
 -- them basic bindings {{{
 
@@ -186,7 +190,7 @@ chmap 'tn' '<cmd>Gitsigns next_hunk<cr>'
 CHmap 'tn' '<cmd>Gitsigns prev_hunk<cr>'
 chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 -- }}}
--- vimenter stuff {{{
+-- iimenter stuff {{{
 function h.vimenter(startup)
   if startup then
     require'colorizer'.setup()
@@ -217,32 +221,48 @@ do local ns = a.create_namespace 'selekt-color'
 end
 -- }}}
 -- LSP {{{
+function h.root_pattern(pat)
+  return vim.fs.dirname(vim.fs.find(pat, { upward = true })[1])
+end
+function h.client_capabilities(over)
+  return vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), over)
+end
+
+function h.clangd()
+  vim.lsp.start {
+    name = 'clangd';
+    cmd = {'clangd'};
+    root_dir = h.root_pattern {
+      'compile_commands.json';
+      'compile_flags.txt';
+      '.clangd';
+      '.git';
+    };
+    capabilities = h.client_capabilities {
+      textDocument = {
+        completion = { editsNearCursor = true; };
+      };
+      offsetEncoding = { 'utf-8', 'utf-16' };
+    }
+   }
+end
+
 if not vim.g.bfredl_nolsp then
-  local lspconfig = require'lspconfig'
   if vim.fn.executable('clangd') ~= 0 then
-    lspconfig.clangd.setup {}
-  end
-  if vim.fn.executable('ra_lsp_server') ~= 0 then
-    lspconfig.rust_analyzer.setup {}
+    h.aucmd('FileType', {'c', 'cpp'}, function() h.clangd() end)
   end
   if vim.fn.executable('zls') ~= 0 then
-    -- lspconfig.zls.setup {}
   end
   if vim.fn.executable 'jedi-language-server' ~= 0 then
-     lspconfig.pylsp.setup {}
   end
-
-  if false then -- DISABLE
-    require'null-ls'.config {
-      sources = { require'null-ls'.builtins.diagnostics.zig_astcheck };
-    }
-    if lspconfig['null-ls'].setup then lspconfig['null-ls'].setup {} end
-  end
-
 end
+
 vim.diagnostic.config {
   signs = false;
   update_in_insert = true;
+  virtual_text = {
+    spacing = 2;
+  }
 }
 -- }}}
 -- tree sitter stuff {{{
@@ -268,12 +288,6 @@ function h.ts_setup()
     refactor = {
       highlight_definitions = { enable = true };
       --highlight_current_scope = { enable = false };
-    };
-    playground = {
-      enable = true;
-      disable = {};
-      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source cod;
-      persist_queries = false; -- Whether the query persists across vim sessions
     };
   } end
   v [[
@@ -322,12 +336,6 @@ if os.getenv'NVIM_INSTANCE' then
 end
 h.f = require'bfredl.floaty'.f
 _G.f = h.f -- HAIII
--- autocmds {{{
-v [[
-  augroup bfredlua
-  augroup END
-]]
--- }}}
 if os.getenv'NVIM_INSTANCE' and not __devcolors then
   v [[ color sitruuna_bfredl ]]
 else

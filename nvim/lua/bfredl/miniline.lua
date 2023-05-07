@@ -16,6 +16,9 @@ local function current()
   return tonumber(context and vim.g.statusline_winid or vim.g.actual_curwin) == a.get_current_win()
 end
 
+-- FUBBIT: we need to load this already, otherwise _LL.LSP hits a race condition
+require 'vim.lsp'
+
 local elements = u.namelist()
 
 [[LeftMark]] {
