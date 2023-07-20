@@ -51,6 +51,7 @@ do each (packer.use)
   '~/dev/vim-argclinic'
   '~/dev/nsync.nvim/'
   '~/dev/nvim-lanterna/'
+  '~/dev/nvim-zigclient/'
 
   { '~/dev/nvim-miniluv/', rocks = 'openssl' }
 
@@ -231,7 +232,7 @@ end
 function h.clangd()
   vim.lsp.start {
     name = 'clangd';
-    cmd = {'clangd'};
+    cmd = {'clangd', '-query-driver=/home/bfredl/dev/DelugeFirmware/toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
     root_dir = h.root_pattern {
       'compile_commands.json';
       'compile_flags.txt';
@@ -251,11 +252,28 @@ if not vim.g.bfredl_nolsp then
   if vim.fn.executable('clangd') ~= 0 then
     h.aucmd('FileType', {'c', 'cpp'}, function() h.clangd() end)
   end
+  if vim.fn.executable('typescript-language-server') ~= 0 then
+    h.aucmd('FileType', {'javascript', 'typescript'}, function() 
+      vim.lsp.start {
+        name = 'typescript-language-server';
+        cmd = {'typescript-language-server', '--stdio'};
+        root_dir = h.root_pattern { '.git'; };
+      }
+    end)
+  end
   if vim.fn.executable('zls') ~= 0 then
   end
   if vim.fn.executable 'jedi-language-server' ~= 0 then
   end
 end
+
+h.aucmd({'BufRead','BufNewFile'}, '*.h', function()
+  if string.match(a.buf_get_name(0), 'DelugeFirmware') then
+    vim.cmd 'setfiletype cpp'
+  else
+    vim.bo.filetype = 'c'
+  end
+end)
 
 vim.diagnostic.config {
   signs = false;

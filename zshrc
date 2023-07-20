@@ -74,12 +74,12 @@ tnew () {
 }
 
 function ag() {
-  rg --color always $* | less
+  rg -S --color always $* | less
 }
 
 function vg() {
   # TODO: take errorlist on stdin
-  rg --vimgrep $* | pager +cbuffer +copen
+  rg -S --vimgrep $* | pager +cbuffer +copen
 }
 
 alias null='cat > /dev/null'

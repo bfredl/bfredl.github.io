@@ -270,6 +270,11 @@ hi link NeomakeVirtualtextInfo Type
 "zig
 hi link @label.zig Function
 
+"javascript :zany_face:
+hi link JavaScriptFunction Statement
+hi link JavaScriptNumber Number
+"hi link @lsp.type.function.javascript NONE
+
 " Fzf
 if get(g:, 'sitruuna_fzf', 1) == 1
   let g:fzf_colors =

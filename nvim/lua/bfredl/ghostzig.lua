@@ -31,7 +31,7 @@ function h.ghostbuild(entrypoint, test)
   h.ghostwrite()
 
   local subcmd = test and 'test' or 'build-exe'
-  args = { subcmd, '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
+  args = { subcmd, '-lc', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
   local start_time = vim.fn.reltime()
   -- require'luadev'.print("START")
   local job = Job:new {
@@ -40,6 +40,7 @@ function h.ghostbuild(entrypoint, test)
     on_exit = vim.schedule_wrap(function(j, ret)
       local time = vim.fn.reltime(start_time)
       local lines = j:stderr_result()
+      _G.zig_lines = lines
       for i,l in ipairs(lines) do
          u.unprefix(l, h.ghostpath..'/', function(p)
           lines[i] = p
@@ -80,7 +81,8 @@ function h.ghostzig(entrypoint, test)
   cwd = vim.fn.getcwd()
   h.ghosted_bufs = {}
   -- TODO: only .zig files?
-  vim.fn.system({'cp', '-r', cwd, h.ghostpath})
+  vim.fn.system({'mkdir', '-p', h.ghostpath})
+  vim.fn.system({'cp', '-r', cwd .. '/src', h.ghostpath .. '/src'})
   a.create_autocmd({'TextChanged', 'TextChangedI'}, {
     pattern = "*.zig";
     callback = function() h.ghostbuild(entrypoint, test) end;

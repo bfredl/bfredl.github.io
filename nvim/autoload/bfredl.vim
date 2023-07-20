@@ -341,12 +341,11 @@ filetype plugin indent on
 set shortmess-=F
 augroup Filetypes
   au!
-  au BufRead,BufNewFile *.h set filetype=c  " go fuck yourself please
   au FileType rmd let b:ipy_celldef = ['^```{r\( \a*\)\?}$', '^```$']
   au FileType rmd set isk+=_
   au FileType markdown let b:ipy_celldef = ['\v^```\a*$', '^```$']
   au FileType matlab let b:ipy_celldef = '^%%'
-  au FileType c,cpp,python,zig call bfredl#lspmap()
+  au FileType c,cpp,python,zig,javascript call bfredl#lspmap()
   au FileType zig call bfredl#zigmap()
   au FileType c call bfredl#nvim_c_ft()
   au FileType c,cpp call bfredl#cmap()
@@ -400,8 +399,9 @@ func bfredl#cmap()
   inoremap <buffer> ¶, ,
   inoremap <buffer> ¶<space> <space>
   inoremap <buffer> ¶ <space>
+  call bfredl#brackety()
 endfunc
-if &ft == "c"
+if &ft == "c" || &ft == "cpp"
   call bfredl#cmap()
 end
 
