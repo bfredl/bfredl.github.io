@@ -232,7 +232,7 @@ end
 function h.clangd()
   vim.lsp.start {
     name = 'clangd';
-    cmd = {'clangd', '-query-driver=/home/bfredl/dev/DelugeFirmware/toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
+    cmd = {'clangd', '-query-driver=/home/bfredl/dev/DelugeFirmware/./toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
     root_dir = h.root_pattern {
       'compile_commands.json';
       'compile_flags.txt';
@@ -255,7 +255,7 @@ if not vim.g.bfredl_nolsp then
   if vim.fn.executable('typescript-language-server') ~= 0 then
     h.aucmd('FileType', {'javascript', 'typescript'}, function() 
       vim.lsp.start {
-        name = 'typescript-language-server';
+        name = 'tsserver';
         cmd = {'typescript-language-server', '--stdio'};
         root_dir = h.root_pattern { '.git'; };
       }
@@ -264,6 +264,15 @@ if not vim.g.bfredl_nolsp then
   if vim.fn.executable('zls') ~= 0 then
   end
   if vim.fn.executable 'jedi-language-server' ~= 0 then
+  end
+  if vim.fn.executable('pylsp') ~= 0 then
+    h.aucmd('FileType', {'python'}, function()
+     vim.lsp.start {
+        name = 'pylsp';
+        cmd = {'pylsp'};
+        root_dir = h.root_pattern { '.git'; 'setup.py'; };
+      }
+    end)
   end
 end
 

@@ -174,8 +174,9 @@ setopt cdablevarS
 autoload colors; colors;
 # }}}
 # application configuration {{{
-[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+[ -x /usr/bin/lesspipe.sh ] && eval "$(lesspipe.sh)"
 export PAGER=less
+export MANPAGER='nvim +Man!'
 export LESS="-r"
 export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
