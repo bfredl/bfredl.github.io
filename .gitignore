@@ -1,2 +1,3 @@
 !*.pdf
 nvim/plugin/packer_compiled.vim
+nushell/history.txt

@@ -521,3 +521,6 @@ function preexec {
 if [[ -e ~/.zshrc_local ]]; then
     source ~/.zshrc_local
 fi
+
+# bun completions
+[ -s "/home/bfredl/.bun/_bun" ] && source "/home/bfredl/.bun/_bun"
