@@ -41,44 +41,8 @@ $0
   julia = newsym
 }
 
-if vim.snippet then
-  function h.setup(b)
-    b.aucmd('FileType', {'c', 'cpp'}, function()
-      vim.keymap.set('i', '<f3>', function()
-      vim.snippet.expand([[for (${1:int} ${2:x} = ${3:0}; $2 < ${4:N}; $2++) {
-	$0
-}]])
-      end, {buffer=true})
-  end)
-    
-  end
-  return h
-end
-
-local ls = require'luasnip'
-local lse = require'luasnip.extras'
-local s = ls.snippet
-local sn = ls.snippet_node
-local t = ls.text_node
-local i = ls.insert_node
-local f = ls.function_node
-local c = ls.choice_node
-local d = ls.dynamic_node
-local res = ls.restore_node
-local r = lse.rep
-local l = lse.lambda
-local p = ls.parser.parse_snippet
-local fmt = require'luasnip.extras.fmt'.fmt
-
--- s("for", { t"for (", i(1, "int"), t" ", i(2, "i"), t" = ", i(3, "0"), t"; ", r(2), t' < ', i(4, 'len'), t'; ', r(2), t{'++) {', '\t'}, i(0), t{'','}'}});
-function h.setup()
-  ls.config.set_config {
-    history = true;
-    updateevents = 'TextChanged,TextChangedI';
-  }
+function h.setup_ls()
   ls.add_snippets("c", {
-    s("for", fmt("for ({} {} = {}; {} < {}; {}++) {{\n\t{}\n}}",
-                 { i(1, "size_t"), i(2, "i"), i(3, "0"), r(2), i(4, 'len'), r(2), i(0)}));
     p("while", "while (${1:true}) {\n\t$0\n}");
   }, {key="c"})
   ls.add_snippets("zig", {
@@ -89,5 +53,14 @@ function h.setup()
   ls.add_snippets("lua", {
     p("snap", "screen:snapshot_util()");
   }, {key="zig"})
+end
+
+function h.setup(b)
+  -- TODO: integrate with deadkeys chords natively
+  b.aucmd('FileType', {'c', 'cpp'}, function()
+    vim.keymap.set('i', '<Plug>ch:KR', function()
+      vim.snippet.expand("for (${1:int} ${2:x} = ${3:0}; $2 < ${4:N}; $2++) {\n\t$0\n}")
+    end, {buffer=true})
+  end)
 end
 return h

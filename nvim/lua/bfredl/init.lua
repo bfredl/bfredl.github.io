@@ -25,8 +25,6 @@ local packer = require'packer'
 packer.init {}
 packer.reset()
 do each (packer.use)
-  -- 'norcalli/snippets.nvim'
-  'L3MON4D3/LuaSnip'
   'norcalli/nvim-colorizer.lua'
   'vim-conf-live/pres.vim'
   --use 'norek/bbbork'
@@ -213,11 +211,8 @@ if vim.snippet then
     end
   end, {expr=true})
   vim.keymap.set({'i', 's'}, '<c-j>', "v:lua.vim.snippet.jumpable(-1) ? '<cmd>lua vim.snippet.jump(1)<cr>' : '<c-j>'", {expr=true})
-else
-  vim.keymap.set({'i', 's'}, '<c-k>', "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'", {expr=true})
-  vim.keymap.set({'i', 's'}, '<c-j>', "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<c-j>'", {expr=true})
+  require'bfredl.snippets'.setup(h)
 end
-require'bfredl.snippets'.setup(h)
 
 do local ns = a.create_namespace 'selekt-color'
   a.set_hl(ns, "Visual", {bg='#006600'})
