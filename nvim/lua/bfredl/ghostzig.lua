@@ -47,9 +47,9 @@ function h.ghostbuild(entrypoint, test)
          end)
       end
       local items = vim.fn.getqflist{lines=lines}
-      h.last_clist = items.items
+      h.last_clist = items
       local diags = vim.diagnostic.fromqflist(items.items)
-      _G.lurka = vim.deepcopy(diags)
+      h.last_diags = diags
       bufdiag = {}
       for k,_ in pairs(h.ghosted_bufs) do
         bufdiag[k] = {}
@@ -74,6 +74,13 @@ function h.ghostbuild(entrypoint, test)
     enable_recording = true;
   };
   job:start()
+end
+
+function h.speedjump()
+  if h.last_clist then
+      vim.fn.setqflist({}, ' ', h.last_clist)
+      vim.cmd 'cfirst'
+  end
 end
 
 

@@ -8,7 +8,7 @@ ffi.cdef [[
 
 local siz = vim.api.nvim_buf_line_count(0)
 
-for j = 1, 20 do
+for j = 1, 10 do
   for i = 1, siz do
     ffi.C.ml_get(i)
   end

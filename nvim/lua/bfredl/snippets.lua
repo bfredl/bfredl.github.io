@@ -13,7 +13,7 @@ f= io.open('timp', 'w')
 f:write(vim.inspect(newsym))
 f:close()
 else
-  newsym = require'bfredl.julia_symbols'
+  --newsym = require'bfredl.julia_symbols'
 end
 
 local h = {}
@@ -40,6 +40,20 @@ $0
   };
   julia = newsym
 }
+
+if vim.snippet then
+  function h.setup(b)
+    b.aucmd('FileType', {'c', 'cpp'}, function()
+      vim.keymap.set('i', '<f3>', function()
+      vim.snippet.expand([[for (${1:int} ${2:x} = ${3:0}; $2 < ${4:N}; $2++) {
+	$0
+}]])
+      end, {buffer=true})
+  end)
+    
+  end
+  return h
+end
 
 local ls = require'luasnip'
 local lse = require'luasnip.extras'

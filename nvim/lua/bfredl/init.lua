@@ -1,6 +1,8 @@
 -- logic: first_run, setup module and _G {{{
 local first_run = not _G.bfredl
-local bfredl = _G.bfredl or {}
+local h = _G.bfredl or {}
+-- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
+_G.h = bfredl
 
 if not first_run then
   require'plenary.reload'.reload_module'bfredl.'
@@ -16,10 +18,7 @@ local function each(z)
   return (function (x) return x(x) end) (function (x) return function (y) z(y) return x(x) end end)
 end
 
-local h = bfredl
 
--- TODO(bfredl):: _G.h should be shorthand for the _last_ edited/reloaded .lua module
-_G.h = bfredl
 -- }}}
  -- packages {{{
 local packer = require'packer'
@@ -205,15 +204,26 @@ function h.vimenter(startup)
   end
 end -- }}}
 -- snippets {{{
-vim.keymap.set({'i', 's'}, '<c-k>', "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'", {expr=true})
-vim.keymap.set({'i', 's'}, '<c-j>', "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<c-j>'", {expr=true})
-require'bfredl.snippets'.setup()
+if vim.snippet then
+  vim.keymap.set({'i', 's'}, '<c-k>', function()
+    if vim.snippet.jumpable(1) then
+      return '<cmd>lua vim.snippet.jump(1)<cr>'
+    else
+      return '<c-k>'
+    end
+  end, {expr=true})
+  vim.keymap.set({'i', 's'}, '<c-j>', "v:lua.vim.snippet.jumpable(-1) ? '<cmd>lua vim.snippet.jump(1)<cr>' : '<c-j>'", {expr=true})
+else
+  vim.keymap.set({'i', 's'}, '<c-k>', "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'", {expr=true})
+  vim.keymap.set({'i', 's'}, '<c-j>', "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<c-j>'", {expr=true})
+end
+require'bfredl.snippets'.setup(h)
 
 do local ns = a.create_namespace 'selekt-color'
   a.set_hl(ns, "Visual", {bg='#006600'})
   local function on_win(_, winid, bufnr, row)
     if winid == a.get_current_win() and ({s=true,S=true,['']=true})[vim.fn.mode():sub(1,1)] then
-      --(a._set_hl_ns or a.set_hl_ns)(ns)
+      a.set_hl_ns_fast(ns)
     else
       --(a._set_hl_ns or a.set_hl_ns)(0)
     end
@@ -229,10 +239,11 @@ function h.client_capabilities(over)
   return vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), over)
 end
 
+h.clangd_path = "/home/bfredl/local/llvm17-release/bin/clangd"
 function h.clangd()
   vim.lsp.start {
     name = 'clangd';
-    cmd = {'clangd', '-query-driver=/home/bfredl/dev/DelugeFirmware/./toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
+    cmd = {h.clangd_path, '-query-driver=/home/bfredl/dev/DelugeFirmware/./toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
     root_dir = h.root_pattern {
       'compile_commands.json';
       'compile_flags.txt';
@@ -244,12 +255,48 @@ function h.clangd()
         completion = { editsNearCursor = true; };
       };
       offsetEncoding = { 'utf-8', 'utf-16' };
+      positionEncodings = { 'utf-8', 'utf-16' }; -- electric boogalo
     }
    }
 end
 
+function h.luals()
+  vim.lsp.start {
+    name = 'luaLS';
+    cmd = {'lua-language-server'};
+    root_dir = h.root_pattern {
+      '.git';
+      '.luarc.json';
+      '.luarc.jsonc';
+    };
+    capabilities = h.client_capabilities {
+    };
+    on_init = function(client)
+      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+        Lua = {
+          runtime = { version = 'LuaJIT'; };
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            checkThirdParty = false;
+            library = {
+              vim.env.VIMRUNTIME;
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            };
+          };
+        };
+      })
+    end;
+  }
+end
+
 if not vim.g.bfredl_nolsp then
-  if vim.fn.executable('clangd') ~= 0 then
+  local has_clangd = vim.fn.executable(h.clangd_path) ~= 0
+  if not has_clangd then
+    h.clangd_path = "clangd"
+    has_clangd = vim.fn.executable(h.clangd_path) ~= 0
+  end
+  if has_clangd then
     h.aucmd('FileType', {'c', 'cpp'}, function() h.clangd() end)
   end
   if vim.fn.executable('typescript-language-server') ~= 0 then
@@ -264,6 +311,11 @@ if not vim.g.bfredl_nolsp then
   if vim.fn.executable('zls') ~= 0 then
   end
   if vim.fn.executable 'jedi-language-server' ~= 0 then
+  end
+  if vim.fn.executable 'lua-language-server' ~= 0 then
+    h.aucmd('FileType', {'lua'}, function()
+      h.luals()
+    end)
   end
   if vim.fn.executable('pylsp') ~= 0 then
     h.aucmd('FileType', {'python'}, function()
@@ -363,10 +415,9 @@ if os.getenv'NVIM_INSTANCE' then
 end
 h.f = require'bfredl.floaty'.f
 _G.f = h.f -- HAIII
-if os.getenv'NVIM_INSTANCE' and not __devcolors then
+if os.getenv'NVIM_INSTANCE' and not __devcolors then -- {{{
   v [[ color sitruuna_bfredl ]]
 else
   v [[ hi MsgArea blend=15 guibg=#281811]]
-end
-return bfredl
-
+end -- }}}
+return h
