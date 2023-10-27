@@ -1,0 +1,56 @@
+2013:
+https://groups.google.com/g/vim_dev/c/lylNU4Na2Nk
+> After marc weber's [thread about improving
+> vim](https://groups.google.com/forum/#!topic/vim_use/IKha1xx6V8Y) I decided to
+> download the source code and try to fix what I believe to be a great deficiency
+> of vim: Impossibility to run vim commands from another thread.
+
+2014:
+
+Before:
+patches to vim about event handling
+
+[HUMBLE BEGINNINGS]
+
+https://groups.google.com/g/vim_dev/c/QF7Bzh1YABU/m/02-YGr7_sCwJ Jan 21, 2014
+[PATCH] Non-blocking job control for vimscript
+> It is my second attempt to bring multitasking to vim, but unlike the
+> event-loop/message queue patch, this one does not rely on multithreading,
+> using only system functions available on most unixes. If required, it
+> could also be
+> ported to windows(I think it has a concept called IOCP which provides a
+> replacement to the 'select' system call).
+
+
+Neovim itself
+```
+commit 72cf89bce8e4230dbc161dc5606f48ef9884ba70
+Author: Thiago de Arruda <tpadilha84@gmail.com>
+Date:   Fri Jan 31 10:39:15 2014 -0300
+
+    Import vim from changeset v5628:c9cad40b4181
+```
+
+https://news.ycombinator.com/item?id=7278214 Feb 21, 2014 |
+https://groups.google.com/g/vim_dev/c/x0BF9Y0Uby8/m/MXWWcW0E9HwJ Feb 23, 2014
+
+2015:
+
+Nvim 0.1.0 - Date:   Sun Nov 1 16:13:52 2015 -0500
+commit c4826c300340a9e4df20964a14650caf64fc1b58 (HEAD, tag: v0.1.0)
+Author: Justin M. Keyes <justinkz@gmail.com>
+
+2016:
+ - first LSP PR?
+
+2017:
+- "virtual text"
+
+2019:
+ - floats
+ - tree sitter
+
+## TO BE PLACED
+- screen tests (rev 0 and snapshot_util()
+- lua/luajit (zyx-i PR)
+- experiment: vim7script to luajit "transpiler"
