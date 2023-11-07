@@ -18,7 +18,7 @@ https://github.com/neovim/neovim/pull/2905
 2017:
 First sketch of "multigrid" (ref relevant PR)
 
-2018:
+2018::h
 https://github.com/neovim/neovim/pull/7992 Represent Screen state as UTF-8 
 https://github.com/neovim/neovim/pull/8221 linegrid mode
 very important: regard screen state as line segments in general
@@ -27,7 +27,13 @@ very important: regard screen state as line segments in general
 - introduce compositor for pum only
 - floating windows!
 
+2023:
+- eee
+
+
 
 separate topic: screen-tests
 Tarrudas first PR:
+https://github.com/neovim/neovim/pull/1605/ "Abstract UI termcap" (test commit)
 https://github.com/neovim/neovim/pull/1835 screen:snapshot_util()
+- 4000 screen tests!
