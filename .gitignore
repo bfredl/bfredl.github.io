@@ -1,3 +1,4 @@
 !*.pdf
 nvim/plugin/packer_compiled.vim
 nushell/history.txt
+.hugo_build.lock
