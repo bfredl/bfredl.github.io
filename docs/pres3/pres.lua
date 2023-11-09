@@ -18,15 +18,43 @@ dblueish = "#0848C8"
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
-s:slide("titlepage", function()
+s:slide('titlepage', function()
   vim.cmd [[ hi Normal guibg=#182024]]
   m.header 'Ten years of Neovim'
 
   -- IMAGEN
 end)
 
-s:slide("before", function()
+s:slide('before', function()
   m.header 'The time before'
+
+  -- neovim: how and why
+
+  sf {r=4, w=74, text=[[
+  event handling before:
+    CursorHold
+    --remote protocol]]}
+end)
+
+s:slide('language', function()
+  m.header 'the language question'
+
+  sf {r=4, w=74, text=[[
+    original plan: faster vimscript
+    ZyX'I:s vimscript to lua compiler: ahead of its time
+
+    problem: (classic) vimscript is not possible to parse
+
+    let x = "a"
+    let y = "b"
+    echo x.y
+    let x = {"y": "foo"}
+    echo x.y
+  ]]}
+end)
+
+s:slide('release', function()
+  m.header 'releases and versioning'
 end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
