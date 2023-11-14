@@ -11,16 +11,25 @@ _G.s = s
 m.prepare()
 m.cls()
 
-dgreen = "#338844"
-dred = "#880000"
-dblueish = "#0848C8"
+clight = "#FFFFFF"
+cfwd = "#CC3333"
+cback = "#1199EE"
+caccent = "#CCCC33"
+cmid = "#6611BB"
 
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
 s:slide('titlepage', function()
-  vim.cmd [[ hi Normal guibg=#182024]]
-  m.header 'Ten years of Neovim'
+  vim.cmd [[ hi Normal guibg=#080808]]
+  local rs, rc = 5, 12
+  sf {r=rs+1, c=rc, text='NEOVIM', fg=clight}
+  local bgs = {cfwd, caccent, cback, cmid}
+  for i = 1,4 do
+    local s = 12
+    sf {r=rs+3,h=5,c=rc+s*(i-1),w=s-2,bg=bgs[i]}
+  end
+  sf {r=rs+9, c=rc+33, text='10 YEARS GONE', fg=clight}
 
   -- IMAGEN
 end)

@@ -97,9 +97,9 @@ function h.f(args)
   if args.blend then
     win.set_option(w, 'winblend', args.blend)
   end
-  if args.bg then
+  if args.bg or args.fg then
     local bg
-    if string.sub(args.bg, 1, 1) == "#" then
+    if (args.bg and string.sub(args.bg, 1, 1) == "#") or (args.fg and string.sub(args.fg, 1, 1) == "#") then
       -- TODO(bfredl):be smart and reuse hl ids.
       bg = "XXTMP"..u.id()
       colors.def_hi(bg, {bg=args.bg, fg=args.fg, blend=args.blend})
