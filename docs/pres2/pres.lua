@@ -15,7 +15,6 @@ dgreen = "#338844"
 dred = "#880000"
 dblueish = "#0848C8"
 
-vim.cmd [[au! lspconfig FileType c]]
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]

@@ -13,15 +13,38 @@ m.cls()
 
 clight = "#FFFFFF"
 cfwd = "#CC3333"
-cback = "#1199EE"
+cback = "#1199DD"
+cbackdark = "#042367"
 caccent = "#CCCC33"
-cmid = "#6611BB"
+cmid = "#6822AA"
+
+a.set_hl(0, "BrightFg", {fg=clight, bold=true})
+a.set_hl(0, "BackFg", {fg=cback, bold=true})
+a.set_hl(0, "DimFg", {fg="#777777"})
+a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
+
+a.set_hl(0, "ZigFg", {fg="#EECC22", bold=true})
+
+ns = a.create_namespace'pres'
+
+function hl(nam, l, c, c2)
+  a.buf_add_highlight(0, ns, nam, l, c, c2)
+end
+
+function issue(r, num, name, date)
+  date = date and (" ("..date..")") or ""
+  sf {r=r, c=8, text=num..": "..name..date, fn=function()
+    hl("BrightFg", 0, 0, #num+1)
+    hl("DimFg", 0, #num+2+#name, -1)
+  end}
+end
+
+  vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
 
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
 s:slide('titlepage', function()
-  vim.cmd [[ hi Normal guibg=#080808]]
   local rs, rc = 5, 12
   sf {r=rs+1, c=rc, text='NEOVIM', fg=clight}
   local bgs = {cfwd, caccent, cback, cmid}
@@ -45,6 +68,50 @@ s:slide('before', function()
     --remote protocol]]}
 end)
 
+s:slide('refactor', function()
+  m.header 'early refactors'
+  sf {r=4, text="Most important change: no more #ifdef FEAT_XXX"}
+  sf {r=6, c=8, w=50, text=[[
+
+ #ifdef FEAT_SYN_HL
+ 	if (!(wlv->cul_screenline
+ # ifdef FEAT_DIFF
+ 		    && wlv->diff_hlf == (hlf_T)0
+ # endif
+ 	     ))
+ 	    wlv->saved_char_attr = wlv->char_attr;
+ 	else
+ #endif
+ 	    wlv->saved_char_attr = 0;
+]], bg=cbackdark, fg="#cccccc", fn=function()
+  vim.cmd "match BackFg /\\v#\\s?\\a+/"
+  vim.cmd "2match BackFG /\\vFEAT_[A-Z_]+/"
+end}
+
+ sf {r=19, bg="BrightFg", text="This is a prerequisite for many other refactors!"}
+
+end)
+
+s:slide('refactor2', function()
+  m.header 'early refactors'
+
+  sf {r=3, text="- get rid of conditional compilation"}
+  sf {r=4, text="- MERE"}
+
+end)
+
+s:slide('multibytes', function()
+  m.header 'case study: multibyte and screen text'
+
+  issue(4, "72cf89b", "Process files through unifdef to remove tons of FEAT_* macros", "jan 2014")
+  issue(6, "#2929", "Don't allow changing encoding after startup scripts", "sep 2015")
+  issue(7, "#3655", "Always use encoding=utf-8 per default", "Jan 2016")
+  issue(8, "#2095", "Only allow encoding=utf-8", "nov 2016")
+  issue(10, "#7992", "Represent Screen state as UTF-8", "jun 2018")
+
+end)
+
+
 s:slide('language', function()
   m.header 'the language question'
 
@@ -60,6 +127,19 @@ s:slide('language', function()
     let x = {"y": "foo"}
     echo x.y
   ]]}
+end)
+
+s:slide('language2', function()
+  m.header 'the language question II'
+  -- this naturally comes AFTER slides where the state of c + c->lua->c
+
+  sf {r=4, text=[[rewrite Neovim in C++/Rust/Zig ??]], fn=function()
+    hl("ZigFg", 0, 27, 30)
+  end}
+
+  issue(6, "#153", "Is there any plan to use c++?", "Feb 2014")
+  issue(8, "#2669", "Switch project to Rust, is that possible at all?", "Jul 2018")
+
 end)
 
 s:slide('release', function()
