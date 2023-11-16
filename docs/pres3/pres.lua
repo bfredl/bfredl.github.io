@@ -104,13 +104,32 @@ s:slide('multibytes', function()
   m.header 'case study: multibyte and screen text'
 
   issue(4, "72cf89b", "Process files through unifdef to remove tons of FEAT_* macros", "jan 2014")
+
   issue(6, "#2929", "Don't allow changing encoding after startup scripts", "sep 2015")
   issue(7, "#3655", "Always use encoding=utf-8 per default", "Jan 2016")
   issue(8, "#2095", "Only allow encoding=utf-8", "nov 2016")
-  issue(10, "#7992", "Represent Screen state as UTF-8", "jun 2018")
 
+  issue(10, "#7992", "Represent Screen state as UTF-8", "jun 2018")
+  issue(11, "#25214", "change schar_T representation to be more compact", "sep 2023")
+
+  issue(13, "#25503", "refactor(grid): do arabic shaping in one place", "okt 2023")
+  issue(14, "#25905", "refactor(grid): reimplement 'rightleft' as a post-processing step", "nov 2023")
+
+  sf {r=16, text="related: ui protocol changes. see last years talk!"}
+
+  issue(18, "#8221", "UI grid protocol revision: line based updates", "jul 2018")
+
+  -- RANT MODE: overemphasize how important the first step has been for the rest!
+  -- whenever I think to the self "should I backport this cleanup to vim/vim"
+  -- get hit by that wall of #ifdef:s in the way
 end)
 
+s:slide('message', function()
+  m.header 'the message.c hydra'
+
+  -- include .dot source as text.
+  -- show rendered xdot as a OBS overlay.
+end)
 
 s:slide('language', function()
   m.header 'the language question'
@@ -141,6 +160,11 @@ s:slide('language2', function()
   issue(8, "#2669", "Switch project to Rust, is that possible at all?", "Jul 2018")
 
 end)
+
+s:slide('build', function()
+  m.header 'Build System!'
+end)
+
 
 s:slide('release', function()
   m.header 'releases and versioning'
