@@ -1,0 +1,58 @@
+current decorations:
+
+INLINE in mtkey_t:
+  - single hl_id (u32)
+  - prority for the hl (u16)
+  - space in flags: (u16 - but shared)
+    - hl_eol (u1)
+    - decor_level (u2)
+  - pointer (u64)
+
+  Total 14 bytes + space in 2 shared bytes out of 32
+
+FULL decoration: (resorted per topic, actual structure more compact)
+  VirtText virt_text;
+  bool virt_text_hide;
+  VirtTextPos virt_text_pos;
+  HlMode hl_mode; // is virt_text..
+  int virt_text_width;  // width of virt_text
+  int col;  // fixed col value, like win_col (CHECK: only for virt_text)
+
+  VirtLines virt_lines;
+  bool virt_lines_above;
+
+  int hl_id;  // highlight group
+  HlMode hl_mode; // not used for hl_group yet.. :P
+  DecorPriority priority; // used for more than highlight? check!
+  bool hl_eol;
+
+  // hl-ish (assumes a region)
+  int conceal_char; // TODO(bfredl): in principle this should be a schar_T, (maybe with reorg, but: inline text anyway)
+  bool conceal;
+  TriState spell;
+
+  // sign ish (though non-sign hl_id could be separated?)
+  char *sign_text;
+  int sign_hl_id;
+  int number_hl_id;
+  int line_hl_id;
+  int cursorline_hl_id;
+
+  bool ui_watched;  // watched for win_extmark
+};
+
+new decorations:
+  separate structs for
+    - virt_text
+    - virt_lines block
+    - hl/hl-ish
+    - sign/sign/ish
+
+if not exactly SOA, at least arrays-of-smaller-structs :P
+
+and then being able to chain arbitary such smaller blocks for one extmark
+
+  inline:
+    more like a tagged union? (single hl-block or a chain reference, somehow)
+    these could always be inlide: ui_watched, spell ?
+      

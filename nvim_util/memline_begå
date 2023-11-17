@@ -1,0 +1,22 @@
+ml_append 50 (use ml_append_buf; assumes already has a memline)
+ml_replace 41 (shell around ml_replace_buf)
+ml_delete 31 (almost shelly, added ml_delete_buf)
+
+mark_adjust 34
+mark_adjust_nofold 4
+^ both shells around mark_adjust_internal
+^ refactored that one to mark_adjust_buf
+
+fix_cursor
+
+changed_lines 45
+refactored to buf_changed_lines (not to confuse with the changed_lines_buf :seenoevil:)
+and added compat shell
+changed_bytes 18
+inserted_bytes 10
+
+ml_get: 180
+ml_get_pos: 15
+ml_get_buf: 116
+get_cursor_line_ptr: 125
+get_cursor_pos_ptr: 61
