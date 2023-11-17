@@ -159,6 +159,19 @@ s:slide('language2', function()
   issue(6, "#153", "Is there any plan to use c++?", "Feb 2014")
   issue(8, "#2669", "Switch project to Rust, is that possible at all?", "Jul 2018")
 
+  sf {r=11, text="but how?"}
+
+  -- "rewrite in rust" makes sense with modules
+  -- otherwise it just becomes "safe rust", "unsafe rust", "c"
+  -- where "unsafe rust" is not a thin interface but the entire code , lol
+
+  sf {r=13, text='"maintain it with zig!" (start with build.zig)'}
+
+  -- just "neovim but rewritten from scratch" is booring, reconsider everything!
+  sf {r=14, text='"Don\'t rewrite, reinvent" -> helix'}
+  sf {r=15, text="use external tools/libraries written in rust"}
+  sf {r=16, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
+
 end)
 
 s:slide('build', function()
