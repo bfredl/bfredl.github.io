@@ -100,6 +100,7 @@ s:slide('refactor2', function()
 
 end)
 
+
 s:slide('multibytes', function()
   m.header 'case study: multibyte and screen text'
 
@@ -129,6 +130,33 @@ s:slide('message', function()
 
   -- include .dot source as text.
   -- show rendered xdot as a OBS overlay.
+end)
+
+s:slide('student', function()
+  m.header 'student collaborations'
+
+  sf {r=3, text="incremental substitution"}
+  sf {r=4, text="a group of students from X university"}
+
+  issue(6, "#4794", ':substitute "live" feedback', "May 2016, tracking issue")
+  issue(7, "#4811", 'Incsub 1', "May 2016, draft")
+
+  -- issue(9, "#4915", 'Incsub 2', "Jun 2016")
+  -- issue(10, "#5226", 'Incsub 3', "Nov 2016")
+  -- issue(11, "#5661", 'Incsub 4', "Nov 2016, merged")
+  issue(9, "#4915+#5226+#5661", 'Incsub 2-4', "Nov 2016, merged")
+
+  sf {r=11, text="Google summer of code: 2018-2020"}
+
+  issue(13, "#8455", 'Break up screen grid into resizable window grids', "Aug 2018")
+  issue(14, "#8337", 'GSoC Project Outline for a .NET API Client', "Aug 2018")
+  issue(15, "#9943", 'Multiprocessing feature', "Aug 2019")
+  issue(16, "#10071", 'TUI (Terminal UI) remote attachment', "Aug 2019")
+  issue(17, "#12531+12593", "TUI + fswatch 'autoread'", "Aug 2020")
+  
+  sf {r=20, text="+ good processes for onboarding new contributions"}
+  sf {r=21, text="+ high quality work produced and merged"} -- emph
+  sf {r=22, text="- harder to keep student contributors around afterwards"}
 end)
 
 s:slide('language', function()
