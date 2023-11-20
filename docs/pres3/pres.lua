@@ -206,9 +206,35 @@ s:slide('build', function()
   m.header 'Build System!'
 end)
 
+s:slide('version', function()
+  m.header 'versioning history'
+
+  sf {r=3,  text='first commit: 2014-01-31'}
+  sf {r=4,  text='v0.1.0: 2015-11-01'}
+  sf {r=5,  text='v0.2.0: 2017-05-01'}
+  sf {r=6,  text='v0.3.0: 2018-06-11'}
+  sf {r=7,  text='v0.4.0: 2019-09-15'}
+  sf {r=8,  text='v0.5.0: 2021-06-02'}
+  sf {r=9,  text='v0.6.0: 2021-11-30'}
+  sf {r=10, text='v0.7.0: 2022-04-15'}
+  sf {r=11, text='v0.8.0: 2022-09-30'}
+  sf {r=12, text='v0.9.0: 2023-04-07'}
+
+end)
+
 
 s:slide('release', function()
   m.header 'releases and versioning'
+
+  sf {r=5, text="starting with v0.4.0, separatate release-0.x branches"}
+  sf {r=7, text="release notes:"}
+  sf {r=8, c=8, text="<=0.4.0: big bash script listing all commits"}
+  sf {r=9, c=8, text="0.5.0 and later: conventional commits + git-cliff"}
+
+  sf {r=11, c=8, w=65,  bg=cmid, text=[[
+feat(clipboard): add OSC 52 clipboard support
+refactor(sign): move legacy signs to extmarks
+fix(job-control): make jobwait() flush UI after hiding cursor]]}
 end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
