@@ -62,10 +62,24 @@ s:slide('before', function()
 
   -- neovim: how and why
 
-  sf {r=4, w=74, text=[[
+  sf {r=3, w=74, text=[[
   event handling before:
     CursorHold
     --remote protocol]]}
+
+    sf {r=7, text="by floobits, for real-time collaboration:"}
+    issue(8, "vim-dev", "[PATCH] Asynchronous functions (settimeout, setinterval, ...)", "sep 2013")
+
+    sf {r=10, text="by tarruda:"}
+    issue(11, "vim-dev", "[PATCH] Proof of concept: thread-safe message queue", "dec 2013")
+    issue(12, "vim-dev", "[PATCH] Non-blocking job control for vimscript", "jan 2014")
+
+  sf {r=14, w=76, bg=cbackdark, text=[[
+> It is my second attempt to bring multitasking to vim, but unlike the
+> event-loop/message queue patch, this one does not rely on multithreading,
+> using only system functions available on most unixes. If required, it
+> could also be ported to windows(I think it has a concept called IOCP
+> which provides a replacement to the 'select' system call). ]]}
 end)
 
 s:slide('refactor', function()
@@ -93,10 +107,11 @@ end}
 end)
 
 s:slide('refactor2', function()
-  m.header 'early refactors'
+  m.header 'important refactors'
 
   sf {r=3, text="- get rid of conditional compilation"}
-  sf {r=4, text="- MERE"}
+  sf {r=4, text="- saner integer types"}
+  sf {r=5, text="- the long running char_u series"}
 
 end)
 
