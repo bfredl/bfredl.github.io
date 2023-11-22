@@ -178,17 +178,21 @@ s:slide('language', function()
   m.header 'the language question'
 
   sf {r=4, w=74, text=[[
-    original plan: faster vimscript
-    ZyX'I:s vimscript to lua compiler: ahead of its time
+original plan: faster vimscript
+ZyX'I:s vimscript to lua compiler: ahead of its time
 
-    problem: (classic) vimscript is not possible to parse
+problem: (classic) vimscript is not possible to parse]]}
 
-    let x = "a"
-    let y = "b"
-    echo x.y
-    let x = {"y": "foo"}
-    echo x.y
-  ]]}
+  sf {r=9, w=30, c=15, bg=cbackdark, text=[[
+let x = "a"
+let y = "b"
+echo x.y
+
+let x = {"y": "foo"}
+echo x.y]]}
+
+ sf{r=17, text="async plugins via remote hosts (python, ruby, node)"}
+ sf{r=18, text="big lua explosion: vim.api + vim.loop"}
 end)
 
 s:slide('language2', function()
@@ -223,20 +227,24 @@ end)
 
 s:slide('version', function()
   m.header 'versioning history'
+  local ce=30
 
   sf {r=3,  text='first commit: 2014-01-31'}
-  sf {r=4,  text='v0.1.0: 2015-11-01'}
-  sf {r=5,  text='v0.2.0: 2017-05-01'}
-  sf {r=6,  text='v0.3.0: 2018-06-11'}
-  sf {r=7,  text='v0.4.0: 2019-09-15'}
-  sf {r=8,  text='v0.5.0: 2021-06-02'}
-  sf {r=9,  text='v0.6.0: 2021-11-30'}
-  sf {r=10, text='v0.7.0: 2022-04-15'}
-  sf {r=11, text='v0.8.0: 2022-09-30'}
-  sf {r=12, text='v0.9.0: 2023-04-07'}
+  sf {r=5,  text='v0.1.0: 2015-11-01'}
+  sf {r=5, c=30, text='async job control, :terminal'}
+  sf {r=7,  text='v0.2.0: 2017-05-01'}
+  sf {r=7, c=30, text='inccommand'}
+  sf {r=9,  text='v0.3.0: 2018-06-11'}
+  sf {r=11,  text='v0.4.0: 2019-09-15'}
+  sf {r=11, c=30, text='floating windows, virtual text'}
+  sf {r=13,  text='v0.5.0: 2021-06-02'}
+  sf {r=13, c=30, text='extmarks, LSP, treesitter'}
+  sf {r=15,  text='v0.6.0: 2021-11-30'}
+  sf {r=17, text='v0.7.0: 2022-04-15'}
+  sf {r=19, text='v0.8.0: 2022-09-30'}
+  sf {r=21, text='v0.9.0: 2023-04-07'}
 
 end)
-
 
 s:slide('release', function()
   m.header 'releases and versioning'
@@ -250,6 +258,23 @@ s:slide('release', function()
 feat(clipboard): add OSC 52 clipboard support
 refactor(sign): move legacy signs to extmarks
 fix(job-control): make jobwait() flush UI after hiding cursor]]}
+end)
+
+s:slide('delet', function()
+  m.header 'deleted features/modules'
+
+    issue(4, "--", "in-tree GUI (gtk, qt, mswin)", "feb 2014")
+    issue(5, "1622", "vi 'compatible' mode", "feb 2014")
+    sf {r=6, text="languages other than vimscript, if_lua"}
+
+    issue(9, "18547", "remove 'insertmode'", "may 2022")
+    issue(10, "20545", "remove :cscope", "okt 2022")
+    issue(11, "21472", "remove :hardcopy", "dec 2022")
+
+  sf {r=13, text="remove 'bundles' of changed behavior which can be configured manually (:behave)"}
+
+  sf {r=15, text='not ported features:'}
+  sf {r=17, c=15, text='defaults.vim (a third set of defaults)'}
 end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
