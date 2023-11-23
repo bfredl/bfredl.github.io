@@ -165,7 +165,7 @@ s:slide('options', function()
   m.header 'case study: options.lua'
 
   issue(3, "#2288 (part)", "options: Move option definitions to options.lua", "jul 2015")
-  issue(4, "#15078", 'refactor(options): remove obsolete distinction of "vi" vs "vim" defaults', "jul 2021")
+  issue(4, "#15078", 'refactor: remove obsolete distinction of "vi" vs "vim" defaults', "jul 2021")
   issue(6, "#24528", "docs(options): take ownership of options.txt ", "aug 2023")
 
   sf {r=10, text="TODO: actually show some codes"}
@@ -287,14 +287,18 @@ s:slide('luaaaaaa', function()
   sf {r=4,  c=10, text="luajit + luarocks + moonscript"}
 
   issue(5, "#1128", "Drop moonscript", "aug 2014")
-  issue(6, "???", "the NVIM api autogen", "aug 2014")
+  issue(6, "#509", "Add msgpack_rpc_dispatch/metadata generator", "apr 2014")
 
-  issue(7, "???", "lua interpreter in core", "aug 2014")
-  issue(8, "???", "libluv bindings", "aug 2014")
+  issue(7, "#4411", "lua interpreter in core", "may 2017")
+  issue(8, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
+  issue(9, "#12235", "startup: support init.lua as user config", "dec 2020")
 
-  issue(9, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
+  issue(11, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
+  issue(12, "#", "lua keymaps", "feb 2022")
 
-  issue(11, "#xx", "something about LuaLS CaTS", "-- 2023")
+  issue(12, "#xx", "something about LuaLS CaTS", "-- 2023")
+
+  sf {r=20, text="conclusion: shift from 'infrastructure' language to primary plugin/config lang"}
   -- go through all the usage of lua internally and externally
 end)
 
@@ -322,7 +326,21 @@ s:slide('language2', function()
   sf {r=14, text='"Don\'t rewrite, reinvent" -> helix'}
   sf {r=15, text="use external tools/libraries written in rust"}
   sf {r=16, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
+end)
 
+s:slide('ctool', function()
+  m.header 'Tooling for C'
+
+  sf {r=3, text="Given the consistent strategy to stick with C for a long while" }
+  sf {r=4, text='"Just write good C code and not bad C code"'}
+  sf {r=5, text='invest in good tooling for maintaining and writing C code'}
+
+  sf {r=8, text='Sanitizers (address, undefined behavior, leaks)'}
+  sf {r=9, text="Multithreading: just don't do it"}
+  sf {r=10, text="Static analyzers:"}
+  sf {r=11, c=12, text="PVS"}
+  sf {r=12, c=12, text="coverity"}
+  sf {r=13, c=12, text="clang-analyzer/clang-tidy"}
 
 end)
 
@@ -351,12 +369,15 @@ s:slide('version', function()
   sf {r=11,  text='v0.4.0: 2019-09-15'}
   sf {r=11, c=30, text='floating windows, virtual text'}
   sf {r=13,  text='v0.5.0: 2021-06-02'}
-  sf {r=13, c=30, text='extmarks, LSP, treesitter'}
+  sf {r=13, c=30, text='extmarks, LSP, tree-sitter, init.lua'}
   sf {r=15,  text='v0.6.0: 2021-11-30'}
+  sf {r=15, c=30, text="diagnostic API, LSP improvements, better 'packpath'"}
   sf {r=17, text='v0.7.0: 2022-04-15'}
+  sf {r=17, c=30, text="lua core interfaces"}
   sf {r=19, text='v0.8.0: 2022-09-30'}
+  sf {r=19, c=30, text="aaaa"}
   sf {r=21, text='v0.9.0: 2023-04-07'}
-
+  sf {r=21, c=30, text=":inspect, vim.secure"}
 end)
 
 s:slide('release', function()
