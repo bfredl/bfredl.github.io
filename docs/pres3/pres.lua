@@ -69,7 +69,6 @@ s:slide("whoami", function()
   m.header 'Whoami'
   sf {r=4, w=55, text=[[
 - Regular contributor to Neovim since early 2015
-- "One of multiple dictators like Bram" for the project
   ]]}
 
   -- IMAGEN
@@ -132,9 +131,9 @@ s:slide('refactor2', function()
   m.header 'important refactors'
 
   sf {r=3, text="- get rid of conditional compilation"}
-  sf {r=3, text="- use lua for code generation and unit testing"}
-  sf {r=4, text="- saner integer types"}
-  sf {r=5, text="- the long running char_u series"}
+  sf {r=4, text="- use lua for code generation and unit testing"}
+  sf {r=5, text="- saner integer types"}
+  sf {r=6, text="- the long running char_u series"}
 end)
 
 
@@ -162,6 +161,16 @@ s:slide('multibytes', function()
   -- get hit by that wall of #ifdef:s in the way
 end)
 
+s:slide('options', function()
+  m.header 'case study: options.lua'
+
+  issue(3, "#2288 (part)", "options: Move option definitions to options.lua", "jul 2015")
+  issue(4, "#15078", 'refactor(options): remove obsolete distinction of "vi" vs "vim" defaults', "jul 2021")
+  issue(6, "#24528", "docs(options): take ownership of options.txt ", "aug 2023")
+
+  sf {r=10, text="TODO: actually show some codes"}
+end)
+
 s:slide('message', function()
   m.header 'the message.c hydra'
 
@@ -170,7 +179,7 @@ s:slide('message', function()
 end)
 
 s:slide_multi("testing", 2,  function(i)
-  m.header 'Regression test-drived development'
+  m.header 'Regression test-driven development'
 
   sf {r=4, text="RPC-protocol driven testing"}
   sf {r=5, text="screen tests"}
@@ -255,7 +264,7 @@ s:slide('language', function()
 
   sf {r=4, w=74, text=[[
 original plan: faster vimscript
-ZyX'I:s vimscript to lua compiler: ahead of its time
+ZyX-I's vimscript to lua compiler: ahead of its time
 
 problem: (classic) vimscript is not possible to parse]]}
 
@@ -269,6 +278,24 @@ echo x.y]]}
 
  sf{r=17, text="async plugins via remote hosts (python, ruby, node)"}
  sf{r=18, text="big lua explosion: vim.api + vim.loop"}
+end)
+
+s:slide('luaaaaaa', function()
+  m.header 'tema: lua'
+
+  issue(3, "d04ca90", "Add basic infrastructure for unit testing", "feb 2014")
+  sf {r=4,  c=10, text="luajit + luarocks + moonscript"}
+
+  issue(5, "#1128", "Drop moonscript", "aug 2014")
+  issue(6, "???", "the NVIM api autogen", "aug 2014")
+
+  issue(7, "???", "lua interpreter in core", "aug 2014")
+  issue(8, "???", "libluv bindings", "aug 2014")
+
+  issue(9, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
+
+  issue(11, "#xx", "something about LuaLS CaTS", "-- 2023")
+  -- go through all the usage of lua internally and externally
 end)
 
 s:slide('language2', function()
@@ -287,6 +314,7 @@ s:slide('language2', function()
   -- "rewrite in rust" makes sense with modules
   -- otherwise it just becomes "safe rust", "unsafe rust", "c"
   -- where "unsafe rust" is not a thin interface but the entire code , lol
+  sf {r=12, text='TODO: the "safe rust", "unsafe rust", "c" infographic'}
 
   sf {r=13, text='"maintain it with zig!" (start with build.zig)'}
 
@@ -295,11 +323,20 @@ s:slide('language2', function()
   sf {r=15, text="use external tools/libraries written in rust"}
   sf {r=16, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
 
+
 end)
 
 s:slide('build', function()
   m.header 'Build System!'
 end)
+
+s:slide('dependencies', function()
+  m.header 'Dependencies used by neovim'
+
+  -- Don't NIH the wheel
+  -- Bundle vs vendor
+end)
+
 
 s:slide('version', function()
   m.header 'versioning history'
