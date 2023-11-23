@@ -57,6 +57,28 @@ s:slide('titlepage', function()
   -- IMAGEN
 end)
 
+s:slide("intro", function()
+  m.header 'Overview'
+  sf {r=3, w=70, c=3, text=[[
+- What is Neovim?
+- Is neovim the same today as in 2014?
+  ]]}
+end)
+
+s:slide("whoami", function()
+  m.header 'Whoami'
+  sf {r=4, w=55, text=[[
+- Regular contributor to Neovim since early 2015
+- "One of multiple dictators like Bram" for the project
+  ]]}
+
+  -- IMAGEN
+
+  sf {r=12, text=[[
+- github.com/bfredl                matrix.to/#/@bfredl:matrix.org
+  ]], bg="#", fg="#EE8822"}
+end)
+
 s:slide('before', function()
   m.header 'The time before'
 
@@ -110,9 +132,9 @@ s:slide('refactor2', function()
   m.header 'important refactors'
 
   sf {r=3, text="- get rid of conditional compilation"}
+  sf {r=3, text="- use lua for code generation and unit testing"}
   sf {r=4, text="- saner integer types"}
   sf {r=5, text="- the long running char_u series"}
-
 end)
 
 
@@ -145,6 +167,60 @@ s:slide('message', function()
 
   -- include .dot source as text.
   -- show rendered xdot as a OBS overlay.
+end)
+
+s:slide_multi("testing", 2,  function(i)
+  m.header 'Regression test-drived development'
+
+  sf {r=4, text="RPC-protocol driven testing"}
+  sf {r=5, text="screen tests"}
+
+local  texten = [===[
+it('buffer highlighting', function()
+  screen = Screen.new(40, 8)
+  screen:attach()
+  insert([[
+    these are some lines
+    with colorful text]])
+
+  meths.buf_add_highlight(0, -1, "String", 0 , 10, 14)
+  meths.buf_add_highlight(0, -1, "Statement", 1 , 5, -1)
+
+  screen:snapshot_util()
+end)]===]
+
+  if i == 2 then
+    texten = [===[
+it('buffer highlighting', function()
+  screen = Screen.new(40, 8)
+  screen:attach()
+  insert([[
+    these are some lines
+    with colorful text]])
+
+  meths.buf_add_highlight(0, -1, "String", 0 , 10, 14)
+  meths.buf_add_highlight(0, -1, "Statement", 1 , 5, -1)
+
+  screen:expect{grid=[[
+    these are {1:some} lines                    |
+    with {2:colorful tex^t}                      |
+    {3:~                                       }|
+    {3:~                                       }|
+    {3:~                                       }|
+                                            |
+  ]], attr_ids={
+    [1] = {foreground = Screen.colors.Magenta1};
+    [2] = {bold = true, foreground = Screen.colors.Brown};
+    [3] = {bold = true, foreground = Screen.colors.Blue1};
+  }}
+end)]===]
+  end
+
+  sf {r=7, w=60, bg=cmid, text=texten}
+
+  if i == 2 then
+    sf {r=31, text=[[over 4000 expected screen states]]}
+  end
 end)
 
 s:slide('student', function()
