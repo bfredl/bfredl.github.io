@@ -12,6 +12,7 @@ m.prepare()
 m.cls()
 
 clight = "#FFFFFF"
+cmiddim = "#aaaaaa"
 cfwd = "#CC3333"
 cback = "#1199DD"
 cbackdark = "#042367"
@@ -19,6 +20,7 @@ caccent = "#E8BB22"
 cmid = "#6822AA"
 
 a.set_hl(0, "BrightFg", {fg=clight, bold=true})
+a.set_hl(0, "FwdFg", {fg=cfwd, bold=true})
 a.set_hl(0, "BackFg", {fg=cback, bold=true})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
@@ -74,7 +76,7 @@ s:slide("whoami", function()
 
   sf {r=12, text=[[
 - github.com/bfredl                matrix.to/#/@bfredl:matrix.org
-  ]], bg="#", fg="#EE8822"}
+  ]], bg="#", fg=caccent}
 end)
 
 s:slide('before', function()
@@ -317,7 +319,7 @@ s:slide('student', function()
   issue(17, "#12531+12593", "TUI + fswatch 'autoread'", "Aug 2020")
   
   sf {r=20, text="+ good processes for onboarding new contributions"}
-  sf {r=21, text="+ high quality work produced and merged"} -- emph
+  sf {r=21, text="+ high quality work produced and merged", fg=caccent}
   sf {r=22, text="- harder to keep student contributors around afterwards"}
 end)
 
@@ -330,16 +332,18 @@ ZyX-I's vimscript to lua compiler: ahead of its time
 
 problem: (classic) vimscript is not possible to parse]]}
 
-  sf {r=9, w=30, c=15, bg=cbackdark, text=[[
-let x = "a"
-let y = "b"
-echo x.y
+  sf {r=9, w=25, c=15, bg=cfwd, text=[[
+ let x = "a"
+ let y = "b"
+ echo x.y
 
-let x = {"y": "foo"}
-echo x.y]]}
+ let x = {"y": "foo"}
+ echo x.y]]}
 
  sf{r=17, text="async plugins via remote hosts (python, ruby, node)"}
  sf{r=18, text="big lua explosion: vim.api + vim.loop"}
+
+ sf{r=20, text="vim9script to lua transpiler"}
 end)
 
 s:slide('luaaaaaa', function()
@@ -361,7 +365,7 @@ s:slide('luaaaaaa', function()
 
   issue(15, "#24523", "feat(lua-types): types for vim.api.*", "-- 2023")
 
-  sf {r=20, text="conclusion: shift from 'infrastructure' language to primary plugin/config lang"}
+  sf {r=20, text="conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
   -- go through all the usage of lua internally and externally
 end)
 
@@ -405,6 +409,10 @@ s:slide('ctool', function()
   sf {r=12, c=12, text="coverity"}
   sf {r=13, c=12, text="clang-analyzer/clang-tidy"}
 
+  sf {r=15, text="linting formatting:"}
+  sf {r=16, c=12, text="clint.py"}
+  sf {r=17, c=12, text="uncrustify"}
+
 end)
 
 s:slide('build', function()
@@ -437,26 +445,27 @@ s:slide('version', function()
   m.header 'versioning history'
   local ce=28
 
-  sf {r=3,  text='first commit: 2014-01-31'}
-  sf {r=5,  text='v0.1.0: 2015-11-01'}
+  sf {r=3,  text='first commit: 2014-01-31', fg=cmiddim}
+  sf {r=5,  text='v0.1.0: 2015-11-01', fg=cmiddim}
   sf {r=5, c=ce, text='async job control, :terminal'}
-  sf {r=7,  text='v0.2.0: 2017-05-01'}
+  sf {r=7,  text='v0.2.0: 2017-05-01', fg=cmiddim}
   sf {r=7, c=ce, text='inccommand'}
-  sf {r=9,  text='v0.3.0: 2018-06-11'}
-  sf {r=11,  text='v0.4.0: 2019-09-15'}
+  sf {r=9,  text='v0.3.0: 2018-06-11', fg=cmiddim}
+  sf {r=9, c=ce, text="buffer updates, <cmd> key"}
+  sf {r=11,  text='v0.4.0: 2019-09-15', fg=cmiddim}
   sf {r=11, c=ce, text='floating windows, virtual text'}
-  sf {r=13,  text='v0.5.0: 2021-06-02'}
+  sf {r=13,  text='v0.5.0: 2021-06-02', fg=cmiddim}
   sf {r=13, c=ce, text='extmarks, LSP, tree-sitter, init.lua'}
-  sf {r=15,  text='v0.6.0: 2021-11-30'}
+  sf {r=15,  text='v0.6.0: 2021-11-30', fg=cmiddim}
   sf {r=15, c=ce, text="diagnostic API, better 'packpath'"}
-  sf {r=17, text='v0.7.0: 2022-04-15'}
+  sf {r=17, text='v0.7.0: 2022-04-15', fg=cmiddim}
   sf {r=17, c=ce, text="lua core interfaces"}
-  sf {r=19, text='v0.8.0: 2022-09-30'}
+  sf {r=19, text='v0.8.0: 2022-09-30', fg=cmiddim}
   sf {r=19, c=ce, text="aaaa"}
-  sf {r=21, text='v0.9.0: 2023-04-07'}
+  sf {r=21, text='v0.9.0: 2023-04-07', fg=cmiddim}
   sf {r=21, c=ce, text=":inspect, vim.secure"}
 
-  sf {r=15, c=66, w=1, h=7, bg=caccent}
+  sf {r=15, c=66, w=1, h=7, bg=cmid}
   sf {r=17, c=69, w=20, text = "tree-sitter,\nLSP maturation"}
 end)
 
@@ -494,14 +503,19 @@ end)
 s:slide('conclude', function()
   m.header 'after 10 years: did we stick to the original goals'
 
-  sf {r=3, text='original goal: transpile vimscript into lua'}
-  sf {r=4, text='original goal: async plugins as co-processes in any language'}
-  sf {r=5, text='current approach: lua as first class plugin and config, while compat with vim8script'}
-  sf {r=6, text='current approach: async plugins by lua bindings andr wrappers around libuv'}
+  sf {r=3, text='then: transpile vimscript into lua', fg=cfwd}
+  sf {r=4, text='then: async plugins as co-processes in any language', fg=cfwd}
+  sf {r=5, text='now: lua as first class plugin and config', fg=cback}
+  sf {r=6, text='now: keep compat with vim8 script', fg=cback}
+  sf {r=7, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
+  sf {r=8, text='there and back again: transpile runtime vim9 code into lua',fg=cback}
 
-  sf {r=8, text='original goal: RPC protocol for GUI:s and embedder'}
-  sf {r=9, text='TUI as a separate process written in ~~lua~~ C.'}
-  sf {r=10, text="GUI:s as third-party projects"}
+  sf {r=10, text='goal: RPC protocol for GUI:s and embedders'}
+  sf {r=11, text='TUI as a separate process written in ~~lua~~ C.', fn=function()
+    hl("FwdFg", 0, 37, 44)
+    hl("BackFg", 0, 45, 46)
+  end}
+  sf {r=12, text="GUI:s as third-party projects", fg=cback}
 
   -- answer: sorta. We solved the same problems but often in a different way
 end)
