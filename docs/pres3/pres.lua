@@ -15,15 +15,13 @@ clight = "#FFFFFF"
 cfwd = "#CC3333"
 cback = "#1199DD"
 cbackdark = "#042367"
-caccent = "#CCCC33"
+caccent = "#E8BB22"
 cmid = "#6822AA"
 
 a.set_hl(0, "BrightFg", {fg=clight, bold=true})
 a.set_hl(0, "BackFg", {fg=cback, bold=true})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
-
-a.set_hl(0, "ZigFg", {fg="#EECC22", bold=true})
 
 ns = a.create_namespace'pres'
 
@@ -45,7 +43,7 @@ vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
 s:slide('titlepage', function()
-  local rs, rc = 5, 12
+  local rs, rc = 5, 18
   sf {r=rs+1, c=rc, text='NEOVIM', fg=clight}
   local bgs = {cfwd, caccent, cback, cmid}
   for i = 1,4 do
@@ -60,8 +58,9 @@ end)
 s:slide("intro", function()
   m.header 'Overview'
   sf {r=3, w=70, c=3, text=[[
-- What is Neovim?
-- Is neovim the same today as in 2014?
+- Neovim was announced early 2014, nearly 10 years ago
+- How has our goals and overal design desicions evolved?
+- A lot of things has happened in 10 years
   ]]}
 end)
 
@@ -101,6 +100,33 @@ s:slide('before', function()
 > using only system functions available on most unixes. If required, it
 > could also be ported to windows(I think it has a concept called IOCP
 > which provides a replacement to the 'select' system call). ]]}
+end)
+
+s:slide('fundraiser', function()
+  m.header 'The original announcement: fundraiser'
+
+  sf {r=3, c=4, h=25, w=85, text=[[
+
+$10,000 will allow me to dedicate two months of full time work to this project, which will be enough to implement the following:
+
+- New, modern multi-platform UI written using qtlua.
+- New curses UI written using luaposix. [...] remove a great deal of code dedicated to handling terminals in the core source.
+- New testing UI written in Lua with migration of all tests to this interface. [...] Write vim tests using lua's bdd framework busted which will improve readability and run speed.
+- New plugin architecture, with a python compatibility layer for using vim plugins written in python.
+- Full port of the editor IO to libuv.
+- Cross-platform implementation of job control for vimscript (easy on top of libuv).
+- Distributions for Windows, Linux and Mac, and a Windows installer.
+
+Streatch goals:
+
+- Reimplement vimscript as a language that compiles to lua. In other words, vimscript will be to lua what coffeescript is to javascript.
+
+- Refactor the editor into a library. It will require changing the way vim reads input or emits output.  This will allow programs to embed the editor in the same process for better efficiency (no more marshalling of json/msgpack documents between the GUI and the core).
+
+]]}
+
+  sf {r=30, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
+  sf {r=32, text="inspect source and delete 'display: none;' style :P"}
 end)
 
 s:slide('refactor', function()
@@ -173,6 +199,42 @@ end)
 
 s:slide('message', function()
   m.header 'the message.c hydra'
+
+  sf {r=3, w=70, h=37, text=[[
+digraph {
+  redrawcmdline[color=blue,fontcolor=blue];
+  put_on_cmdline -> redrawcmdline -> msg_outtrans_len_attr
+  msg_outtrans_len_attr -> msg_puts_attr_len
+  msg_putchar[shape=plaintext];
+  msg_putchar -> msg_putchar_attr -> msg_puts_attr
+  msg_puts_attr[shape=plaintext];
+  msg_puts_attr -> msg_puts_attr_len
+  msg_puts_attr_len -> msg_puts_display -> t_puts -> grid_puts
+  msg_puts_display -> screen_puts_mbyte -> msg_screen_putchar
+  msg_puts_display -> msg_screen_putchar -> grid_putchar
+  screen_puts_mbyte -> grid_puts; grid_puts[color=red,fontcolor=red];
+  grid_putchar[color=red,fontcolor=red];
+  msg_attr_keep -> msg_multiline_attr -> msg_outtrans_len_attr
+  msg_multiline_attr -> msg_putchar_attr
+  msg_attr -> msg_attr_keep -> msg_outtrans_attr
+  msg_outtrans_attr[shape=plaintext]
+  msg_outtrans_len[shape=plaintext]
+  msg_outtrans[shape=plaintext]
+  msg_outtrans -> msg_outtrans_attr -> msg_outtrans_len_attr
+  msg_outtrans_len -> msg_outtrans_len_attr
+  msg -> msg_attr_keep; msg[shape=plaintext]
+  msg_attr[shape=plaintext]
+  emsg -> emsg_multiline -> msg_attr_keep; emsg[shape=plaintext]
+  put_on_cmdline -> cursorcmd -> cmd_cursor_goto
+  cursorcmd[color=blue,fontcolor=blue]
+  cmd_cursor_goto[color=blue,fontcolor=blue,shape=plaintext]
+  cmd_cursor_goto -> ui_grid_cursor_goto
+  ui_grid_cursor_goto[color=red,fontcolor=red];
+  put_on_cmdline[color=blue,fontcolor=blue]
+  do_more_prompt -> disp_sb_line -> msg_puts_display
+  msg_puts_display -> do_more_prompt
+}
+  ]]}
 
   -- include .dot source as text.
   -- show rendered xdot as a OBS overlay.
@@ -292,11 +354,12 @@ s:slide('luaaaaaa', function()
   issue(7, "#4411", "lua interpreter in core", "may 2017")
   issue(8, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
   issue(9, "#12235", "startup: support init.lua as user config", "dec 2020")
+  issue(10, "#14686", "Allow lua to be used in runtime files", "jun 2021")
 
   issue(11, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
-  issue(12, "#", "lua keymaps", "feb 2022")
+  issue(12, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
 
-  issue(12, "#xx", "something about LuaLS CaTS", "-- 2023")
+  issue(15, "#24523", "feat(lua-types): types for vim.api.*", "-- 2023")
 
   sf {r=20, text="conclusion: shift from 'infrastructure' language to primary plugin/config lang"}
   -- go through all the usage of lua internally and externally
@@ -307,7 +370,7 @@ s:slide('language2', function()
   -- this naturally comes AFTER slides where the state of c + c->lua->c
 
   sf {r=4, text=[[rewrite Neovim in C++/Rust/Zig ??]], fn=function()
-    hl("ZigFg", 0, 27, 30)
+    hl("AccentFg", 0, 27, 30)
   end}
 
   issue(6, "#153", "Is there any plan to use c++?", "Feb 2014")
@@ -351,6 +414,20 @@ end)
 s:slide('dependencies', function()
   m.header 'Dependencies used by neovim'
 
+  sf {r=3, text="bundled:"}
+  sf {r=5, c=8, text="libuv"}
+  sf {r=6, c=8, text="unibilium (terminfo without curses)"}
+  sf {r=7, c=8, text="libtermkey"}
+  sf {r=8, c=8, text="libvterm"}
+  sf {r=9, c=8, text="luajit (or lua 5.1)"}
+  sf {r=10, c=8, text="libluv"}
+  sf {r=11, c=8, text="libtreesitter"}
+
+  sf {r=14, text="vendored:"}
+  sf {r=16, c=8, text="klib (klist, khash, etc)"}
+  sf {r=17, c=8, text="lpeg (lua expression grammars)"}
+  sf {r=18, c=8, text="xdiff"}
+
   -- Don't NIH the wheel
   -- Bundle vs vendor
 end)
@@ -358,26 +435,29 @@ end)
 
 s:slide('version', function()
   m.header 'versioning history'
-  local ce=30
+  local ce=28
 
   sf {r=3,  text='first commit: 2014-01-31'}
   sf {r=5,  text='v0.1.0: 2015-11-01'}
-  sf {r=5, c=30, text='async job control, :terminal'}
+  sf {r=5, c=ce, text='async job control, :terminal'}
   sf {r=7,  text='v0.2.0: 2017-05-01'}
-  sf {r=7, c=30, text='inccommand'}
+  sf {r=7, c=ce, text='inccommand'}
   sf {r=9,  text='v0.3.0: 2018-06-11'}
   sf {r=11,  text='v0.4.0: 2019-09-15'}
-  sf {r=11, c=30, text='floating windows, virtual text'}
+  sf {r=11, c=ce, text='floating windows, virtual text'}
   sf {r=13,  text='v0.5.0: 2021-06-02'}
-  sf {r=13, c=30, text='extmarks, LSP, tree-sitter, init.lua'}
+  sf {r=13, c=ce, text='extmarks, LSP, tree-sitter, init.lua'}
   sf {r=15,  text='v0.6.0: 2021-11-30'}
-  sf {r=15, c=30, text="diagnostic API, LSP improvements, better 'packpath'"}
+  sf {r=15, c=ce, text="diagnostic API, better 'packpath'"}
   sf {r=17, text='v0.7.0: 2022-04-15'}
-  sf {r=17, c=30, text="lua core interfaces"}
+  sf {r=17, c=ce, text="lua core interfaces"}
   sf {r=19, text='v0.8.0: 2022-09-30'}
-  sf {r=19, c=30, text="aaaa"}
+  sf {r=19, c=ce, text="aaaa"}
   sf {r=21, text='v0.9.0: 2023-04-07'}
-  sf {r=21, c=30, text=":inspect, vim.secure"}
+  sf {r=21, c=ce, text=":inspect, vim.secure"}
+
+  sf {r=15, c=66, w=1, h=7, bg=caccent}
+  sf {r=17, c=69, w=20, text = "tree-sitter,\nLSP maturation"}
 end)
 
 s:slide('release', function()
@@ -409,6 +489,21 @@ s:slide('delet', function()
 
   sf {r=15, text='not ported features:'}
   sf {r=17, c=15, text='defaults.vim (a third set of defaults)'}
+end)
+
+s:slide('conclude', function()
+  m.header 'after 10 years: did we stick to the original goals'
+
+  sf {r=3, text='original goal: transpile vimscript into lua'}
+  sf {r=4, text='original goal: async plugins as co-processes in any language'}
+  sf {r=5, text='current approach: lua as first class plugin and config, while compat with vim8script'}
+  sf {r=6, text='current approach: async plugins by lua bindings andr wrappers around libuv'}
+
+  sf {r=8, text='original goal: RPC protocol for GUI:s and embedder'}
+  sf {r=9, text='TUI as a separate process written in ~~lua~~ C.'}
+  sf {r=10, text="GUI:s as third-party projects"}
+
+  -- answer: sorta. We solved the same problems but often in a different way
 end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
