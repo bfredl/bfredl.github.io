@@ -107,9 +107,12 @@ end)
 s:slide('fundraiser', function()
   m.header 'The original announcement: fundraiser'
 
-  sf {r=3, c=4, h=25, w=85, text=[[
+  sf {r=3, c=4, h=30, w=85, text=[[
+- Migrate to a cmake-based build
+- remove Legacy support and compile-time features
+- New plugin architecture
 
-$10,000 will allow me to dedicate two months of full time work to this project, which will be enough to implement the following:
+Plugins are long-running programs/jobs (coprocesses) that communicate with vim through stdin/stdout using msgpack-rpc or json-rpc. This system will be built on top of a job control mechanism similar to the one implemented by the job control patch.
 
 - New, modern multi-platform UI written using qtlua.
 - New curses UI written using luaposix. [...] remove a great deal of code dedicated to handling terminals in the core source.
@@ -119,16 +122,15 @@ $10,000 will allow me to dedicate two months of full time work to this project, 
 - Cross-platform implementation of job control for vimscript (easy on top of libuv).
 - Distributions for Windows, Linux and Mac, and a Windows installer.
 
-Streatch goals:
+Stretch goals:
 
 - Reimplement vimscript as a language that compiles to lua. In other words, vimscript will be to lua what coffeescript is to javascript.
-
 - Refactor the editor into a library. It will require changing the way vim reads input or emits output.  This will allow programs to embed the editor in the same process for better efficiency (no more marshalling of json/msgpack documents between the GUI and the core).
 
 ]]}
 
-  sf {r=30, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
-  sf {r=32, text="inspect source and delete 'display: none;' style :P"}
+  sf {r=33, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
+  sf {r=35, text="inspect source and delete 'display: none;' style :P"}
 end)
 
 s:slide('refactor', function()
@@ -162,6 +164,7 @@ s:slide('refactor2', function()
   sf {r=4, text="- use lua for code generation and unit testing"}
   sf {r=5, text="- saner integer types"}
   sf {r=6, text="- the long running char_u series"}
+  sf {r=7, text="- header file cleanup; prototype generation"}
 end)
 
 
