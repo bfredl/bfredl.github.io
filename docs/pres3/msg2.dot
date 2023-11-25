@@ -1,0 +1,35 @@
+digraph {
+  redrawcmdline[color=blue,fontcolor=blue];
+  put_on_cmdline -> redrawcmdline -> msg_outtrans_len_attr
+  msg_outtrans_len_attr -> msg_puts_attr_len
+  msg_putchar[shape=plaintext];
+  msg_putchar -> msg_putchar_attr -> msg_puts_attr
+  msg_puts_attr[shape=plaintext];
+  msg_puts_attr -> msg_puts_attr_len
+  msg_puts_attr_len -> msg_puts_display -> t_puts -> grid_puts
+  msg_puts_display -> screen_puts_mbyte -> msg_screen_putchar
+  msg_puts_display -> msg_screen_putchar -> grid_putchar
+  screen_puts_mbyte -> grid_puts
+  grid_puts[color=red,fontcolor=red];
+  grid_putchar[color=red,fontcolor=red];
+  msg_attr_keep -> msg_multiline_attr -> msg_outtrans_len_attr
+  msg_multiline_attr -> msg_putchar_attr
+  msg_attr -> msg_attr_keep -> msg_outtrans_attr
+  msg_outtrans_attr[shape=plaintext]
+  msg_outtrans_len[shape=plaintext]
+  msg_outtrans[shape=plaintext]
+  msg_outtrans -> msg_outtrans_attr -> msg_outtrans_len_attr
+  msg_outtrans_len -> msg_outtrans_len_attr
+  msg -> msg_attr_keep; msg[shape=plaintext]
+  msg_attr[shape=plaintext]
+  emsg -> emsg_multiline; emsg[shape=plaintext]
+  emsg_multiline -> msg_attr_keep
+  put_on_cmdline -> cursorcmd -> cmd_cursor_goto
+  cursorcmd[color=blue,fontcolor=blue]
+  cmd_cursor_goto[color=blue,fontcolor=blue,shape=plaintext]
+  cmd_cursor_goto -> ui_grid_cursor_goto
+  ui_grid_cursor_goto[color=red,fontcolor=red];
+  put_on_cmdline[color=blue,fontcolor=blue]
+  do_more_prompt -> disp_sb_line -> msg_puts_display
+  msg_puts_display -> do_more_prompt
+}

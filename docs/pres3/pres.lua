@@ -12,6 +12,7 @@ m.prepare()
 m.cls()
 
 clight = "#FFFFFF"
+cnormal = "#e0e0e0"
 cmiddim = "#aaaaaa"
 cfwd = "#CC3333"
 cback = "#1199DD"
@@ -22,6 +23,9 @@ cmid = "#6822AA"
 a.set_hl(0, "BrightFg", {fg=clight, bold=true})
 a.set_hl(0, "FwdFg", {fg=cfwd, bold=true})
 a.set_hl(0, "BackFg", {fg=cback, bold=true})
+a.set_hl(0, "BackMidFg", {fg="#0020CC"})
+a.set_hl(0, "BackMidFgDim", {fg="#111111", bg="#aaaaaa"})
+a.set_hl(0, "BackDarkFg", {fg=cbackdark})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
 
@@ -39,7 +43,9 @@ function issue(r, num, name, date)
   end}
 end
 
-  vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
+function no_slide() end
+
+vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
 
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
@@ -127,33 +133,140 @@ Stretch goals:
 - Reimplement vimscript as a language that compiles to lua. In other words, vimscript will be to lua what coffeescript is to javascript.
 - Refactor the editor into a library. It will require changing the way vim reads input or emits output.  This will allow programs to embed the editor in the same process for better efficiency (no more marshalling of json/msgpack documents between the GUI and the core).
 
-]]}
+]], fn=function()
+    vim.fn.matchadd("AccentFg", 'cmake-based build')
+    vim.fn.matchadd("AccentFg", 'compile-time features')
+    vim.fn.matchadd("AccentFg", 'msgpack-rpc or json-rpc')
+    vim.fn.matchadd("AccentFg", 'job control mechanism')
+    vim.fn.matchadd("AccentFg", 'remove a great deal.\\+')
+    vim.fn.matchadd("AccentFg", "lua's bdd framework busted")
+    vim.fn.matchadd("AccentFg", "editor IO to libuv")
+    vim.fn.matchadd("AccentFg", "Windows, Linux and Mac")
+    vim.fn.matchadd("AccentFg", "Reimplement vimscript as a language that compiles to lua.")
+    vim.fn.matchadd("AccentFg", "Refactor the editor into a library.")
+    vim.cmd "setl showbreak=NONE"
+end}
 
   sf {r=33, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
   sf {r=35, text="inspect source and delete 'display: none;' style :P"}
 end)
 
-s:slide('refactor', function()
+s:slide_multi('refactor_ifdef', 4, function(i)
+  texten = [[
+
+	    if (wp->w_lcs_chars.eol == lcs_eol_one
+		    && ((area_attr != 0 && wlv.vcol == wlv.fromcol
+			    && (VIsual_mode != Ctrl_V
+				|| lnum == VIsual.lnum
+				|| lnum == curwin->w_cursor.lnum)
+			    && c == NUL)
+#ifdef FEAT_SEARCH_EXTRA
+			// highlight 'hlsearch' match at end of line
+			|| (prevcol_hl_flag
+# ifdef FEAT_SYN_HL
+			    && !(wp->w_p_cul && lnum == wp->w_cursor.lnum
+				    && !(wp == curwin && VIsual_active))
+# endif
+# ifdef FEAT_DIFF
+			    && wlv.diff_hlf == (hlf_T)0
+# endif
+# if defined(LINE_ATTR)
+			    && did_line_attr <= 1
+# endif
+			   )
+#endif
+		       ))
+	    {
+		int n = 0;
+]]
+if i == 2 then
+  texten = [[
+
+#ifdef FEAT_CONCEAL
+	// In the cursor line and we may be concealing characters: correct
+	// the cursor column when we reach its position.
+	if (!did_wcol && wlv.draw_state == WL_LINE
+		&& wp == curwin && lnum == wp->w_cursor.lnum
+		&& conceal_cursor_line(wp)
+		&& (int)wp->w_virtcol <= wlv.vcol + skip_cells)
+	{
+# ifdef FEAT_RIGHTLEFT
+	    if (wp->w_p_rl)
+		wp->w_wcol = wp->w_width - wlv.col + wlv.boguscols - 1;
+	    else
+# endif
+		wp->w_wcol = wlv.col - wlv.boguscols;
+	    wp->w_wrow = wlv.row;
+	    did_wcol = TRUE;
+	    curwin->w_valid |= VALID_WCOL|VALID_WROW|VALID_VIRTCOL;
+# ifdef FEAT_PROP_POPUP
+	    curwin->w_flags &= ~(WFLAG_WCOL_OFF_ADDED | WFLAG_WROW_OFF_ADDED);
+# endif
+	}
+#endif
+]]
+elseif i == 3 then
+  texten = [[
+
+#ifdef FEAT_SIGNS
+    sign_present = buf_get_signattrs(wp, lnum, &wlv.sattr);
+    if (sign_present)
+	num_attr = wlv.sattr.sat_numhl;
+#endif
+
+#ifdef LINE_ATTR
+# ifdef FEAT_SIGNS
+    // If this line has a sign with line highlighting set wlv.line_attr.
+    if (sign_present)
+	wlv.line_attr = wlv.sattr.sat_linehl;
+# endif
+# if defined(FEAT_QUICKFIX)
+    // Highlight the current line in the quickfix window.
+    if (bt_quickfix(wp->w_buffer) && qf_current_entry(wp) == lnum)
+	wlv.line_attr = HL_ATTR(HLF_QFL);
+# endif
+    if (wlv.line_attr != 0)
+	area_highlighting = TRUE;
+#endif
+]]
+elseif i == 4 then
+texten = [[
+
+#if defined(LINE_ATTR)
+		else if ((
+# ifdef FEAT_DIFF
+			    wlv.diff_hlf != (hlf_T)0 ||
+# endif
+# ifdef FEAT_TERMINAL
+			    wlv.win_attr != 0 ||
+# endif
+			    wlv.line_attr != 0
+			) && (
+# ifdef FEAT_RIGHTLEFT
+			    wp->w_p_rl ? (wlv.col >= 0) :
+# endif
+			    (wlv.col
+# ifdef FEAT_CONCEAL
+				- wlv.boguscols
+# endif
+					    < wp->w_width)))
+		{
+		    // Highlight until the right side of the window
+		    c = ' ';
+		    --ptr;	    // put it back at the NUL
+]]
+end
   m.header 'early refactors'
   sf {r=4, text="Most important change: no more #ifdef FEAT_XXX"}
-  sf {r=6, c=8, w=50, text=[[
-
- #ifdef FEAT_SYN_HL
- 	if (!(wlv->cul_screenline
- # ifdef FEAT_DIFF
- 		    && wlv->diff_hlf == (hlf_T)0
- # endif
- 	     ))
- 	    wlv->saved_char_attr = wlv->char_attr;
- 	else
- #endif
- 	    wlv->saved_char_attr = 0;
-]], bg=cbackdark, fg="#cccccc", fn=function()
+  sf {r=6, c=8, w=80, text=texten, bg=cbackdark, fg="#cccccc", fn=function()
   vim.cmd "match BackFg /\\v#\\s?\\a+/"
-  vim.cmd "2match BackFG /\\vFEAT_[A-Z_]+/"
+  vim.cmd "2match BackFG /\\v(FEAT|LINE)_[A-Z_]+/"
+  vim.cmd "set ts=8"
 end}
 
- sf {r=19, bg="BrightFg", text="This is a prerequisite for many other refactors!"}
+if i == 4 then
+   sf {r=31, bg="BrightFg", text="This is a prerequisite for many other refactors!"}
+end
 
 end)
 
@@ -192,7 +305,7 @@ s:slide('multibytes', function()
   -- get hit by that wall of #ifdef:s in the way
 end)
 
-s:slide('options', function()
+no_slide('options', function()
   m.header 'case study: options.lua'
 
   issue(3, "#2288 (part)", "options: Move option definitions to options.lua", "jul 2015")
@@ -202,7 +315,7 @@ s:slide('options', function()
   sf {r=10, text="TODO: actually show some codes"}
 end)
 
-s:slide('message', function()
+no_slide('message', function()
   m.header 'the message.c hydra'
 
   sf {r=3, w=70, h=37, text=[[
@@ -292,7 +405,15 @@ it('buffer highlighting', function()
 end)]===]
   end
 
-  sf {r=7, w=60, bg=cmid, text=texten}
+  sf {r=7, w=60, bg="#888888", fg="#111111", text=texten, fn=function()
+    vim.fn.matchadd("BackMidFg", '\\v"[^"]+"')
+    vim.fn.matchadd("BackMidFg", "\\v'[^']+'")
+    vim.fn.matchadd("BackMidFg", "\\v-?[0-9]+")
+    vim.fn.matchadd("BackMidFgDim", "[[\\_.\\{-}\\]\\]")
+    vim.fn.matchadd("BackMidFg", "\\vScreen\\.colors\\.[A-Za-z]+")
+    vim.fn.matchadd("BackMidFg", "true")
+    vim.cmd "set nolist"
+  end}
 
   if i == 2 then
     sf {r=31, text=[[over 4000 expected screen states]]}
@@ -372,7 +493,7 @@ s:slide('luaaaaaa', function()
   -- go through all the usage of lua internally and externally
 end)
 
-s:slide('language2', function()
+s:slide_multi('language2', 3, function(i)
   m.header 'the language question II'
   -- this naturally comes AFTER slides where the state of c + c->lua->c
 
@@ -383,19 +504,37 @@ s:slide('language2', function()
   issue(6, "#153", "Is there any plan to use c++?", "Feb 2014")
   issue(8, "#2669", "Switch project to Rust, is that possible at all?", "Jul 2018")
 
-  sf {r=11, text="but how?"}
+  sf {r=10, text="but how?"}
+  sf {r=11, text="bringing rust into an existing messy C codebase can be tricky: "}
+
+  raw = 14
+  tabell = {{30, 39}, {20,42}, {15, 24}}
+  div1 = tabell[i][1]
+  div2 = tabell[i][2]
+  sf {r=raw, c=4, w=div1, h=5, text= "\n safe\n rust", bg=caccent, fg="#111111"}
+  sf {r=raw, c=div1+5, w=div2-div1-1, h=5, text= "\n unsafe\n rust", bg=cfwd}
+  sf {r=raw, c=div2+5, w=70-div2, h=5, text= "\n c", bg=cmiddim, fg="#111111"}
+
+  re =20
+  if i == 1 then
+    sf {r=re, c=div1+5, text = "^ 'bindings' for unsafe c"}
+  elseif i == 2 then
+    sf {r=re, c=div1, text = "no clean abstraction boundary"}
+  elseif i == 3 then
+    sf {r=re, c=4, w=div2, bg=cnormal}
+    sf {r=re+1, c=4, text="rust library with c bindings"}
+  end
 
   -- "rewrite in rust" makes sense with modules
   -- otherwise it just becomes "safe rust", "unsafe rust", "c"
   -- where "unsafe rust" is not a thin interface but the entire code , lol
-  sf {r=12, text='TODO: the "safe rust", "unsafe rust", "c" infographic'}
 
-  sf {r=13, text='"maintain it with zig!" (start with build.zig)'}
+  sf {r=26, text='"maintain it with zig!" (start with build.zig)'}
 
   -- just "neovim but rewritten from scratch" is booring, reconsider everything!
-  sf {r=14, text='"Don\'t rewrite, reinvent" -> helix'}
-  sf {r=15, text="use external tools/libraries written in rust"}
-  sf {r=16, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
+  sf {r=25, text='"Don\'t rewrite, reinvent" -> helix'}
+  sf {r=26, text="use external tools/libraries written in rust"}
+  sf {r=27, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
 end)
 
 s:slide('ctool', function()
@@ -418,9 +557,9 @@ s:slide('ctool', function()
 
 end)
 
-s:slide('build', function()
-  m.header 'Build System!'
-end)
+-- s:slide('build', function()
+--   m.header 'Build System!'
+-- end)
 
 s:slide('dependencies', function()
   m.header 'Dependencies used by neovim'
