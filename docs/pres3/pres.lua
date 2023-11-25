@@ -275,9 +275,24 @@ s:slide('refactor2', function()
 
   sf {r=3, text="- get rid of conditional compilation"}
   sf {r=4, text="- use lua for code generation and unit testing"}
-  sf {r=5, text="- saner integer types"}
-  sf {r=6, text="- the long running char_u series"}
-  sf {r=7, text="- header file cleanup; prototype generation"}
+  sf {r=5, text="- better integer types"}
+  sf {r=7, c = 8, text="int has_thing = FALSE;"}
+  sf {r=7, c = 50, text="bool has_thing = false;"}
+  sf {r=8, c= 8, text="long, unsigned long, long long"}
+  sf {r=8, c= 50, text="int32_t, int64_t, uint64_t"}
+  sf {r=9, c= 8, text="char_u"}
+  sf {r=9, c= 50, text="char, int8_t, uint8_t"}
+  for i = 1,3 do
+  sf {r=6+i, c= 42, text="-->"}
+  end
+
+  issue(11, "#459", "Remove char_u, long_u, short_u", "tracking issue, apr 2014")
+  issue(12, "#1865", "main.c: remove char_u and enable -Wconversion", "jan 2015")
+  sf {r=13, c=10, text="... twenty PR:s later"}
+  issue(14, "#22829", "refactor: remove char_u", "apr 2023")
+
+  issue(16, "#91", "Convert function declarations from K&R to ANSI style", "feb 2014")
+
 end)
 
 
@@ -658,6 +673,10 @@ s:slide('conclude', function()
     hl("BackFg", 0, 45, 46)
   end}
   sf {r=12, text="GUI:s as third-party projects", fg=cback}
+
+  sf {r=15, text='goal: refactor neovim into a library'}
+  sf {r=16, text='building libnvim.a and including it is possible, but..'}
+  sf {r=17, text='no stable API. call any internal function'}
 
   -- answer: sorta. We solved the same problems but often in a different way
 end)
