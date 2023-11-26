@@ -67,7 +67,7 @@ s:slide("intro", function()
   m.header 'Overview'
   sf {r=3, w=70, c=3, text=[[
 - Neovim was announced early 2014, nearly 10 years ago
-- How has our goals and overal design desicions evolved?
+- How has our goals and overall design desicions evolved?
 - A lot of things has happened in 10 years
   ]]}
 end)
@@ -91,7 +91,7 @@ s:slide('before', function()
   -- neovim: how and why
 
   sf {r=3, w=74, text=[[
-  event handling before:
+  Event handling before:
     CursorHold
     --remote protocol]]}
 
@@ -271,11 +271,11 @@ end
 end)
 
 s:slide('refactor2', function()
-  m.header 'important refactors'
+  m.header 'Important refactors'
 
-  sf {r=3, text="- get rid of conditional compilation"}
-  sf {r=4, text="- use lua for code generation and unit testing"}
-  sf {r=5, text="- better integer types"}
+  sf {r=3, text="- Get rid of conditional compilation"}
+  sf {r=4, text="- Use lua for code generation and unit testing"}
+  sf {r=5, text="- Better integer types"}
   sf {r=7, c = 8, text="int has_thing = FALSE;"}
   sf {r=7, c = 50, text="bool has_thing = false;"}
   sf {r=8, c= 8, text="long, unsigned long, long long"}
@@ -297,7 +297,7 @@ end)
 
 
 s:slide('multibytes', function()
-  m.header 'case study: multibyte and screen text'
+  m.header 'Case study: multibyte and screen text'
 
   issue(4, "72cf89b", "Process files through unifdef to remove tons of FEAT_* macros", "jan 2014")
 
@@ -311,7 +311,7 @@ s:slide('multibytes', function()
   issue(13, "#25503", "refactor(grid): do arabic shaping in one place", "okt 2023")
   issue(14, "#25905", "refactor(grid): reimplement 'rightleft' as a post-processing step", "nov 2023")
 
-  sf {r=16, text="related: ui protocol changes. see last years talk!"}
+  sf {r=16, text="Related: ui protocol changes. see last years talk!"}
 
   issue(18, "#8221", "UI grid protocol revision: line based updates", "jul 2018")
 
@@ -321,7 +321,7 @@ s:slide('multibytes', function()
 end)
 
 no_slide('options', function()
-  m.header 'case study: options.lua'
+  m.header 'Case study: options.lua'
 
   issue(3, "#2288 (part)", "options: Move option definitions to options.lua", "jul 2015")
   issue(4, "#15078", 'refactor: remove obsolete distinction of "vi" vs "vim" defaults', "jul 2021")
@@ -436,10 +436,10 @@ end)]===]
 end)
 
 s:slide('student', function()
-  m.header 'student collaborations'
+  m.header 'Student collaborations'
 
-  sf {r=3, text="incremental substitution"}
-  sf {r=4, text="a group of students from X university"}
+  sf {r=3, text="Incremental substitution"}
+  sf {r=4, text="Group of students from X university"}
 
   issue(6, "#4794", ':substitute "live" feedback', "May 2016, tracking issue")
   issue(7, "#4811", 'Incsub 1', "May 2016, draft")
@@ -457,19 +457,19 @@ s:slide('student', function()
   issue(16, "#10071", 'TUI (Terminal UI) remote attachment', "Aug 2019")
   issue(17, "#12531+12593", "TUI + fswatch 'autoread'", "Aug 2020")
   
-  sf {r=20, text="+ good processes for onboarding new contributions"}
-  sf {r=21, text="+ high quality work produced and merged", fg=caccent}
-  sf {r=22, text="- harder to keep student contributors around afterwards"}
+  sf {r=20, text="+ Good processes for onboarding new contributions"}
+  sf {r=21, text="+ High quality work produced and merged", fg=caccent}
+  sf {r=22, text="- Harder to keep student contributors around afterwards"}
 end)
 
 s:slide('language', function()
-  m.header 'the language question'
+  m.header 'The language question'
 
   sf {r=4, w=74, text=[[
-original plan: faster vimscript
+Original goal: faster vimscript by compile to lua
 ZyX-I's vimscript to lua compiler: ahead of its time
 
-problem: (classic) vimscript is not possible to parse]]}
+Problem: (classic) vimscript is not possible to parse]]}
 
   sf {r=9, w=25, c=15, bg=cfwd, text=[[
  let x = "a"
@@ -479,14 +479,14 @@ problem: (classic) vimscript is not possible to parse]]}
  let x = {"y": "foo"}
  echo x.y]]}
 
- sf{r=17, text="async plugins via remote hosts (python, ruby, node)"}
- sf{r=18, text="big lua explosion: vim.api + vim.loop"}
+ sf{r=17, text="Async plugins via remote hosts (python, ruby, node)"}
+ sf{r=18, text="Big lua explosion: vim.api + vim.loop"}
 
  sf{r=20, text="vim9script to lua transpiler"}
 end)
 
 s:slide('luaaaaaa', function()
-  m.header 'tema: lua'
+  m.header 'Tema: lua'
 
   issue(3, "d04ca90", "Add basic infrastructure for unit testing", "feb 2014")
   sf {r=4,  c=10, text="luajit + luarocks + moonscript"}
@@ -501,15 +501,18 @@ s:slide('luaaaaaa', function()
 
   issue(11, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
   issue(12, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
+  issue(14, "#16600", "feat: filetype.lua (ft detection)", "jan 2022")
 
-  issue(15, "#24523", "feat(lua-types): types for vim.api.*", "-- 2023")
+  issue(16, "#24523", "feat(lua-types): types for vim.api.*", "aug 2023")
 
-  sf {r=20, text="conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
+  sf {r=20, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
+  sf {r=21, text="Conclusion: one focus language better than if_python+if_ruby+if_mzscheme..."}
+  sf {r=22, text="nvim/vim argrees on the first part, but lua vs improved vimscript"}
   -- go through all the usage of lua internally and externally
 end)
 
 s:slide_multi('language2', 3, function(i)
-  m.header 'the language question II'
+  m.header 'The language question II'
   -- this naturally comes AFTER slides where the state of c + c->lua->c
 
   sf {r=4, text=[[rewrite Neovim in C++/Rust/Zig ??]], fn=function()
@@ -557,7 +560,7 @@ s:slide('ctool', function()
 
   sf {r=3, text="Given the consistent strategy to stick with C for a long while" }
   sf {r=4, text='"Just write good C code and not bad C code"'}
-  sf {r=5, text='invest in good tooling for maintaining and writing C code'}
+  sf {r=5, text='Invest in good tooling for maintaining and writing C code'}
 
   sf {r=8, text='Sanitizers (address, undefined behavior, leaks)'}
   sf {r=9, text="Multithreading: just don't do it"}
@@ -566,7 +569,7 @@ s:slide('ctool', function()
   sf {r=12, c=12, text="coverity"}
   sf {r=13, c=12, text="clang-analyzer/clang-tidy"}
 
-  sf {r=15, text="linting formatting:"}
+  sf {r=15, text="Linting and formatting:"}
   sf {r=16, c=12, text="clint.py"}
   sf {r=17, c=12, text="uncrustify"}
 
@@ -599,10 +602,10 @@ end)
 
 
 s:slide('version', function()
-  m.header 'versioning history'
+  m.header 'Versioning history'
   local ce=28
 
-  sf {r=3,  text='first commit: 2014-01-31', fg=cmiddim}
+  sf {r=3,  text='First commit: 2014-01-31', fg=cmiddim}
   sf {r=5,  text='v0.1.0: 2015-11-01', fg=cmiddim}
   sf {r=5, c=ce, text='async job control, :terminal'}
   sf {r=7,  text='v0.2.0: 2017-05-01', fg=cmiddim}
@@ -618,7 +621,7 @@ s:slide('version', function()
   sf {r=17, text='v0.7.0: 2022-04-15', fg=cmiddim}
   sf {r=17, c=ce, text="lua core interfaces"}
   sf {r=19, text='v0.8.0: 2022-09-30', fg=cmiddim}
-  sf {r=19, c=ce, text="aaaa"}
+  sf {r=19, c=ce, text="filetype.lua, cmdheight=0"}
   sf {r=21, text='v0.9.0: 2023-04-07', fg=cmiddim}
   sf {r=21, c=ce, text=":inspect, vim.secure"}
 
@@ -627,10 +630,10 @@ s:slide('version', function()
 end)
 
 s:slide('release', function()
-  m.header 'releases and versioning'
+  m.header 'Releases and versioning'
 
-  sf {r=5, text="starting with v0.4.0, separatate release-0.x branches"}
-  sf {r=7, text="release notes:"}
+  sf {r=5, text="Starting with v0.4.0, separatate release-0.x branches"}
+  sf {r=7, text="Release notes:"}
   sf {r=8, c=8, text="<=0.4.0: big bash script listing all commits"}
   sf {r=9, c=8, text="0.5.0 and later: conventional commits + git-cliff"}
 
@@ -641,7 +644,7 @@ fix(job-control): make jobwait() flush UI after hiding cursor]]}
 end)
 
 s:slide('delet', function()
-  m.header 'deleted features/modules'
+  m.header 'Deleted features/modules'
 
     issue(4, "--", "in-tree GUI (gtk, qt, mswin)", "feb 2014")
     issue(5, "1622", "vi 'compatible' mode", "feb 2014")
@@ -651,21 +654,23 @@ s:slide('delet', function()
     issue(10, "20545", "remove :cscope", "okt 2022")
     issue(11, "21472", "remove :hardcopy", "dec 2022")
 
-  sf {r=13, text="remove 'bundles' of changed behavior which can be configured manually (:behave)"}
+  sf {r=13, text="Remove 'bundles' of changed behavior which can be configured manually (:behave)"}
 
-  sf {r=15, text='not ported features:'}
+  sf {r=15, text='Not ported features:'}
   sf {r=17, c=15, text='defaults.vim (a third set of defaults)'}
 end)
 
 s:slide('conclude', function()
-  m.header 'after 10 years: did we stick to the original goals'
+  m.header 'After 10 years: compared with original goals'
 
   sf {r=3, text='then: transpile vimscript into lua', fg=cfwd}
   sf {r=4, text='then: async plugins as co-processes in any language', fg=cfwd}
   sf {r=5, text='now: lua as first class plugin and config', fg=cback}
   sf {r=6, text='now: keep compat with vim8 script', fg=cback}
   sf {r=7, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
-  sf {r=8, text='there and back again: transpile runtime vim9 code into lua',fg=cback}
+  sf {r=8, text='there and back again: transpile runtime vim9 code into lua',fg=cback, fn=function()
+    hl("FwdFg", 0, 0, 21)
+  end}
 
   sf {r=10, text='goal: RPC protocol for GUI:s and embedders'}
   sf {r=11, text='TUI as a separate process written in ~~lua~~ C.', fn=function()
