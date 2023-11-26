@@ -494,16 +494,16 @@ s:slide('luaaaaaa', function()
   issue(5, "#1128", "Drop moonscript", "aug 2014")
   issue(6, "#509", "Add msgpack_rpc_dispatch/metadata generator", "apr 2014")
 
-  issue(7, "#4411", "lua interpreter in core", "may 2017")
-  issue(8, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
-  issue(9, "#12235", "startup: support init.lua as user config", "dec 2020")
-  issue(10, "#14686", "Allow lua to be used in runtime files", "jun 2021")
+  issue(8, "#4411", "lua interpreter in core", "may 2017")
+  issue(9, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
+  issue(11, "#12235", "startup: support init.lua as user config", "dec 2020")
+  issue(12, "#14686", "Allow lua to be used in runtime files", "jun 2021")
 
-  issue(11, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
-  issue(12, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
-  issue(14, "#16600", "feat: filetype.lua (ft detection)", "jan 2022")
+  issue(13, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
+  issue(14, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
+  issue(15, "#16600", "feat: filetype.lua (ft detection)", "jan 2022")
 
-  issue(16, "#24523", "feat(lua-types): types for vim.api.*", "aug 2023")
+  issue(17, "#24523", "feat(lua-types): types for vim.api.*", "aug 2023")
 
   sf {r=20, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
   sf {r=21, text="Conclusion: one focus language better than if_python+if_ruby+if_mzscheme..."}
@@ -579,23 +579,57 @@ end)
 --   m.header 'Build System!'
 -- end)
 
+function yearbar(row, col)
+  cab, caf = cmiddim, "#222222"
+  wab, waf = "#444444", nil
+  for i = 0,4 do
+    sf {r=row, text = " "..(14+2*i), c=col+i*8, w=4, bg=cab, fg=caf}
+    sf {r=row, text = " "..(15+2*i), c=col+4+i*8, w=4, bg=wab, fg=waf}
+  end
+end
+
 s:slide('dependencies', function()
   m.header 'Dependencies used by neovim'
 
-  sf {r=3, text="bundled:"}
-  sf {r=5, c=8, text="libuv"}
-  sf {r=6, c=8, text="unibilium (terminfo without curses)"}
-  sf {r=7, c=8, text="libtermkey"}
-  sf {r=8, c=8, text="libvterm"}
-  sf {r=9, c=8, text="luajit (or lua 5.1)"}
-  sf {r=10, c=8, text="libluv"}
-  sf {r=11, c=8, text="libtreesitter"}
+  function depend(ri, name, start, enda, forstart, doveend)
+    r = 4 + ri
+    sf {r=r, c=7, text=name}
+    if enda > start then
+      color = clight
+      if doveend then color = cback end
+      sf {r=r, c=28+math.floor(4*(start-2014)),w=math.floor(4*(enda-start)), bg=color}
+    end
+    if forstart then
+      sf {r=r, c=28+math.floor(4*(forstart-2014)),w=math.floor(4*(start-forstart)), bg="#777777"}
+    end
+  end
 
-  sf {r=14, text="vendored:"}
-  sf {r=16, c=8, text="klib (klist, khash, etc)"}
-  sf {r=17, c=8, text="lpeg (lua expression grammars)"}
-  sf {r=18, c=8, text="xdiff"}
+  yearbar(3, 28)
 
+  --sf {r=3, text="bundled:"}
+  depend(1, "klib", 2014.25, 2024, nil, true)
+  depend(2, "libuv", 2014, 2024)
+  depend(3, "unibilium", 2015, 2024)
+  depend(4, "libtermkey", 2015, 2024)
+  depend(5, "libvterm", 2015.25, 2024)
+  depend(6, "luajit", 2017.25, 2024,2014)
+  depend(7, "xdiff", 2018.75, 2024, nil, true)
+  depend(8, "libluv", 2019.5, 2024, 2015.25)
+  depend(9, "libtreesitter", 2020.75, 2024)
+  depend(9, "", 2019.75, 2020.75, nil, true)
+  depend(10, "TS parsers", 2021.5, 2024, 2019.75)
+  depend(12, "lpeg", 2023.25, 2024, 2014.25, true)
+  depend(11, "(lua)mpack", 2021.5, 2024, 2014.75, true)
+
+  sf {r=18, c=8, w=6, bg=cback}
+  sf {r=18, c=15, text="vendored: included in source tree"}
+  sf {r=18+1, c=8, w=6, bg=clight}
+  sf {r=18+1, c=15, text="external/bundled dependencies"}
+  sf {r=18+2, c=8, w=6, bg="#777777"}
+  sf {r=18+2, c=15, text="build/test-time only"}
+
+  sf {r=22, c=8, text="bundled build: automatically download and build dependencies"}
+  sf {r=24, c=8, text="lesson learned: don't hide useful deps, useful for plugins too"}
   -- Don't NIH the wheel
   -- Bundle vs vendor
 end)
@@ -627,6 +661,39 @@ s:slide('version', function()
 
   sf {r=15, c=66, w=1, h=7, bg=cmid}
   sf {r=17, c=69, w=20, text = "tree-sitter,\nLSP maturation"}
+
+  yearbar(25, 20)
+  function putta(t,y,bg)
+    bg = bg or cmiddim
+    sf {r=26, text=t, c=(20+math.floor(4*(y-2014))), bg=bg, fg="#222222"}
+  end
+  putta("1", 2015.75)
+  putta("2", 2017.5)
+  putta("3", 2018.5)
+  putta("4", 2019.75)
+  putta("5", 2021.5)
+  putta("5", 2021.5)
+  putta("6", 2021.75)
+  putta("7", 2022.25)
+  putta("8", 2022.75)
+  putta("9", 2023.25)
+
+  firstp = "#666666"
+  putta(".", 2016.25, firstp)
+  putta(".", 2016.5, firstp)
+  putta(".", 2016.75, firstp)
+  putta(".", 2017.75, firstp)
+  putta(".", 2018.75, firstp)
+  putta(".", 2019.00, firstp)
+  secondp = cmid
+  putta(".", 2020.5, secondp, cnormal)
+  putta(".", 2022.0, secondp, cnormal)
+  putta(".", 2022.5, secondp, cnormal)
+  putta(".", 2023.0, secondp, cnormal)
+  putta(".", 2023.5, secondp, cnormal)
+
+  sf {r=28, c=6, text="feature/fixes from master branch ^", fg=cmiddim}
+  sf {r=28, c=46, text="^ separate release-0.x branch", bg=cmid}
 end)
 
 s:slide('release', function()
