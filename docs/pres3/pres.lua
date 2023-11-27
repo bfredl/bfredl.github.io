@@ -376,8 +376,9 @@ end)
 s:slide_multi("testing", 2,  function(i)
   m.header 'Regression test-driven development'
 
-  sf {r=4, text="RPC-protocol driven testing"}
-  sf {r=5, text="screen tests"}
+  sf {r=3, text="unittests: call any internal C function using luajit ffi"}
+  sf {r=5, text="functionaltest: RPC-protocol driven testing,"}
+  sf {r=6, text="including screen tests:"}
 
 local  texten = [===[
 it('buffer highlighting', function()
@@ -420,7 +421,7 @@ it('buffer highlighting', function()
 end)]===]
   end
 
-  sf {r=7, w=60, bg="#888888", fg="#111111", text=texten, fn=function()
+  sf {r=8, w=60, bg="#888888", fg="#111111", text=texten, fn=function()
     vim.fn.matchadd("BackMidFg", '\\v"[^"]+"')
     vim.fn.matchadd("BackMidFg", "\\v'[^']+'")
     vim.fn.matchadd("BackMidFg", "\\v-?[0-9]+")
@@ -431,7 +432,7 @@ end)]===]
   end}
 
   if i == 2 then
-    sf {r=31, text=[[over 4000 expected screen states]]}
+    sf {r=32, text=[[over 4000 expected screen states]]}
   end
 end)
 
@@ -479,10 +480,20 @@ Problem: (classic) vimscript is not possible to parse]]}
  let x = {"y": "foo"}
  echo x.y]]}
 
- sf{r=17, text="Async plugins via remote hosts (python, ruby, node)"}
- sf{r=18, text="Big lua explosion: vim.api + vim.loop"}
+ sf{r=16, text="Async plugins via remote hosts (python, ruby, node)"}
 
- sf{r=20, text="vim9script to lua transpiler"}
+ sf{r=18, text="often cited alternative: ECMAScript"}
+ sf{r=19, text="ES is more popular/bigger ecosystem. but luajit small and embeddable"}
+ -- sf{r=20, text="WASM? pure WASM solution like wasmtime more likely"}
+
+
+ sf{r=21, text="Pivot to lua as the primary extension lang"}
+ sf{r=22, text="Big lua explosion: vim.api + vim.loop + vim.lsp etc"}
+
+  sf {r=23, text="conclusion: one focus language better than if_python+if_ruby+if_mzscheme...", fg=cfwd}
+  sf {r=24, text="vim: agrees with first part but took a different path: vim9script", fg=cfwd}
+
+ sf{r=26, text="vim9script to lua transpiler"}
 end)
 
 s:slide('luaaaaaa', function()
@@ -493,21 +504,29 @@ s:slide('luaaaaaa', function()
 
   issue(5, "#1128", "Drop moonscript", "aug 2014")
   issue(6, "#509", "Add msgpack_rpc_dispatch/metadata generator", "apr 2014")
+  issue(7, "#2288 (part)", "options: Move option definitions to options.lua", "jul 2015")
+  issue(8, "#15516", "generate dict conversion code in lua", "okt 2021")
+  issue(9, "#18544", "use Hashy McHashFace (lua) instead of gperf (external)", "may 2022")
 
-  issue(8, "#4411", "lua interpreter in core", "may 2017")
-  issue(9, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
-  issue(11, "#12235", "startup: support init.lua as user config", "dec 2020")
-  issue(12, "#14686", "Allow lua to be used in runtime files", "jun 2021")
+  issue(11, "#4411", "lua interpreter in core", "may 2017")
+  issue(12, "#10175", "lua: introduce vim.loop (expose libuv event-loop)", "june 2019")
 
-  issue(13, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
-  issue(14, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
-  issue(15, "#16600", "feat: filetype.lua (ft detection)", "jan 2022")
+  issue(13, "#6856,#10222,#11336", "Built-in LSP Support", "Nov 2019")
+  issue(14, "#10124", "Tree-sitter step 1: lua API for TS runtime lib", "Nov 2019")
 
-  issue(17, "#24523", "feat(lua-types): types for vim.api.*", "aug 2023")
+  issue(16, "#12235", "startup: support init.lua as user config", "dec 2020")
+  issue(17, "#14686", "Allow lua to be used in runtime files", "jun 2021")
+  issue(18, "#14661", "feat(lua): add api and lua autocmds", "feb 2022")
+  issue(17, "#16591", "feat(lua): add support for lua keymaps", "jan 2022")
+  issue(19, "#16600", "feat: filetype.lua (ft detection)", "jan 2022")
 
-  sf {r=20, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
-  sf {r=21, text="Conclusion: one focus language better than if_python+if_ruby+if_mzscheme..."}
-  sf {r=22, text="nvim/vim argrees on the first part, but lua vs improved vimscript"}
+  issue(21, "#24523", "feat(lua-types): types for vim.api.*", "aug 2023")
+
+
+  sf {r=23, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
+
+  sf {r=24, text="LSP and TS: by effect of being written in lua -> immediately accessible by plugins"}
+  sf {r=25, text="concern: still needs to delineate what is backwards-compat API vs internal"}
   -- go through all the usage of lua internally and externally
 end)
 
@@ -612,21 +631,22 @@ s:slide('dependencies', function()
   depend(3, "unibilium", 2015, 2024)
   depend(4, "libtermkey", 2015, 2024)
   depend(5, "libvterm", 2015.25, 2024)
-  depend(6, "luajit", 2017.25, 2024,2014)
-  depend(7, "xdiff", 2018.75, 2024, nil, true)
-  depend(8, "libluv", 2019.5, 2024, 2015.25)
-  depend(9, "libtreesitter", 2020.75, 2024)
-  depend(9, "", 2019.75, 2020.75, nil, true)
-  depend(10, "TS parsers", 2021.5, 2024, 2019.75)
-  depend(12, "lpeg", 2023.25, 2024, 2014.25, true)
-  depend(11, "(lua)mpack", 2021.5, 2024, 2014.75, true)
+  depend(6, "gperf", 2016.5, 2022.25)
+  depend(7, "luajit", 2017.25, 2024,2014)
+  depend(8, "xdiff", 2018.75, 2024, nil, true)
+  depend(9, "libluv", 2019.5, 2024, 2015.25)
+  depend(10, "libtreesitter", 2020.75, 2024)
+  depend(10, "", 2019.75, 2020.75, nil, true)
+  depend(11, "TS parsers", 2021.5, 2024, 2019.75)
+  depend(12, "(lua)mpack", 2021.5, 2024, 2014.75, true)
+  depend(13, "lpeg", 2023.25, 2024, 2014.25, true)
 
-  sf {r=18, c=8, w=6, bg=cback}
-  sf {r=18, c=15, text="vendored: included in source tree"}
-  sf {r=18+1, c=8, w=6, bg=clight}
-  sf {r=18+1, c=15, text="external/bundled dependencies"}
-  sf {r=18+2, c=8, w=6, bg="#777777"}
-  sf {r=18+2, c=15, text="build/test-time only"}
+  sf {r=19, c=8, w=6, bg=cback}
+  sf {r=19, c=15, text="vendored: included in source tree"}
+  sf {r=19+1, c=8, w=6, bg=clight}
+  sf {r=19+1, c=15, text="external/bundled dependencies"}
+  sf {r=19+2, c=8, w=6, bg="#777777"}
+  sf {r=19+2, c=15, text="build/test-time only"}
 
   sf {r=22, c=8, text="bundled build: automatically download and build dependencies"}
   sf {r=24, c=8, text="lesson learned: don't hide useful deps, useful for plugins too"}
