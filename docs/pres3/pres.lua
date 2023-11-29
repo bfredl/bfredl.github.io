@@ -68,8 +68,9 @@ s:slide("intro", function()
   m.header 'Overview'
   sf {r=3, w=70, c=3, text=[[
 - Neovim was announced early 2014, nearly 10 years ago
+- Why was Nvim started?
 - How has our goals and overall design desicions evolved?
-- A lot of things has happened in 10 years
+- What has happened in 10 years?
   ]]}
 end)
 
