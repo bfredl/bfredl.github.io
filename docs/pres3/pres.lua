@@ -76,6 +76,10 @@ s:slide("whoami", function()
   m.header 'Whoami'
   sf {r=4, w=55, text=[[
 - Regular contributor to Neovim since early 2015
+- Focus on
+  - Internal text handling
+  - GUI and TUI features (same thing)
+  - extmarks/virtual text/decorations
   ]]}
 
   -- IMAGEN
@@ -110,10 +114,41 @@ s:slide('before', function()
 > which provides a replacement to the 'select' system call). ]]}
 end)
 
-s:slide('fundraiser', function()
+s:slide('fundraiser_pre', function()
   m.header 'The original announcement: fundraiser'
 
-  sf {r=3, c=4, h=30, w=85, text=[[
+  sf {r=3, c=4, fg=cfwd, text="Thiago de Arruda Padilha, February 2014"}
+
+  sf {r=5, c=4, h=29, w=85, text=[[
+Introduction:
+
+vim is a powerful text editor with a big community that is constantly growing. Even though the editor is about two decades old, people still extend and want to improve it, mostly using vimscript or one of the supported scripting languages.
+
+Problem:
+
+Over its more than 20 years of life, vim has accumulated about 300k lines of scary C89 code that very few people understand or have the guts to mess with.
+
+Solution:
+
+neovim is a project that seeks to aggressively refactor vim source code in order to achieve the following goals:
+
+- Simplify maintenance to improve the speed that bug fixes and features get merged.
+- Split the work between multiple developers.
+- Enable the implementation of new/modern user interfaces without any modifications to the core source.
+- Improve the extensibility power with a new plugin architecture based on coprocesses. Plugins will be written in any programming language without needing explicit support from the editor.
+
+  ]], fn=function()
+    vim.fn.matchadd("FwdFg", 'Problem:')
+    vim.fn.matchadd("FwdFg", 'Solution:')
+  end}
+end)
+
+s:slide('fundraiser', function()
+  m.header 'The original announcement: goals'
+
+  sf {r=3, c=4, bg="AccentFg", text="Solution, continued:"}
+
+  sf {r=5, c=4, h=29, w=85, text=[[
 - Migrate to a cmake-based build
 - remove Legacy support and compile-time features
 - New plugin architecture
@@ -147,8 +182,8 @@ Stretch goals:
     vim.cmd "setl showbreak=NONE"
 end}
 
-  sf {r=33, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
-  sf {r=35, text="inspect source and delete 'display: none;' style :P"}
+  sf {r=34, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
+  sf {r=36, text="inspect source and delete 'display: none;' style :P"}
 end)
 
 s:slide_multi('refactor_ifdef', 4, function(i)
@@ -256,8 +291,8 @@ texten = [[
 		    --ptr;	    // put it back at the NUL
 ]]
 end
-  m.header 'early refactors'
-  sf {r=4, text="Most important change: no more #ifdef FEAT_XXX"}
+  m.header 'Early refactors'
+  sf {r=4, text="Most important change: delete most of #ifdef FEAT_XXX", fn=function() vim.fn.matchadd("BackFg", "#ifdef FEAT_XXX") end}
   sf {r=6, c=8, w=80, text=texten, bg=cbackdark, fg="#cccccc", fn=function()
   vim.cmd "match BackFg /\\v#\\s?\\a+/"
   vim.cmd "2match BackFG /\\v(FEAT|LINE)_[A-Z_]+/"
@@ -290,8 +325,9 @@ s:slide('refactor2', function()
   issue(12, "#1865", "main.c: remove char_u and enable -Wconversion", "jan 2015")
   sf {r=13, c=10, text="... twenty PR:s later"}
   issue(14, "#22829", "refactor: remove char_u", "apr 2023")
+  sf {r=16, text="- Cleanup style and formatting"}
 
-  issue(16, "#91", "Convert function declarations from K&R to ANSI style", "feb 2014")
+  issue(18, "#91", "Convert function declarations from K&R to ANSI style", "feb 2014")
 
 end)
 
@@ -439,8 +475,8 @@ end)
 s:slide('student', function()
   m.header 'Student collaborations'
 
-  sf {r=3, text="Incremental substitution"}
-  sf {r=4, text="Group of students from X university"}
+  sf {r=3, text="month-long project of a group of students in a programming course"}
+  sf {r=4, text="Incremental substitution :set inccommand=split", fn=function() hl("AccentFg", 0, 25, -1) end}
 
   issue(6, "#4794", ':substitute "live" feedback', "May 2016, tracking issue")
   issue(7, "#4811", 'Incsub 1', "May 2016, draft")
@@ -493,7 +529,7 @@ Problem: (classic) vimscript is not possible to parse]]}
   sf {r=23, text="conclusion: one focus language better than if_python+if_ruby+if_mzscheme...", fg=cfwd}
   sf {r=24, text="vim: agrees with first part but took a different path: vim9script", fg=cfwd}
 
- sf{r=26, text="vim9script to lua transpiler"}
+ sf{r=26, text="vim9jit: vim9script to lua compliler"}
 end)
 
 s:slide('luaaaaaa', function()
@@ -541,40 +577,47 @@ s:slide_multi('language2', 3, function(i)
   issue(6, "#153", "Is there any plan to use c++?", "Feb 2014")
   issue(8, "#2669", "Switch project to Rust, is that possible at all?", "Jul 2018")
 
-  sf {r=10, text="but how?"}
-  sf {r=11, text="bringing rust into an existing messy C codebase can be tricky: "}
+  --sf {r=10, text="but how?"}
+  sf {r=10, text="Only unsafe rust can access c data and code", fn=function() vim.fn.matchadd("FwdFg", "unsafe rust") end}
+  sf {r=11, text="Bringing rust into an existing messy C codebase can be tricky: "}
 
   raw = 14
+  cinc = 5
   tabell = {{30, 39}, {20,42}, {15, 24}}
   div1 = tabell[i][1]
   div2 = tabell[i][2]
-  sf {r=raw, c=4, w=div1, h=5, text= "\n safe\n rust", bg=caccent, fg="#111111"}
-  sf {r=raw, c=div1+5, w=div2-div1-1, h=5, text= "\n unsafe\n rust", bg=cfwd}
-  sf {r=raw, c=div2+5, w=70-div2, h=5, text= "\n c", bg=cmiddim, fg="#111111"}
+  sf {r=raw, c=cinc, w=div1, h=5, text= "\n safe\n rust", bg=caccent, fg="#111111"}
+  sf {r=raw, c=div1+cinc+1, w=div2-div1-1, h=5, text= "\n unsafe\n rust", bg=cfwd}
+  sf {r=raw, c=div2+cinc+1, w=70-div2, h=5, text= "\n c", bg=cmiddim, fg="#111111"}
 
   re =20
   if i == 1 then
-    sf {r=re, c=div1+5, text = "^ 'bindings' for unsafe c"}
+    sf {r=re, c=div1+cinc+1, text = "^ 'bindings' for unsafe c"}
   elseif i == 2 then
-    sf {r=re, c=div1, text = "no clean abstraction boundary"}
+    sf {r=re, c=div1+cinc-2, text = "no clean abstraction boundary"}
   elseif i == 3 then
-    sf {r=re, c=4, w=div2, bg=cnormal}
-    sf {r=re+1, c=4, text="rust library with c bindings"}
+    sf {r=re, c=cinc, w=div2, bg=cnormal}
+    sf {r=re+1, c=cinc, text="rust library with c bindings"}
   end
 
   -- "rewrite in rust" makes sense with modules
   -- otherwise it just becomes "safe rust", "unsafe rust", "c"
   -- where "unsafe rust" is not a thin interface but the entire code , lol
 
-  sf {r=26, text='"maintain it with zig!" (start with build.zig)'}
+  if i == 3 then
+  sf {r=23, text="use external tools/libraries written in rust"}
+  sf {r=24, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
 
   -- just "neovim but rewritten from scratch" is booring, reconsider everything!
-  sf {r=25, text='"Don\'t rewrite, reinvent" -> helix'}
-  sf {r=26, text="use external tools/libraries written in rust"}
-  sf {r=27, text="tree-sitter CLI in rust, tho libtreesitter is still C"}
+  sf {r=26, text='"Don\'t rewrite, reinvent" -> helix'}
+  sf {r=27, text='"maintain it with zig!" (start with build.zig)'}
+
+  sf {r=29, text='Invest in better tooling for all the C code:'}
+  sf {r=30, text='Address sanitizer, static analysis, formatting, linting'}
+  end
 end)
 
-s:slide('ctool', function()
+no_slide('ctool', function()
   m.header 'Tooling for C'
 
   sf {r=3, text="Given the consistent strategy to stick with C for a long while" }
@@ -730,7 +773,7 @@ refactor(sign): move legacy signs to extmarks
 fix(job-control): make jobwait() flush UI after hiding cursor]]}
 end)
 
-s:slide('delet', function()
+no_slide('delet', function()
   m.header 'Deleted features/modules'
 
     issue(4, "--", "in-tree GUI (gtk, qt, mswin)", "feb 2014")
@@ -750,27 +793,41 @@ end)
 s:slide('conclude', function()
   m.header 'After 10 years: compared with original goals'
 
-  sf {r=3, text='then: transpile vimscript into lua', fg=cfwd}
-  sf {r=4, text='then: async plugins as co-processes in any language', fg=cfwd}
-  sf {r=5, text='now: lua as first class plugin and config', fg=cback}
-  sf {r=6, text='now: keep compat with vim8 script', fg=cback}
-  sf {r=7, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
-  sf {r=8, text='there and back again: transpile runtime vim9 code into lua',fg=cback, fn=function()
+  sf {r=3, text='- aggressively refactor source code'}
+  sf {r=4, text='- remove legacy platforms and compile-time features'}
+  sf {r=5, text='- cmake-based unified build'}
+
+  sf {r=7, text='- remove GUI and TUI code from core'}
+  sf {r=8, text='- RPC protocol for GUI:s and embedders'}
+  sf {r=9, text='- TUI as a separate process using ~~lua~~ C with unibilium+libtermkey.', fn=function()
+    hl("FwdFg", 0, 34, 41)
+    hl("BackFg", 0, 42, -1)
+  end}
+
+  sf {r=10, text='New, modern multi-platform UI written using qtlua', fg=cfwd}
+  sf {r=11, text="GUI:s as third-party projects", fg=cback}
+
+  sf {r=13, text='async plugins as co-processes in any language'}
+  sf {r=14, text='then: reimplement vimscript as a compiler to lua', fg=cfwd}
+  sf {r=15, text='now: lua as first class plugin and config', fg=cback}
+  --sf {r=16, text='now: keep compat with vim8 script', fg=cback}
+  sf {r=16, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
+
+  sf {r=17, text='there and back again: transpile runtime vim9 code into lua',fg=cback, fn=function()
     hl("FwdFg", 0, 0, 21)
   end}
 
-  sf {r=10, text='goal: RPC protocol for GUI:s and embedders'}
-  sf {r=11, text='TUI as a separate process written in ~~lua~~ C.', fn=function()
-    hl("FwdFg", 0, 37, 44)
-    hl("BackFg", 0, 45, 46)
-  end}
-  sf {r=12, text="GUI:s as third-party projects", fg=cback}
+  sf {r=19, text='co-process plugins at home: LSP servers'}
 
-  sf {r=15, text='goal: refactor neovim into a library'}
-  sf {r=16, text='building libnvim.a and including it is possible, but..'}
-  sf {r=17, text='no stable API. call any internal function'}
+  sf {r=25, text='goal: refactor neovim into a library'}
+  sf {r=26, text='building libnvim.a and including it is possible, but..'}
+  sf {r=27, text='no stable API. call any internal function'}
 
   -- answer: sorta. We solved the same problems but often in a different way
+end)
+
+s:slide('enda', function()
+  m.header 'Thanks for listening'
 end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
