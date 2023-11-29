@@ -804,11 +804,11 @@ s:slide('conclude', function()
     hl("BackFg", 0, 42, -1)
   end}
 
-  sf {r=10, text='New, modern multi-platform UI written using qtlua', fg=cfwd}
-  sf {r=11, text="GUI:s as third-party projects", fg=cback}
+  sf {r=10, text='- New, modern multi-platform UI written using qtlua', fg=cfwd}
+  sf {r=11, text="  GUI:s as third-party projects", fg=cback}
 
-  sf {r=13, text='async plugins as co-processes in any language'}
-  sf {r=14, text='then: reimplement vimscript as a compiler to lua', fg=cfwd}
+  sf {r=13, text='- async plugins as co-processes in any language'}
+  sf {r=14, text='- implement vimscript as a compiler to lua', fg=cfwd}
   sf {r=15, text='now: lua as first class plugin and config', fg=cback}
   --sf {r=16, text='now: keep compat with vim8 script', fg=cback}
   sf {r=16, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
@@ -819,9 +819,9 @@ s:slide('conclude', function()
 
   sf {r=19, text='co-process plugins at home: LSP servers'}
 
-  sf {r=25, text='goal: refactor neovim into a library'}
-  sf {r=26, text='building libnvim.a and including it is possible, but..'}
-  sf {r=27, text='no stable API. call any internal function'}
+  sf {r=21, text='- refactor neovim into a library'}
+  sf {r=22, text='building libnvim.a and including it is possible, but..'}
+  sf {r=23, text='no stable API (call any internal function)', fg=cfwd}
 
   -- answer: sorta. We solved the same problems but often in a different way
 end)
