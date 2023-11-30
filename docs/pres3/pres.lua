@@ -35,11 +35,14 @@ function hl(nam, l, c, c2)
   a.buf_add_highlight(0, ns, nam, l, c, c2)
 end
 
-function issue(r, num, name, date)
+function issue(r, num, name, date, idim)
   date = date and (" ("..date..")") or ""
   sf {r=r, c=8, text=num..": "..name..date, fn=function()
     hl("BrightFg", 0, 0, #num+1)
     hl("DimFg", 0, #num+2+#name, -1)
+    if idim then
+      hl("DimFg", 0, #num+1, #num+2+#name)
+    end
   end}
 end
 
@@ -78,7 +81,7 @@ s:slide("whoami", function()
   m.header 'Whoami'
   sf {r=4, w=55, text=[[
 - Regular contributor to Neovim since early 2015
-- Focus on
+- core maintainer, focus on
   - Internal text handling
   - GUI and TUI features (same thing)
   - extmarks/virtual text/decorations
@@ -334,24 +337,82 @@ s:slide('refactor2', function()
 end)
 
 
-s:slide('multibytes', function()
+s:slide_multi('multibytes', 5, function(i)
   m.header 'Case study: multibyte and screen text'
 
-  issue(4, "72cf89b", "Process files through unifdef to remove tons of FEAT_* macros", "jan 2014")
+  text1 = [[
+typedef unsigned char schar_T;
+schar_T ScreenLines[]; // 8-bit
+sattr_T ScreenAttrs[];
+#ifdef FEAT_MBYTE
+schar_T ScreenLines2[]; // Second byte of a DBCS character
+u8char_T ScreenLinesUC INIT(= NULL); // decoded UTF-8 characters, 32-bit
+u8char_T ScreenLinesC[MAX_MCO][]; // composing characters
+#endif]]
 
-  issue(6, "#2929", "Don't allow changing encoding after startup scripts", "sep 2015")
-  issue(7, "#3655", "Always use encoding=utf-8 per default", "Jan 2016")
-  issue(8, "#2095", "Only allow encoding=utf-8", "nov 2016")
+  text2 = [[
+schar_T ScreenLines[]; // 8-bit
+sattr_T ScreenAttrs[];
+schar_T ScreenLines2[]; // Second byte of a DBCS character
+u8char_T ScreenLinesUC INIT(= NULL); // decoded UTF-8 characters, 32-bit
+u8char_T ScreenLinesC[MAX_MCO][]; // composing characters]]
 
-  issue(10, "#7992", "Represent Screen state as UTF-8", "jun 2018")
-  issue(11, "#25214", "change schar_T representation to be more compact", "sep 2023")
+if i== 3 then
+  text2 = [[
+schar_T ScreenLines[]; // 8-bit
+sattr_T ScreenAttrs[];
+u8char_T ScreenLinesUC INIT(= NULL); // decoded UTF-8 characters, 32-bit
+u8char_T ScreenLinesC[MAX_MCO][]; // composing characters
+]]
+elseif i==4 then
+  text2 = [[
+typedef char[32] schar_T;
+schar_T ScreenLines[];
+sattr_T ScreenAttrs[];
 
-  issue(13, "#25503", "refactor(grid): do arabic shaping in one place", "okt 2023")
-  issue(14, "#25905", "refactor(grid): reimplement 'rightleft' as a post-processing step", "nov 2023")
+]]
+elseif i==5 then
+  text2 = [[
+typedef char[4] schar_T; // fits a valid char up to 4-bytes
+// or 0xFF escape + 24-bit index into glyph_cache[]
+schar_T ScreenLines[];
+sattr_T ScreenAttrs[];
+char glyph_cache[]; ]]
+end
 
-  sf {r=16, text="Related: ui protocol changes. see last years talk!"}
+ sf {r=3, text=text1, c=8, w=75, bg=cmiddim, fg="#222222"}
 
-  issue(18, "#8221", "UI grid protocol revision: line based updates", "jul 2018")
+ idim = false
+
+ if i == 1 then return end
+
+  issue(12, "72cf89b", "Process files through unifdef to remove tons of FEAT_* macros", "jan 2014")
+
+  sf {r=14, text=text2, c=8, w=75, bg=cmiddim, fg="#222222"}
+
+  if i == 2 then idim = true end
+
+  issue(20, "#2929", "Don't allow changing encoding after startup scripts", "sep 2015")
+  issue(21, "#3655", "Always use encoding=utf-8 per default", "Jan 2016")
+  issue(23, "#2095", "Only allow encoding=utf-8", "nov 2016", idim)
+
+  if i == 3 then idim = true end
+
+  issue(24, "#7992", "Represent Screen state as UTF-8", "jun 2018", idim)
+
+  if i == 4 then idim = true end
+
+  issue(25, "#25214", "change schar_T representation to be more compact", "sep 2023", idim)
+
+  -- if i < 5 then return end
+
+  issue(27, "#25503", "refactor(grid): do arabic shaping in one place", "okt 2023")
+  issue(28, "#25905", "refactor(grid): reimplement 'rightleft' as a post-processing step", "nov 2023")
+
+  sf {r=31, text="Related: ui protocol changes. see last years talk!"}
+
+  issue(33, "#8221", "UI grid protocol revision: line based updates", "jul 2018")
+
 
   -- RANT MODE: overemphasize how important the first step has been for the rest!
   -- whenever I think to the self "should I backport this cleanup to vim/vim"
@@ -563,8 +624,8 @@ s:slide('luaaaaaa', function()
 
   sf {r=23, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
 
-  sf {r=24, text="LSP and TS: by effect of being written in lua -> immediately accessible by plugins"}
-  sf {r=25, text="concern: still needs to delineate what is backwards-compat API vs internal"}
+  sf {r=25, text="LSP and TS: by effect of being written in lua -> immediately accessible by plugins"}
+  sf {r=26, text="concern: still needs to delineate what is backwards-compat API vs internal"}
   -- go through all the usage of lua internally and externally
 end)
 
