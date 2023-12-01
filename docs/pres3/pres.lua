@@ -79,7 +79,7 @@ end)
 
 s:slide("whoami", function()
   m.header 'Whoami'
-  sf {r=4, w=55, text=[[
+  sf {r=4, w=58, text=[[
 - Regular contributor to Neovim since early 2015
 - core maintainer, focus on
   - Internal text handling
@@ -119,12 +119,17 @@ s:slide('before', function()
 > which provides a replacement to the 'select' system call). ]]}
 end)
 
+function linkat(row)
+  sf {r=row, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
+  sf {r=row+2, text="inspect source and delete 'display: none;' style :P"}
+end
+
 s:slide('fundraiser_pre', function()
   m.header 'The original announcement: fundraiser'
 
   sf {r=3, c=4, fg=cfwd, text="Thiago de Arruda Padilha, February 2014"}
 
-  sf {r=5, c=4, h=29, w=85, text=[[
+  sf {r=5, c=4, h=24, w=85, text=[[
 Introduction:
 
 vim is a powerful text editor with a big community that is constantly growing. Even though the editor is about two decades old, people still extend and want to improve it, mostly using vimscript or one of the supported scripting languages.
@@ -141,11 +146,12 @@ neovim is a project that seeks to aggressively refactor vim source code in order
 - Split the work between multiple developers.
 - Enable the implementation of new/modern user interfaces without any modifications to the core source.
 - Improve the extensibility power with a new plugin architecture based on coprocesses. Plugins will be written in any programming language without needing explicit support from the editor.
-
   ]], fn=function()
     vim.fn.matchadd("FwdFg", 'Problem:')
     vim.fn.matchadd("FwdFg", 'Solution:')
   end}
+
+  linkat(34)
 end)
 
 s:slide('fundraiser', function()
@@ -187,8 +193,7 @@ Stretch goals:
     vim.cmd "setl showbreak=NONE"
 end}
 
-  sf {r=34, w=80, h=2, text="http://web.archive.org/web/20140530212019/https://www.bountysource.com/fundraisers/539-neovim-vim-s-rebirth-for-the-21st-century"}
-  sf {r=36, text="inspect source and delete 'display: none;' style :P"}
+  linkat(34)
 end)
 
 s:slide_multi('refactor_ifdef', 4, function(i)
@@ -333,6 +338,9 @@ s:slide('refactor2', function()
   sf {r=16, text="- Cleanup style and formatting"}
 
   issue(18, "#91", "Convert function declarations from K&R to ANSI style", "feb 2014")
+
+  sf {r=20, text='- run tests with ASAN/UBSAN to catch common C errors'}
+  sf {r=21, text="- Static analyzers: PVS, coverity, clang-tidy"}
 
 end)
 
@@ -624,15 +632,13 @@ s:slide('luaaaaaa', function()
 
   sf {r=23, text="Conclusion: shift from 'infrastructure' language to primary plugin/config lang", fg=cback}
 
-  sf {r=25, text="LSP and TS: by effect of being written in lua -> immediately accessible by plugins"}
+  sf {r=25, text="LSP and TS: by being written in lua -> immediately accessible by plugins and config"}
   sf {r=26, text="concern: still needs to delineate what is backwards-compat API vs internal"}
   -- go through all the usage of lua internally and externally
 end)
 
 s:slide_multi('language2', 3, function(i)
   m.header 'The language question II'
-  -- this naturally comes AFTER slides where the state of c + c->lua->c
-
   sf {r=4, text=[[rewrite Neovim in C++/Rust/Zig ??]], fn=function()
     hl("AccentFg", 0, 27, 30)
   end}
@@ -822,7 +828,7 @@ s:slide('version', function()
   sf {r=28, c=46, text="^ separate release-0.x branch", bg=cmid}
 end)
 
-s:slide('release', function()
+no_slide('release', function()
   m.header 'Releases and versioning'
 
   sf {r=5, text="Starting with v0.4.0, separatate release-0.x branches"}
