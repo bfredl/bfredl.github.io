@@ -61,7 +61,7 @@ s:slide('titlepage', function()
     local s = 12
     sf {r=rs+3,h=5,c=rc+s*(i-1),w=s-2,bg=bgs[i]}
   end
-  sf {r=rs+9, c=rc+33, text='10 YEARS GONE', fg=clight}
+  sf {r=rs+9, c=rc+35, text='10 YEARS ON', fg=clight}
   sf {r=37, c=3, w=90, bg="#d8d8d8"}
 
   -- IMAGEN
@@ -639,7 +639,7 @@ end)
 
 s:slide_multi('language2', 3, function(i)
   m.header 'The language question II'
-  sf {r=4, text=[[rewrite Neovim in C++/Rust/Zig ??]], fn=function()
+  sf {r=4, text=[[Rewrite Neovim in C++/Rust/Zig ??]], fn=function()
     hl("AccentFg", 0, 27, 30)
   end}
 
@@ -652,7 +652,7 @@ s:slide_multi('language2', 3, function(i)
 
   raw = 14
   cinc = 5
-  tabell = {{30, 39}, {20,42}, {15, 24}}
+  tabell = {{30, 39}, {19,42}, {15, 24}}
   div1 = tabell[i][1]
   div2 = tabell[i][2]
   sf {r=raw, c=cinc, w=div1, h=5, text= "\n safe\n rust", bg=caccent, fg="#111111"}
@@ -760,8 +760,8 @@ s:slide('dependencies', function()
   sf {r=19+2, c=8, w=6, bg="#777777"}
   sf {r=19+2, c=15, text="build/test-time only"}
 
-  sf {r=22, c=8, text="bundled build: automatically download and build dependencies"}
-  sf {r=24, c=8, text="lesson learned: don't hide useful deps, useful for plugins too"}
+  sf {r=23, c=8, text="Bundled build: automatically download and build dependencies"}
+  sf {r=25, c=8, text="Lesson learned: don't hide useful deps, useful for plugins too"}
   -- Don't NIH the wheel
   -- Bundle vs vendor
 end)
@@ -880,7 +880,7 @@ s:slide('conclude', function()
   sf {r=14, text='- implement vimscript as a compiler to lua', fg=cfwd}
   sf {r=15, text='now: lua as first class plugin and config', fg=cback}
   --sf {r=16, text='now: keep compat with vim8 script', fg=cback}
-  sf {r=16, text='now: async plugins by lua bindings andr wrappers around libuv',fg=cback}
+  sf {r=16, text='now: async plugins by lua bindings and wrappers around libuv',fg=cback}
 
   sf {r=17, text='there and back again: transpile runtime vim9 code into lua',fg=cback, fn=function()
     hl("FwdFg", 0, 0, 21)
