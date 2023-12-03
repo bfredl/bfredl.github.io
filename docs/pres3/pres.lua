@@ -56,10 +56,10 @@ vim.cmd [[set winblend=0]]
 s:slide('titlepage', function()
   local rs, rc = 10, 25
   sf {r=rs+1, c=rc, text='NEOVIM', fg=clight}
-  local bgs = {cfwd, caccent, cback, cmid}
+  local bgs = {cmiddim, caccent, cback, cmid}
   for i = 1,4 do
     local s = 12
-    sf {r=rs+3,h=5,c=rc+s*(i-1),w=s-2,bg=bgs[i]}
+    sf {r=rs+3,h=5,c=rc+s*(i-1),w=s-2,bg=bgs[1]}
   end
   sf {r=rs+9, c=rc+35, text='10 YEARS ON', fg=clight}
   sf {r=37, c=3, w=90, bg="#d8d8d8"}

@@ -78,6 +78,8 @@ do each (packer.use)
 
   'JuliaEditorSupport/julia-vim'
 
+  'elkasztano/nushell-syntax-vim'
+
   'lervag/vimtex'
 
 -- them colors
