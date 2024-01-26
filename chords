@@ -322,6 +322,7 @@ keymap['cpp'] = {
 
 parents['zig'] = ('insert',)
 keymap['zig'] = {
+    ',s': s('self','self.'),
     'kr': 'for (',
     'kc': s('if (', 'continue;'),
     'kl': 'while (',
@@ -342,6 +343,7 @@ keymap['zig'] = {
     '.r': '.{',
     'im': '@import("',
     'yr': s('try ', ' catch '),
+    'el': s('orelse ', 'orelse return error.'), # we have "if (err != nil)" at home
     'un': 'undefined',
     'ur': 'unreachable',
     'ih': s('i64', 'u64'),

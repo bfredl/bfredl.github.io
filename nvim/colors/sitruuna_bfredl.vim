@@ -213,6 +213,7 @@ hi link @attribute Statement
 
 hi link @lsp.type.variable NONE " too noisy
 hi link @lsp.type.property @property
+hi link @lsp.type.class.c @class " NOW YOU REALLY DONE IT
 
 hi link @variable NONE " too noisy
 
