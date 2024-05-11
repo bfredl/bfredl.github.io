@@ -81,6 +81,7 @@ keymap['base'] = {
     #CONFLICT, so explicit override:
     'T:': '`',
     '12': '½',
+    'edg': '°',
 }
 
 #OMGLOLROFL

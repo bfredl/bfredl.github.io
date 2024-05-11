@@ -164,6 +164,7 @@ chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
 
 chmap 'in' '<cmd>Inspect<cr>' -- LORD inspector
 
+vim.g.surround_no_insert_mappings = 1 -- NIIIIN
 
 -- TODO(bfredl): reload all the filetypes when reloading bfred/init.lua
 v [[
@@ -193,7 +194,9 @@ chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 -- iimenter stuff {{{
 function h.vimenter(startup)
   if startup then
-    require'colorizer'.setup()
+    if jit then
+      require'colorizer'.setup()
+    end
     if a._fork_serve then
       _G.prepfork = true
        a._fork_serve()

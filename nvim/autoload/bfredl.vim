@@ -20,7 +20,7 @@ set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:p:h\")})%)%(\ %a%)\ -\ NVIM\ %{g:_b_
 " TODO(bfredl): one logic please for detecting conflicting mappings
 let g:mapleader = ","
 " vimrc {{{
-func bfredl#rt(name)
+func! bfredl#rt(name)
   return nvim_get_runtime_file(a:name, 0)[0]
 endfunc
 command Reload luafile $MYVIMRC
@@ -181,6 +181,7 @@ nmap <buffer> <Plug>CH:id <cmd>lua vim.lsp.buf.declaration()<cr>
 nmap <buffer> K <cmd>lua vim.lsp.buf.hover()<cr>
 nmap <buffer> <Plug>ch:mv <cmd>lua vim.diagnostic.open_float()<cr>
 nmap <buffer> <Plug>ch:ac <cmd>lua vim.lsp.buf.code_action()<cr>
+nmap <buffer> <Plug>ch:rn <cmd>lua vim.lsp.buf.rename()<cr>
 setl omnifunc=v:lua.vim.lsp.omnifunc
 let b:did_lspmap = v:true
 " ic does not work, delete ic->char ?
@@ -364,7 +365,7 @@ augroup Filetypes
     \ | endif
 augroup END
 
-func bfredl#brackety()
+func! bfredl#brackety()
   nnoremap <silent> <buffer> [[ :call rust#Jump('n', 'Back')<CR>
   nnoremap <silent> <buffer> ]] :call rust#Jump('n', 'Forward')<CR>
   xnoremap <silent> <buffer> [[ :call rust#Jump('v', 'Back')<CR>
@@ -384,7 +385,7 @@ endfunc
 let g:latex_to_unicode_tab = 0
 " }}}
 "
-func bfredl#nvim_c_ft()
+func! bfredl#nvim_c_ft()
   setlocal expandtab
   setlocal shiftwidth=2
   setlocal softtabstop=2
@@ -394,7 +395,7 @@ func bfredl#nvim_c_ft()
   setlocal commentstring=//\ %s
 endfunc
 
-func bfredl#cmap()
+func! bfredl#cmap()
   inoremap <buffer> ¶) )
   inoremap <buffer> ¶, ,
   inoremap <buffer> ¶<space> <space>
@@ -405,7 +406,7 @@ if &ft == "c" || &ft == "cpp"
   call bfredl#cmap()
 end
 
-func bfredl#zigmap()
+func! bfredl#zigmap()
   inoremap <buffer> <plug>ch:kh ifc<Plug>luasnip-expand-snippet
   call bfredl#brackety()
 endfunc
@@ -418,7 +419,7 @@ function! bfredl#vim_ft() "{{{
 endfunction
 " }}}
 
-func bfredl#nvimdev()
+func! bfredl#nvimdev()
   augroup nvimdev
     au!
     au BufRead,BufNewFile *.h set filetype=c
