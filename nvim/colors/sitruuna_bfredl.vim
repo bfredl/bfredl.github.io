@@ -216,6 +216,8 @@ hi link @lsp.type.property @property
 hi link @lsp.type.class.c @class " NOW YOU REALLY DONE IT
 
 hi link @variable NONE " too noisy
+hi link @repeat Statement
+hi link @conditional Statement
 
 hi link @type.definition.zig Type
 hi link ZigDefinition LightKeyword

@@ -209,7 +209,7 @@ end -- }}}
 -- snippets {{{
 if vim.snippet then
   vim.keymap.set({'i', 's'}, '<c-k>', function()
-    if vim.snippet.jumpable(1) then
+    if vim.snippet.active {direction = 1} then
       return '<cmd>lua vim.snippet.jump(1)<cr>'
     else
       return '<c-k>'
@@ -243,7 +243,7 @@ h.clangd_path = "/home/bfredl/local/llvm17-release/bin/clangd"
 function h.clangd()
   vim.lsp.start {
     name = 'clangd';
-    cmd = {h.clangd_path, '-query-driver=/home/bfredl/dev/DelugeFirmware/./toolchain/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
+    cmd = {h.clangd_path, '-query-driver=/home/bfredl/dev/DelugeFirmware/toolchain/v16/linux-x86_64/arm-none-eabi-gcc/bin/arm-none-eabi-*'};
     root_dir = h.root_pattern {
       'compile_commands.json';
       'compile_flags.txt';
