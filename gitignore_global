@@ -24,6 +24,7 @@ runtime/doc/doctags
 .Rhistory
 compile_commands.json
 zig-cache
+.zig-cache
 zig-out
 zig-cache-sudo
 compile_flags.txt
