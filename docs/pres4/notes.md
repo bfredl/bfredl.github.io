@@ -36,3 +36,4 @@ compromise:
 - vim 5.2 "multibyte" (DBCS only)
 (convenient: many early 2-byte encodings defined the cell width to be the byte width)
 
+- vim 6.0: first version with utf-8

@@ -94,6 +94,33 @@ s:slide('unicode', function()
   m.header 'The thing'
 end)
 
+s:slide('vimhistory', function()
+  m.header 'vim-history'
+
+  sf {r=4, text="github repo with reconstructed vim history"}
+  sf {r=6, text="URL"}
+
+  sf {r=10, text="vim 5.2, date: first version with multibyte support"}
+  sf {r=11, text="vim 6.0, UTF-8 support"}
+
+  -- screenshot just to boast about compiled vim6.0
+
+  -- so "multibyte" is not UTF-8?? explain
+end)
+
+s:slide('emoji_intro', function()
+end)
+
+s:slide_multi('emoji_variants', 4, function(i)
+  m.header 'how emojis are encoded'
+  sf {r=4, text="single codepoint: crylaugh"}
+  if i >= 2 then sf {r=5, text="variant selector: red heart"} end
+  if i >= 3 then sf {r=6, text="ZWJ joiner: peasant"} end
+  if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: transgender flag"} end
+
+end)
+
+
 s:slide('enda', function()
   m.header 'Thanks for listening'
 end)
