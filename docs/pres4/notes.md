@@ -1,4 +1,10 @@
 
+ABSTRACT
+=====
+Neovim and Unicode: Neovim 0.11 contains a significant upgrade to its multibyte implementation, including support of new emoji from recent Unicode standard versions. This will be presented along with historical background of internationalized text and vim's support for it. Are "multibyte", "wide characters" and "Unicode" all the same thing? And how did funny color pictures end up being the flagship feature of a standard meant to encode human written text across languages?
+
+=====
+
 - background of unicode
 
 - The stoneage time: code pages
