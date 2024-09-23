@@ -11,6 +11,7 @@ _G.s = s
 m.prepare()
 m.cls()
 
+
 clight = "#FFFFFF"
 cnormal = "#e0e0e0"
 cmiddim = "#aaaaaa"
@@ -53,9 +54,17 @@ vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
 vim.lsp.stop_client(vim.lsp.get_active_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
+
+s:permanent_bar(function(name)
+  if name == 'titlepage' then return end
+
+  sf {r=35, c=2, w=80, text=[[ Unicode and Neovim,   more colors here,        bfredl ]]}
+end)
+
 s:slide('titlepage', function()
   m.header 'Unicodes' -- TODO: fancy title
 
+  sf {r=35, c=3, w=90, bg="#d8d8d8"}
   -- IMAGEN
 end)
 

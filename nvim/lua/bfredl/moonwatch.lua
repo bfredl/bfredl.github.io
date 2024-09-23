@@ -79,6 +79,9 @@ end
 function Show:show(id)
   cls()
   id = id or self.order[1]
+  if self._permanent_bar then
+    self._permanent_bar(id)
+  end
   self.slides[id]()
   self.cur = id
   print(" ")
@@ -89,6 +92,10 @@ function Show:mov(d)
   if num and self.order[num+d] then
     self:show(self.order[num+d])
   end
+end
+
+function Show:permanent_bar(bar)
+  self._permanent_bar = bar
 end
 
 return m
