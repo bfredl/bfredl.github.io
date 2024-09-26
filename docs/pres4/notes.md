@@ -1,7 +1,7 @@
 
 ABSTRACT
 =====
-Neovim and Unicode: Neovim 0.11 contains a significant upgrade to its multibyte implementation, including support of new emoji from recent Unicode standard versions. This will be presented along with historical background of internationalized text and vim's support for it. Are "multibyte", "wide characters" and "Unicode" all the same thing? And how did funny color pictures end up being the flagship feature of a standard meant to encode human written text across languages?
+Unicode and emoji in Neovim: Neovim 0.11 contains a significant upgrade to its multibyte text implementation, including support of new emoji from recent Unicode standard versions. This will be presented along with historical background of internationalized text and vim's support for it. Are "multibyte", "wide characters" and "Unicode" all the same thing? And how did funny color pictures end up being the flagship feature of a standard meant to encode written languages from around the world?
 
 =====
 
@@ -36,4 +36,4 @@ compromise:
 - vim 5.2 "multibyte" (DBCS only)
 (convenient: many early 2-byte encodings defined the cell width to be the byte width)
 
-- vim 6.0: first version with utf-8
+- vim 6.0: first version with (utf-8 Sun Jul 30 23:10:55 2000)

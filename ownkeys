@@ -16,7 +16,7 @@ xkb_symbols "base" {
     key <AE05> { [ 5, dead_tilde   ] };
     key <AE06> { [ 6, dead_cedilla  ] };
     key <AE07> { [ 7, question ] };
-    key <AE08> { [ 8, B, asciitilde] };
+    key <AE08> { [ 8, minus, asciitilde] };
     key <AE09> { [ 9, X, dollar ] };
     key <AE10> { [ 0] };
     key <AE11> { [ adiaeresis, Adiaeresis   ] };

@@ -94,6 +94,48 @@ s:slide('unicode', function()
   m.header 'The thing'
 end)
 
+s:slide('ascii', function()
+  m.header 'ASCII (1967, 1977)'
+
+  sf {r=4, text="ASCII was standardized in the 1960:s as a 7-bit encoding"}
+  sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
+  sf {r=6, text="with some ambiguities locked down in 1977"}
+
+  -- ASCII table here
+
+  sf {r=15, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
+
+
+  sf {r=20, text="There was also the rival standard EBCDIC used by IBM mainframes"}
+  sf {r=21, text="We are not going to talk about EBCDIC"}
+end)
+
+
+s:slide('8bitworld', function()
+  m.header '8-bit codepages (what is "plain text" anyway)'
+
+  sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
+  sf {r=4, text="to interpret these as text, an Encoding is needed"}
+  sf {r=5, text="ASCII become the lingua franca for interpreting the first 0-127 values"}
+
+  sf {r=12, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
+end)
+
+s:slide('dbscworld', function()
+  m.header 'double byte character sets (east asian)'
+end)
+
+s:slide('xkcdstandards', function()
+  m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
+
+  sf {r=3, text="Unicode vs ISO/IEC"}
+end)
+
+s:slide('whatisunicode', function()
+  m.header "What's in the unicode standard? anyway?"
+end)
+
+
 s:slide('vimhistory', function()
   m.header 'vim-history'
 
