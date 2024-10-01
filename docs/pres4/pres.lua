@@ -90,8 +90,29 @@ s:slide("whoami", function()
   ]], bg="#", fg=caccent}
 end)
 
-s:slide('unicode', function()
-  m.header 'The thing'
+s:slide('nvim11', function()
+  m.header 'New in Neovim 0.11: emoji support'
+
+  sf {r=3, text="NB: not in all terminal emulators"}
+
+  local x, y = 15, 35
+  sf {r=5, c=x, text="before"}
+  sf {r=5, c=y, text="after"}
+
+  sf {r=7, c=x, text="😂"}
+  sf {r=7, c=y, text="😂"}
+  sf {r=8, c=x, text="🧑🌾"}
+  sf {r=8, c=y, text="🧑‍🌾"}
+  sf {r=9, c=x, text="❤"}
+  sf {r=9, c=y, text="❤️"}
+  sf {r=10, c=x, text="🏳️<200d>⚧️"} --TODO: special hl!
+  sf {r=10, c=y, text="🏳️‍⚧️"}
+  sf {r=11, c=x, text="🇦 🇽 🇧 🇷"}
+  sf {r=11, c=y, text="🇦🇽🇧🇷"}
+
+  sf {r=14, text="most of there in unicode XX or earier"}
+  sf {r=15, text="Why did id take so long? and why do they fail so differently?"}
+  sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
 end)
 
 s:slide('ascii', function()
@@ -131,6 +152,9 @@ s:slide('xkcdstandards', function()
   sf {r=3, text="Unicode vs ISO/IEC"}
 end)
 
+s:slide('16bitworld', function()
+end)
+
 s:slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
 end)
@@ -159,7 +183,9 @@ s:slide_multi('emoji_variants', 4, function(i)
   if i >= 2 then sf {r=5, text="variant selector: red heart"} end
   if i >= 3 then sf {r=6, text="ZWJ joiner: peasant"} end
   if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: transgender flag"} end
+end)
 
+s:slide('country flags', function()
 end)
 
 
