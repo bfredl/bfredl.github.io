@@ -155,6 +155,24 @@ end)
 s:slide('16bitworld', function()
 end)
 
+s:slide('unicode1', function()
+  -- TODO: not sure what to do with this, highlight the last sentence? (UTF-8 delivered on this, not UCS-2:p)
+  local text = [[
+The Unicode character encoding standard is a fixed-width, uniform text and character encoding
+scheme. It includes characters from the world’s scripts, as well as technical symbols in common
+use. The Unicode standard is modeled on the ASCII character set. Since ASCII's 7-bit character size
+is inadequate to handle multilingual text, the Unicode Consortium adopted a 16-bit architecture
+which extends the benefits of ASCII to multilingual text. Unicode characters are consistently 16
+bits wide, regardless of language, so no escape sequence or control code is required to specify any
+character in any language. Unicode character encoding treats symbols, alphabetic characters, and
+ideographic characters identically, so that they can be used simultaneously and with equal facility.
+Computer programs that use Unicode character encoding to represent characters but do not dis-
+play or print text can (for the most part) remain unaltered when new scripts or characters are
+introduced.
+]]
+
+end)
+
 s:slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
 end)
@@ -185,7 +203,24 @@ s:slide_multi('emoji_variants', 4, function(i)
   if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: transgender flag"} end
 end)
 
-s:slide('country flags', function()
+s:slide('countryflags', function()
+end)
+
+s:slide('tagsequences', function()
+  m.header 'yoo dawg I heard you like ascii'
+
+  -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
+end)
+
+s:slide('references', function()
+  m.header 'futher infortion'
+
+  sf {r=4, text="Emoji support in terminals"}
+  sf {r=5, text="https://mitchellh.com/writing/grapheme-clusters-in-terminals"}
+
+  sf {r=7, text="History of emoji in unicode:"}
+  sf {r=8, text="youtuuu"}
+
 end)
 
 
