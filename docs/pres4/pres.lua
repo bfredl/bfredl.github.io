@@ -121,6 +121,7 @@ s:slide('ascii', function()
   sf {r=4, text="ASCII was standardized in the 1960:s as a 7-bit encoding"}
   sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
   sf {r=6, text="with some ambiguities locked down in 1977"}
+  sf {r=8, text="==== THIS IS JUST  A FILLER ========"}
 
   -- ASCII table here
 
@@ -153,9 +154,8 @@ s:slide('xkcdstandards', function()
 end)
 
 s:slide('16bitworld', function()
-end)
-
-s:slide('unicode1', function()
+  m.header 'the brave new world: 16-bit characters!'
+  -- from unicode standard 1.0
   -- TODO: not sure what to do with this, highlight the last sentence? (UTF-8 delivered on this, not UCS-2:p)
   local text = [[
 The Unicode character encoding standard is a fixed-width, uniform text and character encoding
@@ -193,14 +193,49 @@ s:slide('vimhistory', function()
 end)
 
 s:slide('emoji_intro', function()
+  m.header 'emojis: what, whow, why'
 end)
 
 s:slide_multi('emoji_variants', 4, function(i)
   m.header 'how emojis are encoded'
-  sf {r=4, text="single codepoint: crylaugh"}
-  if i >= 2 then sf {r=5, text="variant selector: red heart"} end
-  if i >= 3 then sf {r=6, text="ZWJ joiner: peasant"} end
-  if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: transgender flag"} end
+  sf {r=4, text="single codepoint: 😂"}
+  if i >= 2 then sf {r=5, text="variant selector: ❤️"} end
+  if i >= 3 then sf {r=6, text="ZWJ joiner: 🧑‍🌾"} end
+  if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: 🏳️‍⚧️"} end
+
+  local texte = ''
+  local cell = {}
+  if i == 1 then
+    texte = [[1F602;FACE WITH TEARS OF JOY]]
+    cell = {'😂'}
+  elseif i == 2 then
+    texte = [[2764;HEAVY BLACK HEART
+FE0F;VARIATION SELECTOR-16]]
+    cell = {'❤', 'VS-16'}
+  elseif i == 3 then
+    texte = [[
+1F9D1;ADULT
+0200D;ZERO WIDTH JOINER
+1F33E;EAR OF RICE ]]
+    cell = {'❤', 'VS-16'}
+  elseif i == 4 then
+    texte = [[
+1F3F3;WAVING WHITE FLAG
+0FE0F;VARIATION SELECTOR-16
+0200D;ZERO WIDTH JOINER
+026A7;TRANSGENDER SYMBOL
+0FE0F;VARIATION SELECTOR-16]]
+    cell = {'❤', 'VS-16'}
+  end
+  sf {r=10, w=35, h=5, text=texte}
+
+  local data = [[
+  
+1F602                             ; fully-qualified     # 😂 E0.6 face with tears of joy
+2764 FE0F                         ; fully-qualified     # ❤️ E0.6 red heart
+1F9D1 200D 1F33E                  ; fully-qualified     # 🧑‍🌾 E12.1 farmer
+1F3F3 FE0F 200D 26A7 FE0F         ; fully-qualified     # 🏳️‍⚧️ E13.0 transgender flag
+  ]]
 end)
 
 s:slide('countryflags', function()
