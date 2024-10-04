@@ -292,6 +292,15 @@ FE0F;VARIATION SELECTOR-16]]
   ]]
 end)
 
+s:slide('zwjmania', function()
+  m.header "modifiers and ZWJ: a grammar for emoji"
+  -- emoji modifiers:
+  -- the three genders: person, man, woman
+  -- skin colors
+
+  -- and then "holding hands", "family" combinatorial explosions
+end)
+
 s:slide('countryflags', function()
   m.header "But there's more: country flags!"
 end)
