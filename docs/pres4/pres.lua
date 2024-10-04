@@ -121,11 +121,26 @@ s:slide('ascii', function()
   sf {r=4, text="ASCII was standardized in the 1960:s as a 7-bit encoding"}
   sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
   sf {r=6, text="with some ambiguities locked down in 1977"}
-  sf {r=8, text="==== THIS IS JUST  A FILLER ========"}
+
+  sf {r=8, h=8, w=64, text=[[
+NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
+DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
+SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+ 0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+ @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+ P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+ `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+ p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  DEL
+]], fn=function() 
+  hl("DimFg", 0, 0, 36)
+  hl("DimFg", 0, 43, -1)
+  hl("DimFg", 1, 0, -1)
+  hl("DimFg", 7, 60, -1)
+end}
 
   -- ASCII table here
 
-  sf {r=15, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
+  sf {r=17, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
 
 
   sf {r=20, text="There was also the rival standard EBCDIC used by IBM mainframes"}
@@ -200,7 +215,7 @@ s:slide_multi('emoji_variants', 4, function(i)
   m.header 'how emojis are encoded'
   sf {r=4, text="single codepoint: 😂"}
   if i >= 2 then sf {r=5, text="variant selector: ❤️"} end
-  if i >= 3 then sf {r=6, text="ZWJ joiner: 🧑‍🌾"} end
+  if i >= 3 then sf {r=6, text="ZWJ joiner: 🧑‍🌾 "} end
   if i >= 4 then sf {r=7, text="ZWJ joiner + variant selector: 🏳️‍⚧️"} end
 
   local texte = ''
@@ -239,6 +254,7 @@ FE0F;VARIATION SELECTOR-16]]
 end)
 
 s:slide('countryflags', function()
+  m.header "But there's more: country flags!"
 end)
 
 s:slide('tagsequences', function()
