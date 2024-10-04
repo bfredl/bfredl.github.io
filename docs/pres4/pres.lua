@@ -115,6 +115,29 @@ s:slide('nvim11', function()
   sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
 end)
 
+function ascii(row)
+  -- TODO: hex numbers?
+  sf {r=row, c=9, h=8, w=68, text=[[
+00  NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
+10  DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
+20  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+30   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+40   @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+50   P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+60   `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+70   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  DEL
+]], fn=function() 
+  hl("DimFg", 0, 4, 40)
+  hl("DimFg", 0, 47, -1)
+  hl("DimFg", 1, 4, -1)
+  hl("DimFg", 7, 64, -1)
+  for i=0,7 do
+    hl("Number", i, 0, 2)
+  end
+end}
+
+end
+
 s:slide('ascii', function()
   m.header 'ASCII (1967, 1977)'
 
@@ -122,23 +145,8 @@ s:slide('ascii', function()
   sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
   sf {r=6, text="with some ambiguities locked down in 1977"}
 
-  sf {r=8, h=8, w=64, text=[[
-NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
-DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
-SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
- 0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
- @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
- P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
- `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
- p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  DEL
-]], fn=function() 
-  hl("DimFg", 0, 0, 36)
-  hl("DimFg", 0, 43, -1)
-  hl("DimFg", 1, 0, -1)
-  hl("DimFg", 7, 60, -1)
-end}
-
   -- ASCII table here
+  ascii(8)
 
   sf {r=17, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
 
@@ -148,14 +156,45 @@ end}
 end)
 
 
-s:slide('8bitworld', function()
+s:slide_multi('8bitworld', 4, function(i)
   m.header '8-bit codepages (what is "plain text" anyway)'
 
   sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
   sf {r=4, text="to interpret these as text, an Encoding is needed"}
   sf {r=5, text="ASCII become the lingua franca for interpreting the first 0-127 values"}
 
-  sf {r=12, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
+  ascii(7)
+  local thetext=""
+if i == 1 then
+  thetext=[[
+80  
+90  
+A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
+B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+D0   Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+]]
+elseif i == 2 then
+  thetext = [[
+80   Ç   ü   é   â   ä   à   å   ç   ê   ë   è   ï   î   ì   Ä   Å
+90   É   æ   Æ   ô   ö   ò   û   ù   ÿ   Ö   Ü   ¢   £   ¥   ₧   ƒ
+A0   á   í   ó   ú   ñ   Ñ   ª   º   ¿   ⌐   ¬   ½   ¼   ¡   «   »
+B0   ░   ▒   ▓   │   ┤   ╡   ╢   ╖   ╕   ╣   ║   ╗   ╝   ╜   ╛   ┐
+C0   └   ┴   ┬   ├   ─   ┼   ╞   ╟   ╚   ╔   ╩   ╦   ╠   ═   ╬   ╧
+D0   ╨   ╤   ╥   ╙   ╘   ╒   ╓   ╫   ╪   ┘   ┌   █   ▄   ▌   ▐   ▀
+E0   α   ß   Γ   π   Σ   σ   µ   τ   Φ   Θ   Ω   δ   ∞   φ   ε   ∩
+F0   ≡   ±   ≥   ≤   ⌠   ⌡   ÷   ≈   °   ∙   ·   √   ⁿ   ²   ■ NBSP
+  ]]
+elseif i == 3 then
+  thetext = [[
+  MACROMAN
+  ]]
+end
+  sf {r=15, c=9, h=8, w=68, text=thetext}
+
+  sf {r=30, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
 end)
 
 s:slide('dbscworld', function()
