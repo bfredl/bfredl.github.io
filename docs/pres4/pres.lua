@@ -101,10 +101,10 @@ s:slide('nvim11', function()
 
   sf {r=7, c=x, text="😂"}
   sf {r=7, c=y, text="😂"}
-  sf {r=8, c=x, text="🧑🌾"}
-  sf {r=8, c=y, text="🧑‍🌾"}
-  sf {r=9, c=x, text="❤"}
-  sf {r=9, c=y, text="❤️"}
+  sf {r=8, c=x, text="❤"}
+  sf {r=8, c=y, text="❤️"}
+  sf {r=9, c=x, text="🧑🌾"}
+  sf {r=9, c=y, text="🧑‍🌾"}
   sf {r=10, c=x, text="🏳️<200d>⚧️"} --TODO: special hl!
   sf {r=10, c=y, text="🏳️‍⚧️"}
   sf {r=11, c=x, text="🇦 🇽 🇧 🇷"}
@@ -146,9 +146,9 @@ s:slide('ascii', function()
   sf {r=6, text="with some ambiguities locked down in 1977"}
 
   -- ASCII table here
-  ascii(8)
+  ascii(9)
 
-  sf {r=17, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
+  sf {r=18, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
 
 
   sf {r=20, text="There was also the rival standard EBCDIC used by IBM mainframes"}
@@ -161,14 +161,14 @@ s:slide_multi('8bitworld', 4, function(i)
 
   sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
   sf {r=4, text="to interpret these as text, an Encoding is needed"}
-  sf {r=5, text="ASCII become the lingua franca for interpreting the first 0-127 values"}
 
-  ascii(7)
-  local thetext=""
+  ascii(9)
+  local thetext, thename = "", ""
 if i == 1 then
+  thename = "iso latin-1 (ISO/IEC 8859-1)"
   thetext=[[
-80  
-90  
+80                   ( more control code no
+90                     one uses anymore :p)
 A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
 B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
 C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
@@ -177,6 +177,21 @@ E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   
 F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
 ]]
 elseif i == 2 then
+  thename = [[MS WINDOWS cp-1252 ("latin-1")]]
+  thetext=[[
+80   €       ‚   ƒ   „   …   †   ‡   ˆ   ‰   Š   ‹   Œ       Ž
+90   ‘   ’   “   ”   •   –   —   ˜   ™   š   ›   œ           ž   Ÿ
+A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
+B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+D0   Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+]]
+
+elseif i == 3 then
+  -- TODO: show the 00 10 overlay (not usable in text)
+  thename = "MS-DOS (IBM PC OEM code page)"
   thetext = [[
 80   Ç   ü   é   â   ä   à   å   ç   ê   ë   è   ï   î   ì   Ä   Å
 90   É   æ   Æ   ô   ö   ò   û   ù   ÿ   Ö   Ü   ¢   £   ¥   ₧   ƒ
@@ -187,14 +202,29 @@ D0   ╨   ╤   ╥   ╙   ╘   ╒   ╓   ╫   ╪   ┘   ┌   █   ▄
 E0   α   ß   Γ   π   Σ   σ   µ   τ   Φ   Θ   Ω   δ   ∞   φ   ε   ∩
 F0   ≡   ±   ≥   ≤   ⌠   ⌡   ÷   ≈   °   ∙   ·   √   ⁿ   ²   ■ NBSP
   ]]
-elseif i == 3 then
+elseif i == 4 then
+  -- note CA is really ⁄ but that's hard to render surrounded by spaces
+  thename = "MAC ROMAN"
   thetext = [[
-  MACROMAN
+80   Ä   Å   Ç   É   Ñ   Ö   Ü   á   à   â   ä   ã   å   ç   é   è
+90   ê   ë   í   ì   î   ï   ñ   ó   ò   ô   ö   õ   ú   ù   û   ü
+A0   †   °   ¢   £   §   •   ¶   ß   ®   ©   ™   ´   ¨   ≠   Æ   Ø
+B0   ∞   ±   ≤   ≥   ¥   µ   ∂   ∑   ∏   π   ∫   ª   º   Ω   æ   ø
+C0   ¿   ¡   ¬   √   ƒ   ≈   ∆   «   »   … NBSP  À   Ã   Õ   Œ   œ
+D0   –   —   “   ”   ‘   ’   ÷   ◊   ÿ   Ÿ   ⟋   €   ‹   ›   ﬁ   ﬂ
+E0   ‡   ·   ‚   „   ‰   Â   Ê   Á   Ë   È   Í   Î   Ï   Ì   Ó   Ô
+F0   🍎  Ò   Ú   Û   Ù   ı   ˆ   ˜   ¯   ˘   ˙   ˚   ¸   ˝   ˛   ˇ
   ]]
 end
-  sf {r=15, c=9, h=8, w=68, text=thetext}
 
-  sf {r=30, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
+  sf {r=7, c=43, center="c", text=thename}
+  sf {r=17, c=9, h=8, w=68, text=thetext}
+
+  sf {r=28, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
+  sf {r=29, text="ASCII become the lingua franca for interpreting 0-127 byte values"}
+  sf {r=30, text=[[intepreting the rest required choosing a "code page" (locale settings, ugh)]]}
+  -- ASCI values are preserved between MS-DOS, lose-DOS, lunix, mac etc.
+  -- the others: not so much
 end)
 
 s:slide('dbscworld', function()
@@ -204,7 +234,14 @@ end)
 s:slide('xkcdstandards', function()
   m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
 
-  sf {r=3, text="Unicode vs ISO/IEC"}
+  sf {r=3, text="A new encoding scheme would need to:"}
+  sf {r=4, text="  - be substantially larger than 8-bit (224 visible chars)"}
+  sf {r=5, text="  - shared across all major vendors (IBM, MS, Apple, Unix)", fg=caccent}
+
+
+  sf {r=7, text="Unicode vs ISO/IEC"}
+
+  sf {r=10, text="UCS (ISO/IEC 10646)"}
 end)
 
 s:slide('16bitworld', function()
@@ -225,6 +262,18 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
+  sf {r=8, text="WIDECHAR word:"}
+  sf {r=9, text="java, javascript, windows NT"}
+
+end)
+
+s:slide('robpike', function()
+  m.header 'An encoding backwards compat with ASCII?'
+  -- praise our lord and saviour: plan-9
+  --
+  
+  sf {r=8, text="MULTIBYTE word: HTML/XML, modern linux, vim!!!!"}
+  -- "multibyte" like earlier DBSC encod in g
 end)
 
 s:slide('whatisunicode', function()
@@ -312,7 +361,7 @@ s:slide('tagsequences', function()
 end)
 
 s:slide('references', function()
-  m.header 'futher infortion'
+  m.header 'futher information'
 
   sf {r=4, text="Emoji support in terminals"}
   sf {r=5, text="https://mitchellh.com/writing/grapheme-clusters-in-terminals"}
