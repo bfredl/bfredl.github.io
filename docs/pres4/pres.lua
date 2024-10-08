@@ -58,7 +58,7 @@ vim.cmd [[set winblend=0]]
 s:permanent_bar(function(name)
   if name == 'titlepage' then return end
 
-  sf {r=35, c=2, w=80, text=[[ Unicode and Neovim,   more colors here,        bfredl ]]}
+  sf {r=35, c=2, w=91, text=[[ Unicode and Neovim,   more colors here,                        bfredl ]], bg=cbackdark}
 end)
 
 s:slide('titlepage', function()
@@ -108,7 +108,7 @@ s:slide('nvim11', function()
   sf {r=10, c=x, text="🏳️<200d>⚧️"} --TODO: special hl!
   sf {r=10, c=y, text="🏳️‍⚧️"}
   sf {r=11, c=x, text="🇦 🇽 🇧 🇷"}
-  sf {r=11, c=y, text="🇦🇽🇧🇷"}
+  sf {r=11, c=y, text="🇦🇽 🇧🇷"}
 
   sf {r=14, text="most of there in unicode XX or earier"}
   sf {r=15, text="Why did id take so long? and why do they fail so differently?"}
@@ -245,7 +245,35 @@ s:slide('xkcdstandards', function()
 end)
 
 s:slide('16bitworld', function()
-  m.header 'the brave new world: 16-bit characters!'
+  m.header 'A modest proposal: 16-bit characters'
+
+  sf {r=3, text="Unicode 88: Need for a new, word-wide ASCII"}
+
+  orignal = [[
+Are 16 bits, providing at most 65,536 distinct codes, sufficient to encode
+all characters of all the world’s scripts? Since the definition of a
+“character” is itself part of the design of a text encoding scheme, the
+question is meaningless unless it is restated as: Is it possible to
+engineer a reasonable definition of “character” such that all the world’s
+scripts contain fewer than 65,536 of them?
+  ]]
+
+  -- TODO best to keep full text, but use HiGHLiGHtS
+  sf {r=5, c=8, w=76, h=11, bg=cbackdark, text=[[
+Are 16 bits, providing at most 65,536 distinct codes, sufficient to encode
+all characters of all the world’s scripts? Since the definition of a
+“character” is itself part of the design of a text encoding scheme, the
+question is meaningless unless it is restated as: Is it possible to
+engineer a reasonable definition of “character” such that all the world’s
+scripts contain fewer than 65,536 of them?
+
+The answer to this is Yes. (Of course, the converse need not be true, i.e.
+it is certainly possible, albeit uninteresting, to come up with
+unreasonable definitions of “character such that there are more than 65,536
+of them.)]]}
+
+
+  -- the fucking ascii vs wide ascii side by side table
   -- from unicode standard 1.0
   -- TODO: not sure what to do with this, highlight the last sentence? (UTF-8 delivered on this, not UCS-2:p)
   local text = [[
@@ -262,8 +290,8 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
-  sf {r=8, text="WIDECHAR word:"}
-  sf {r=9, text="java, javascript, windows NT"}
+  sf {r=18, text="WIDECHAR word:"}
+  sf {r=19, text="java, javascript, windows NT"}
 
 end)
 
