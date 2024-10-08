@@ -247,7 +247,7 @@ end)
 s:slide('16bitworld', function()
   m.header 'A modest proposal: 16-bit characters'
 
-  sf {r=3, text="Unicode 88: Need for a new, word-wide ASCII"}
+  sf {r=3, text="Unicode 88: Need for a new, world-wide ASCII"}
 
   orignal = [[
 Are 16 bits, providing at most 65,536 distinct codes, sufficient to encode
@@ -273,8 +273,17 @@ unreasonable definitions of “character such that there are more than 65,536
 of them.)]]}
 
 
+  sf {r=17, text=[[The "reasonable" definition (at home):]]}
+  sf {r=19, text=[[ - only "modern use" characters]]}
+  sf {r=20, c=9, text=[["""the union of all papers and magazines printed in the world in 1988"""]]}
+  sf {r=22, text=[[Han unification (Japanese, Chinese, Korean)]]}
+end)
+
+s:slide('unicode1.0', function()
+  m.header '1991: Unicode 1.0, the WIDECHAR world'
   -- the fucking ascii vs wide ascii side by side table
   -- from unicode standard 1.0
+  
   -- TODO: not sure what to do with this, highlight the last sentence? (UTF-8 delivered on this, not UCS-2:p)
   local text = [[
 The Unicode character encoding standard is a fixed-width, uniform text and character encoding
@@ -290,8 +299,13 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
-  sf {r=18, text="WIDECHAR word:"}
-  sf {r=19, text="java, javascript, windows NT"}
+  sf {r=10, text="in this mindset, unicode just IS UCS-2, i e unicode is an encoding"}
+
+  -- explain how this is the seed of the mayhem which will ensure
+  sf {r=12, text="yes but: spacing marks"}
+
+  sf {r=15, text="WIDECHAR word:"}
+  sf {r=16, text="java, javascript, windows NT"}
 
 end)
 
@@ -304,6 +318,16 @@ s:slide('robpike', function()
   -- "multibyte" like earlier DBSC encod in g
 end)
 
+s:slide('utf-16', function()
+  m.header "what if 65 536 characters are NOT enough?"
+
+  sf {r=6, text="unicode 2.0: reserved space for surrogates"}
+
+  sf {r=20, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
+  sf {r=21, text="looking inside:"}
+  sf {r=22, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
+  sf {r=23, text="jabbascript: but UTF-16 as the PROCESSING format"}
+end)
 s:slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
 end)
