@@ -1,0 +1,35 @@
+--- /usr/share/X11/xkb/rules/evdev.xml	2014-10-02 15:15:17.000000000 +0200
++++ evdev.xml	2014-11-04 17:22:02.290272183 +0100
+@@ -5774,6 +5774,25 @@
+         </variant>
+       </variantList>
+     </layout>
++    <layout>
++      <configItem>
++        <name>ownkeys</name>
++        
++        <shortDescription>ownkeys</shortDescription>
++        <description>ownkeys</description>
++        <languageList>
++          <iso639Id>swe</iso639Id>
++        </languageList>
++      </configItem>
++      <variantList>
++        <variant>
++          <configItem>
++            <name>standard</name>
++            <description>Swedish (bfredl's special layout)</description>
++          </configItem>
++        </variant>
++      </variantList>
++    </layout>
+   </layoutList>
+   <optionList>
+     <group allowMultipleSelection="true">
+@@ -6926,4 +6945,4 @@
+       </option>
+     </group>
+   </optionList>
+-</xkbConfigRegistry>
+\ No newline at end of file
++</xkbConfigRegistry>

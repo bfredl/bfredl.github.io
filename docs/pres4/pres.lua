@@ -29,6 +29,7 @@ a.set_hl(0, "BackMidFgDim", {fg="#111111", bg="#aaaaaa"})
 a.set_hl(0, "BackDarkFg", {fg=cbackdark})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
+a.set_hl(0, "PlainUnderline", {underline=true})
 
 ns = a.create_namespace'pres'
 
@@ -372,7 +373,7 @@ FE0F;VARIATION SELECTOR-16]]
 1F9D1;ADULT
 0200D;ZERO WIDTH JOINER
 1F33E;EAR OF RICE ]]
-    cell = {'❤', 'VS-16'}
+    cell = {'🧑', 'ZWJ', '🌾' }
   elseif i == 4 then
     texte = [[
 1F3F3;WAVING WHITE FLAG
@@ -380,9 +381,28 @@ FE0F;VARIATION SELECTOR-16]]
 0200D;ZERO WIDTH JOINER
 026A7;TRANSGENDER SYMBOL
 0FE0F;VARIATION SELECTOR-16]]
-    cell = {'❤', 'VS-16'}
+    cell = {'🏳', 'VS-16', 'ZWJ', '⚧', 'VS-16'}
   end
-  sf {r=10, w=35, h=5, text=texte}
+  sf {r=22, w=35, h=5, text=texte}
+
+  local bright = true
+  for i=1,#cell do
+    local c = cell[i]
+
+    local bg = bright and cmiddim or cbackdark
+
+    local col = 9+10*(i-1)
+    sf {r=12, c=col+5, bg=bg, text=c, center='c'}
+    sf {r=10, c=col, w=10, h=5, bg=bg}
+
+    bright = not bright
+  end
+  if i == 4 then
+    sf {r=15, c=9, w=20, bg='PlainUnderline'}
+    sf {r=15, c=39, w=20, bg='PlainUnderline'}
+    sf {r=17, c=18, text='🏳️'}
+    sf {r=17, c=48, text='⚧️'}
+  end
 
   local data = [[
   
