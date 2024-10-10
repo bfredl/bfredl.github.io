@@ -168,7 +168,7 @@ s:slide_multi('8bitworld', 4, function(i)
 if i == 1 then
   thename = "iso latin-1 (ISO/IEC 8859-1)"
   thetext=[[
-80                   ( more control code no
+80                   ( more control codes no
 90                     one uses anymore :p)
 A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
 B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
@@ -280,10 +280,49 @@ of them.)]]}
   sf {r=22, text=[[Han unification (Japanese, Chinese, Korean)]]}
 end)
 
+function bytesof(num, n)
+  local bits = {}
+  for i=1,n do
+    if i > 1 and i%4 == 1 then
+      table.insert(bits, ' ')
+    end
+    local test = bit.band(num, bit.lshift(1,n-i))
+    local bit = (test > 0) and "1" or "0"
+    table.insert(bits, bit)
+  end
+  return table.concat(bits)
+end
+
 s:slide('unicode1.0', function()
   m.header '1991: Unicode 1.0, the WIDECHAR world'
   -- the fucking ascii vs wide ascii side by side table
   -- from unicode standard 1.0
+
+  local bright = true
+  local ascii = 'this is text'
+  -- local uni = {'G', 'å', ' ', 'β', ' ', 'こ', 'ん', 'に', 'ち', 'は'}
+  local uni = {'G', 'å', ' ', 'β', ' ', '今', '日', 'は', ' ', ' ', ' '}
+
+  for i = 1,12 do
+    local bg = bright and cmid or cbackdark
+
+    local r = 4+i
+    local char = string.sub(ascii, i, i)
+    local byt = string.byte(char)
+    local bytestr = bytesof(byt,8)
+
+    sf {r=r, c=8, bg=bg, text=bytestr}
+    sf {r=r, c=19, bg=bg, text=char}
+
+    local unichar = uni[i]
+    local num = vim.fn.char2nr(unichar)
+    local numstr = bytesof(num,16)
+
+    sf {r=r, c=30, bg=bg, text=numstr}
+    sf {r=r, c=51, w=2, bg=bg, text=unichar}
+
+    bright = not bright
+  end
   
   -- TODO: not sure what to do with this, highlight the last sentence? (UTF-8 delivered on this, not UCS-2:p)
   local text = [[
@@ -300,22 +339,51 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
-  sf {r=10, text="in this mindset, unicode just IS UCS-2, i e unicode is an encoding"}
+  sf {r=19, text="in this mindset, unicode just IS UCS-2, i e unicode is an encoding"}
 
   -- explain how this is the seed of the mayhem which will ensure
-  sf {r=12, text="yes but: spacing marks"}
+  sf {r=21, text="yes but: spacing marks"}
 
-  sf {r=15, text="WIDECHAR word:"}
-  sf {r=16, text="java, javascript, windows NT"}
+  sf {r=24, text="WIDECHAR word:"}
+  sf {r=25, text="java, javascript, windows NT"}
 
 end)
 
 s:slide('robpike', function()
-  m.header 'An encoding backwards compat with ASCII?'
+  -- TODO: better assentuate the 3 important properties (for the time)
+  -- 1. still gigachad 31bit UCS, not prematurely optimied for UNICODE-91 aka UCS-2
+  --    (would have made BMP encoding more efficient _then_, but at a high cost later..)
+  -- 2. ASCII is exactly preserved like in the latin-1 style encodings
+  -- 3. fully self-synchronizing (finite lookback)
+
+  m.header '1992: An encoding backwards compat with ASCII?'
   -- praise our lord and saviour: plan-9
-  --
   
-  sf {r=8, text="MULTIBYTE word: HTML/XML, modern linux, vim!!!!"}
+  sf {r=5, text="as part of the ISO/IEC 10646 draft (UCS-4, 2 billion chars)"}
+  sf {r=6, text="was a multibyte encoding for interoperability with ascii: UTF-1"}
+  --
+  sf {r=8, text="This scheme was very efficient, however just like DBSC ascii bytes became ambigous"}
+
+  sf {r=10, text="A new propsal by IBM and the X/Open unix group: multibyte chars must only use 128-225"}
+  sf {r=11, text="This was modified by Rob Pike and Ken Thomson to be fully self-synchronizing"}
+
+  ascii(13)
+  -- TODO: colors!
+  sf {r=21, c=9, h=8, w=68, text=[[
+80   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
+90   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
+A0   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
+B0   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
+C0  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2
+D0  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2
+E0  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3
+F0  S4  S4  S4  S4  S4  S4  S4  S4  S5  S5  S5  S5  S6  S6   X   X
+]]}
+
+  sf {r=13, text=""}
+  sf {r=17, c=9, h=8, w=68, text=thetext}
+  
+  sf {r=30, text="MULTIBYTE word: HTML/XML, modern linux, vim!!!!"}
   -- "multibyte" like earlier DBSC encod in g
 end)
 

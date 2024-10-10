@@ -1,0 +1,27 @@
+words:
+contributor
+event handling
+bfredl
+multibyte
+twothousandfourteen
+job control
+
+short phrases:
+rewritten in rust
+Is TTD good, is TDD bad?
+Regression test-driven development
+google summer of code
+incremental substitution
+versioning history
+This is a prerequisite for many other refactors!
+Bundle vs vendor
+way ahead of its time
+refactor existing code anyway
+
+phrases:
+
+> It is my second attempt to bring multitasking to vim, but unlike the
+> event-loop/message queue patch, this one does not rely on multithreading,
+> using only system functions available on most unixes. If required, it
+> could also be ported to windows(I think it has a concept called IOCP
+> which provides a replacement to the 'select' system call).
