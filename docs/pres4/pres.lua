@@ -157,7 +157,7 @@ s:slide('ascii', function()
 end)
 
 
-s:slide_multi('8bitworld', 4, function(i)
+s:slide_multi('8bitworld', 5, function(i)
   m.header '8-bit codepages (what is "plain text" anyway)'
 
   sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
@@ -203,9 +203,9 @@ D0   ╨   ╤   ╥   ╙   ╘   ╒   ╓   ╫   ╪   ┘   ┌   █   ▄
 E0   α   ß   Γ   π   Σ   σ   µ   τ   Φ   Θ   Ω   δ   ∞   φ   ε   ∩
 F0   ≡   ±   ≥   ≤   ⌠   ⌡   ÷   ≈   °   ∙   ·   √   ⁿ   ²   ■ NBSP
   ]]
-elseif i == 4 then
+elseif i == 4 or i == 5 then
   -- note CA is really ⁄ but that's hard to render surrounded by spaces
-  thename = "MAC ROMAN"
+  thename = (i == 4) and "MACRO MAN" or "MAC ROMAN"
   thetext = [[
 80   Ä   Å   Ç   É   Ñ   Ö   Ü   á   à   â   ä   ã   å   ç   é   è
 90   ê   ë   í   ì   î   ï   ñ   ó   ò   ô   ö   õ   ú   ù   û   ü
@@ -238,9 +238,10 @@ s:slide('xkcdstandards', function()
   sf {r=3, text="A new encoding scheme would need to:"}
   sf {r=4, text="  - be substantially larger than 8-bit (224 visible chars)"}
   sf {r=5, text="  - shared across all major vendors (IBM, MS, Apple, Unix)", fg=caccent}
+  sf {r=6, text="     - Some form of backwards compat with ASCII"}
 
 
-  sf {r=7, text="Unicode vs ISO/IEC"}
+  sf {r=8, text="Unicode vs ISO/IEC"}
 
   sf {r=10, text="UCS (ISO/IEC 10646)"}
 end)
@@ -399,6 +400,23 @@ s:slide('utf-16', function()
 end)
 s:slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
+end)
+
+s:slide('normalization', function()
+  m.header 'Normalization'
+
+  sf {r=4, text=[[
+[ins] In [8]: dict(ｸ=2)['ｸ']
+---------------------------------------------------------------------------
+KeyError                                  Traceback (most recent call last)
+Cell In[8], line 1
+----> 1 dict(ｸ=2)['ｸ']
+
+KeyError: 'ｸ'
+
+[ins] In [21]: dict(ﬁﬁﬁ=0)
+Out[21]: {'fififi': 0}
+  ]])
 end)
 
 
