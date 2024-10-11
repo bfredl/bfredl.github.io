@@ -279,6 +279,13 @@ of them.)]]}
   sf {r=19, text=[[ - only "modern use" characters]]}
   sf {r=20, c=9, text=[["""the union of all papers and magazines printed in the world in 1988"""]]}
   sf {r=22, text=[[Han unification (Japanese, Chinese, Korean)]]}
+
+  sf {r=24, text=[[ """Also, Unicode avoids tens of thousands of character
+replications by consolidating together the ideographic characters used in writing
+Chinese, Japanese, and Korean."""]]}
+
+  sf {r=26, text=[[ - this is a somewhat controversial topic, and I am not a speaker of any of these languages]]}
+  sf {r=27, text=[[ - regardless, it is fair to say that the sizing constraint imposed a _bias_ towards unifying more characters rather than less]]}
 end)
 
 function bytesof(num, n)
@@ -416,9 +423,8 @@ KeyError: 'ｸ'
 
 [ins] In [21]: dict(ﬁﬁﬁ=0)
 Out[21]: {'fififi': 0}
-  ]])
+  ]]}
 end)
-
 
 s:slide('vimhistory', function()
   m.header 'vim-history'
