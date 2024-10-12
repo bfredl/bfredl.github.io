@@ -232,7 +232,7 @@ s:slide('dbscworld', function()
   m.header 'double byte character sets (east asian)'
 end)
 
-s:slide('xkcdstandards', function()
+s:slide_multi('xkcdstandards', 2, function(i)
   m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
 
   sf {r=3, text="A new encoding scheme would need to:"}
@@ -241,9 +241,22 @@ s:slide('xkcdstandards', function()
   sf {r=6, text="     - Some form of backwards compat with ASCII"}
 
 
-  sf {r=8, text="Unicode vs ISO/IEC"}
+  sf {r=8, c=32, text="Unicode vs ISO/IEC"}
 
-  sf {r=10, text="UCS (ISO/IEC 10646)"}
+  sf {r=10, text="unicode: a set of rules for processing international text"}
+  sf {r=11, text="- 16-bit character set: max 65 536 unicodes possible"}
+  sf {r=12, text="- combining unicodes allow more possible glyphs"}
+
+  sf {r=16, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
+  sf {r=17, text="- 31 byte code space with some restrictions: 600 million characters"}
+  sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+
+  if i >= 2 then
+    -- HANDSHAKE EMOJI
+    sf {r=14, c=40, text="🤝"}
+    sf {r=22, text=[[Agreement: there should be one shared character database ]]}
+    sf {r=23, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0]]}
+  end
 end)
 
 s:slide('16bitworld', function()
