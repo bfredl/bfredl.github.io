@@ -30,6 +30,9 @@ a.set_hl(0, "BackDarkFg", {fg=cbackdark})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
 a.set_hl(0, "PlainUnderline", {underline=true})
+a.set_hl(0, "StartFg", {fg="#22FF33"})
+a.set_hl(0, "ContBg", {bg="#441111"})
+a.set_hl(0, "ContFg", {fg="#cc1111"})
 
 ns = a.create_namespace'pres'
 
@@ -220,16 +223,16 @@ E0   ‡   ·   ‚   „   ‰   Â   Ê   Á   Ë   È   Í   Î   Ï   Ì   �
 F0   🍎  Ò   Ú   Û   Ù   ı   ˆ   ˜   ¯   ˘   ˙   ˚   ¸   ˝   ˛   ˇ
   ]]
 elseif i == 6 then
-  thename = "ISO cyrilic"
+  thename = "ISO/IEC 8859-5: Cyrilic"
   thetext=[[
 80                   ( C1: more control codes
 90                     no one uses anymore :p )
-A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
-B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
-C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
-D0   Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
-E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
-F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+Ax NBSP  Ё   Ђ   Ѓ   Є   Ѕ   І   Ї   Ј   Љ   Њ   Ћ   Ќ  SHY  Ў   Џ
+Bx   А   Б   В   Г   Д   Е   Ж   З   И   Й   К   Л   М   Н   О   П 
+Cx   Р   С   Т   У   Ф   Х   Ц   Ч   Ш   Щ   Ъ   Ы   Ь   Э   Ю   Я
+Dx   а   б   в   г   д   е   ж   з   и   й   к   л   м   н   о   п
+Ex   р   с   т   у   ф   х   ц   ч   ш   щ   ъ   ы   ь   э   ю   я
+Fx   №   ё   ђ   ѓ   є   ѕ   і   ї   ј   љ   њ   ћ   ќ   §   ў   џ
 ]]
 end
 
@@ -243,8 +246,51 @@ end
   -- the others: not so much
 end)
 
-s:slide('dbscworld', function()
+s:slide_multi('dbcsworld', 2, function(i)
   m.header 'double byte character sets (east asian)'
+
+  sf {r=8, c=9, h=16, w=68, text=[[
+00  NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
+10  DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
+20  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   / 
+30   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ? 
+40   @C  A   B   C   D   E   F   G   H   I   J   K   L   M   N   O 
+50   PC  Q   R   S   T   U   V   W   X   Y   Z   [   ¥   ]   ^   _ 
+60   `C  a   b   c   d   e   f   g   h   i   j   k   l   m   n   o 
+70   pC  q   r   s   t   u   v   w   x   y   z   {   |   }   ~  DEL
+80   -   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S 
+90   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S 
+A0       ｡   ｢   ｣   ､   ･   ｦ   ｧ   ｨ   ｩ   ｪ   ｫ   ｬ   ｭ   ｮ   ｯ 
+B0   ｰ   ｱ   ｲ   ｳ   ｴ   ｵ   ｶ   ｷ   ｸ   ｹ   ｺ   ｻ   ｼ   ｽ   ｾ   ｿ 
+C0   ﾀ   ﾁ   ﾂ   ﾃ   ﾄ   ﾅ   ﾆ   ﾇ   ﾈ   ﾉ   ﾊ   ﾋ   ﾌ   ﾍ   ﾎ   ﾏ 
+D0   ﾐ   ﾑ   ﾒ   ﾓ   ﾔ   ﾕ   ﾖ   ﾗ   ﾘ   ﾙ   ﾚ   ﾛ   ﾜ   ﾝ   ﾞ   ﾟ 
+E0   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S 
+F    S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
+]], fn=function() 
+  hl("DimFg", 0, 4, 40)
+  hl("DimFg", 0, 47, -1)
+  hl("DimFg", 1, 4, -1)
+  hl("DimFg", 7, 64, -1)
+  hl("ErrorMsg", 5, 52, 56)
+  hl("StartFg", 8, 7, -1)
+  hl("StartFg", 9, 4, -1)
+  hl("StartFg", 14, 4, -1)
+  hl("StartFg", 15, 4, 55)
+  for l=0,15 do
+    hl("Number", l, 0, 2)
+  end
+  if i==2 then
+    for l=4,15 do
+      local e = -1
+      if l == 7 then e = 63 end
+      if l == 15 then e = 55 end
+      hl("ContBg", l, 4, e)
+    end
+  end
+end}
+  -- TODO: colors!
+  sf {r=16, c=9, h=8, w=68, text=[[
+]]}
 end)
 
 s:slide_multi('xkcdstandards', 3, function(i)
@@ -254,6 +300,8 @@ s:slide_multi('xkcdstandards', 3, function(i)
   sf {r=4, text="  - be substantially larger than 8-bit (224 visible chars)"}
   sf {r=5, text="  - shared across all major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
   sf {r=6, text="     - Some form of backwards compat with ASCII"}
+  sf {r=7, text="     - and the most used language-specific extensions"}
+
 
   if i >= 2 then
     sf {r=8, c=32, text="Unicode vs ISO/IEC"}
@@ -416,7 +464,16 @@ C0  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2
 D0  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2
 E0  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3
 F0  S4  S4  S4  S4  S4  S4  S4  S4  S5  S5  S5  S5  S6  S6   X   X
-]]}
+]], fn=function()
+    for l=0,3 do
+      hl("ContFg", l, 4, -1)
+    end
+    for l=4,7 do
+      local e = -1
+      if l == 7 then e = 60 end
+      hl("StartFg", l, 4, e)
+    end
+end}
 
   sf {r=13, text=""}
   sf {r=17, c=9, h=8, w=68, text=thetext}
@@ -435,8 +492,23 @@ s:slide('utf-16', function()
   sf {r=22, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
   sf {r=23, text="jabbascript: but UTF-16 as the PROCESSING format"}
 end)
+
 s:slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
+
+  sf {r=5, text="the Unicode Character database"}
+  sf {r=6, text="- 154 998 codepoints assigned out of 1 114 111"}
+  sf {r=7, text="- Rules how to encode these as UTF-32, UTF-16, UTF-8"}
+  sf {r=8, text="- Same encoding is standardized as ISO 10646: Universal coded character set"}
+
+  sf {r=10, text="- But the unicode standard contains so much more:"}
+  sf {r=11, text="- core specification: 23 chapters"}
+  sf {r=12, text="- Unicode Standard annexes: 20 more documents "}
+  sf {r=15, text="- rules for:"}
+  sf {r=16, text="- rendering of bidirectional text"}
+  sf {r=18, text="- case conversion and case-insensitive comparison"}
+  sf {r=19, text="- Normalization (recognizing multiple encodings of the same 'abstract char')"}
+  sf {r=20, text="- segmenting into grahemes, words, paragraphs"}
 end)
 
 s:slide('normalization', function()
