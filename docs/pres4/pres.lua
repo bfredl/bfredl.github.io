@@ -157,7 +157,7 @@ s:slide('ascii', function()
 end)
 
 
-s:slide_multi('8bitworld', 5, function(i)
+s:slide_multi('8bitworld', 6, function(i)
   m.header '8-bit codepages (what is "plain text" anyway)'
 
   sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
@@ -165,11 +165,12 @@ s:slide_multi('8bitworld', 5, function(i)
 
   ascii(9)
   local thetext, thename = "", ""
+
 if i == 1 then
   thename = "iso latin-1 (ISO/IEC 8859-1)"
   thetext=[[
-80                   ( more control codes no
-90                     one uses anymore :p)
+80                   ( C1: more control codes
+90                     no one uses anymore :p )
 A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
 B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
 C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
@@ -177,6 +178,7 @@ D0   Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   
 E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
 F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
 ]]
+
 elseif i == 2 then
   thename = [[MS WINDOWS cp-1252 ("latin-1")]]
   thetext=[[
@@ -203,6 +205,7 @@ D0   ╨   ╤   ╥   ╙   ╘   ╒   ╓   ╫   ╪   ┘   ┌   █   ▄
 E0   α   ß   Γ   π   Σ   σ   µ   τ   Φ   Θ   Ω   δ   ∞   φ   ε   ∩
 F0   ≡   ±   ≥   ≤   ⌠   ⌡   ÷   ≈   °   ∙   ·   √   ⁿ   ²   ■ NBSP
   ]]
+
 elseif i == 4 or i == 5 then
   -- note CA is really ⁄ but that's hard to render surrounded by spaces
   thename = (i == 4) and "MACRO MAN" or "MAC ROMAN"
@@ -216,6 +219,18 @@ D0   –   —   “   ”   ‘   ’   ÷   ◊   ÿ   Ÿ   ⟋   €   ‹   
 E0   ‡   ·   ‚   „   ‰   Â   Ê   Á   Ë   È   Í   Î   Ï   Ì   Ó   Ô
 F0   🍎  Ò   Ú   Û   Ù   ı   ˆ   ˜   ¯   ˘   ˙   ˚   ¸   ˝   ˛   ˇ
   ]]
+elseif i == 6 then
+  thename = "ISO cyrilic"
+  thetext=[[
+80                   ( C1: more control codes
+90                     no one uses anymore :p )
+A0 NBSP  ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SHY  ®   ¯
+B0   °   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+C0   À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+D0   Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+]]
 end
 
   sf {r=7, c=43, center="c", text=thename}
@@ -232,26 +247,28 @@ s:slide('dbscworld', function()
   m.header 'double byte character sets (east asian)'
 end)
 
-s:slide_multi('xkcdstandards', 2, function(i)
+s:slide_multi('xkcdstandards', 3, function(i)
   m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
 
   sf {r=3, text="A new encoding scheme would need to:"}
   sf {r=4, text="  - be substantially larger than 8-bit (224 visible chars)"}
-  sf {r=5, text="  - shared across all major vendors (IBM, MS, Apple, Unix)", fg=caccent}
+  sf {r=5, text="  - shared across all major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
   sf {r=6, text="     - Some form of backwards compat with ASCII"}
 
-
-  sf {r=8, c=32, text="Unicode vs ISO/IEC"}
-
-  sf {r=10, text="unicode: a set of rules for processing international text"}
-  sf {r=11, text="- 16-bit character set: max 65 536 unicodes possible"}
-  sf {r=12, text="- combining unicodes allow more possible glyphs"}
-
-  sf {r=16, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-  sf {r=17, text="- 31 byte code space with some restrictions: 600 million characters"}
-  sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
-
   if i >= 2 then
+    sf {r=8, c=32, text="Unicode vs ISO/IEC"}
+
+    sf {r=10, text="unicode: a set of rules for processing international text"}
+    sf {r=11, text="- 16-bit character set: max 65 536 unicodes possible"}
+    sf {r=12, text="- combining unicodes allow more possible glyphs"}
+
+    sf {r=16, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
+    sf {r=17, text="- 31 byte code space with some restrictions: 600 million characters"}
+    sf {r=18, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ascii"}
+    sf {r=19, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+  end
+
+  if i >= 3 then
     -- HANDSHAKE EMOJI
     sf {r=14, c=40, text="🤝"}
     sf {r=22, text=[[Agreement: there should be one shared character database ]]}
