@@ -528,6 +528,37 @@ Out[21]: {'fififi': 0}
   ]]}
 end)
 
+s:slide('whatis', function()
+  m.header 'Now for something completely different'
+
+  sf {r=4, text="What is a character?"}
+  sf {r=5, text="given a valid unicode string(1) how _many_ characters are in it?"}
+  sf {r=7, text="strlen(str), #str, str.lenght, str.__len__()"}
+  sf {r=8, text="codeunits vs codepoint"}
+  sf {r=10, text="Already in unicode 1.0: 'non-spacing marks'"}
+
+  local r = 12
+  local c = 6
+  sf {r=r+2, c=c+5, bg=cbackdark, text='Å', center='c'}
+  sf {r=r+4, c=c+5, bg=cbackdark, text='U+00C5', center='c'}
+  sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
+
+  sf {r=r+2, c=22, text=':'}
+
+  c=30
+  sf {r=r+2, c=c+5, bg=cbackdark, text='A', center='c'}
+  sf {r=r+4, c=c+5, bg=cbackdark, text='U+0041', center='c'}
+  sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
+
+  c=41
+  sf {r=r+2, c=c+5, bg=cbackdark, text='°', center='c'}
+  sf {r=r+4, c=c+5, bg=cbackdark, text='U+030A', center='c'}
+  sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
+
+  sf {r=25, text="(1) i.e. well-formed UTF-8/16/32 which maps to assigned code points"}
+
+end)
+
 s:slide('vimhistory', function()
   m.header 'vim-history'
 
