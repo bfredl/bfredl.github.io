@@ -53,6 +53,13 @@ end
 
 function no_slide() end
 
+function embedditor(filnamn)
+  local fil = vim.fn.bufadd(filnamn)
+
+  sf {r=5, c=8, h=18, w=80, bg=cbackdark, buf=fil, focusable=true}
+  sf {r=3, c=5, h=22, w=86, bg=cback}
+end
+
 vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
 
 vim.lsp.stop_client(vim.lsp.get_active_clients())
@@ -362,8 +369,9 @@ of them.)]]}
 replications by consolidating together the ideographic characters used in writing
 Chinese, Japanese, and Korean."""]]}
 
-  sf {r=26, text=[[ - this is a somewhat controversial topic, and I am not a speaker of any of these languages]]}
-  sf {r=27, text=[[ - regardless, it is fair to say that the sizing constraint imposed a _bias_ towards unifying more characters rather than less]]}
+  sf {r=28, text=[[ - this is a somewhat controversial topic, and I am not a speaker of any of these languages]]}
+  sf {r=29, text=[[ - regardless, it is fair to say that the sizing constraint imposed a ]]}
+  sf {r=30, text=[[   _bias_ towards unifying more characters rather than less]]}
 end)
 
 function bytesof(num, n)
@@ -509,6 +517,11 @@ s:slide('whatisunicode', function()
   sf {r=18, text="- case conversion and case-insensitive comparison"}
   sf {r=19, text="- Normalization (recognizing multiple encodings of the same 'abstract char')"}
   sf {r=20, text="- segmenting into grahemes, words, paragraphs"}
+end)
+
+s:slide('UnicodeData.txt', function()
+  m.header 'UnicodeData.txt'
+  embedditor('showcase/UnicodeData.txt')
 end)
 
 s:slide('normalization', function()
