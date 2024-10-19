@@ -71,7 +71,7 @@ function h.zig()
   -- Nooo! you cannot run an external process as a linter on each keypress. Nooo!
   -- haha, astgen go brrr
   -- TODO: disable this when enabling ghostzig
-  -- vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.zigcheck()]]
+  vim.cmd [[autocmd TextChanged,TextChangedI <buffer> lua require'bfredl.lint'.zigcheck()]]
 end
 
 function h.lua()

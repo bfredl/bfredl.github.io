@@ -33,6 +33,7 @@ a.set_hl(0, "PlainUnderline", {underline=true})
 a.set_hl(0, "StartFg", {fg="#22FF33"})
 a.set_hl(0, "ContBg", {bg="#441111"})
 a.set_hl(0, "ContFg", {fg="#cc1111"})
+a.set_hl(0, "AltFont", {altfont=true})
 
 ns = a.create_namespace'pres'
 
@@ -605,13 +606,13 @@ s:slide_multi('emoji_variants', 4, function(i)
   elseif i == 2 then
     texte = [[2764;HEAVY BLACK HEART
 FE0F;VARIATION SELECTOR-16]]
-    cell = {'❤', 'VS-16'}
+    cell = {'❤', 'VS-16', '❤️'}
   elseif i == 3 then
     texte = [[
 1F9D1;ADULT
 0200D;ZERO WIDTH JOINER
 1F33E;EAR OF RICE ]]
-    cell = {'🧑', 'ZWJ', '🌾' }
+    cell = {'🧑', 'ZWJ', '🌾', '🧑‍🌾' }
   elseif i == 4 then
     texte = [[
 1F3F3;WAVING WHITE FLAG
@@ -619,7 +620,7 @@ FE0F;VARIATION SELECTOR-16]]
 0200D;ZERO WIDTH JOINER
 026A7;TRANSGENDER SYMBOL
 0FE0F;VARIATION SELECTOR-16]]
-    cell = {'🏳', 'VS-16', 'ZWJ', '⚧', 'VS-16'}
+    cell = {'🏳', 'VS-16', 'ZWJ', '⚧', 'VS-16', '🏳️‍⚧️'}
   end
   sf {r=22, w=35, h=5, text=texte}
 
@@ -630,7 +631,17 @@ FE0F;VARIATION SELECTOR-16]]
     local bg = bright and cmiddim or cbackdark
 
     local col = 9+10*(i-1)
-    sf {r=12, c=col+5, bg=bg, text=c, center='c'}
+    if i == #cell and #cell > 1 then
+      sf {r=12, c=col+4, text='=', bg='AltFont'}
+      col = col + 10
+    end
+    local alt = vim.api.nvim_strwidth(c) <= 2
+    -- col adj is bull, fix altfont centering!
+    sf {r=12, c=col+(alt and 3 or 5), bg=bg, text=c, center='c', fn=function()
+      if alt then
+        hl('AltFont', 0, 0, -1)
+      end
+    end}
     sf {r=10, c=col, w=10, h=5, bg=bg}
 
     bright = not bright
@@ -638,8 +649,8 @@ FE0F;VARIATION SELECTOR-16]]
   if i == 4 then
     sf {r=15, c=9, w=20, bg='PlainUnderline'}
     sf {r=15, c=39, w=20, bg='PlainUnderline'}
-    sf {r=17, c=18, text='🏳️'}
-    sf {r=17, c=48, text='⚧️'}
+    sf {r=17, c=18, text='🏳️', bg='AltFont'}
+    sf {r=17, c=48, text='⚧️', bg='AltFont'}
   end
 
   local data = [[
