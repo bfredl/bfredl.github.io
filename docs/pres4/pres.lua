@@ -63,7 +63,7 @@ end
 
 vim.cmd [[ hi Normal guibg=#080808 guifg=#e0e0e0]]
 
-vim.lsp.stop_client(vim.lsp.get_active_clients())
+vim.lsp.stop_client(vim.lsp.get_clients())
 vim.cmd [[set shortmess+=F]]
 vim.cmd [[set winblend=0]]
 
