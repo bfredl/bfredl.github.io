@@ -576,11 +576,16 @@ end)
 s:slide('vimhistory', function()
   m.header 'vim-history'
 
-  sf {r=4, text="github repo with reconstructed vim history"}
-  sf {r=6, text="URL"}
+  sf {r=4, text="Github repo with reconstructed vim history"}
+  sf {r=5, text="URL"}
+
+  sf {r=7, text="vim 4.0 and earlier: charset.c"}
+  sf {r=8, text="support for character properties for 8-bit codepages"}
 
   sf {r=10, text="vim 5.2, date: first version with multibyte support"}
   sf {r=11, text="vim 6.0, UTF-8 support"}
+
+  sf {r=13, text="🤔", bg="AltFont"}
 
   -- screenshot just to boast about compiled vim6.0
 
