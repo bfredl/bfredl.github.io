@@ -37,3 +37,34 @@ compromise:
 (convenient: many early 2-byte encodings defined the cell width to be the byte width)
 
 - vim 6.0: first version with (utf-8 Sun Jul 30 23:10:55 2000)
+```c
+EXTERN u8char_t	*ScreenLinesUC INIT(= NULL);	/* decoded UTF-8 characters */
+EXTERN u8char_t	*ScreenLinesC1 INIT(= NULL);	/* first composing char */
+EXTERN u8char_t	*ScreenLinesC2 INIT(= NULL);	/* second composing char */
+```
+
+unicode then:
+
+vim 7.0216  Mon Mar 6 23:29:24 2006
+
+```c
+EXTERN u8char_T	*ScreenLinesUC INIT(= NULL);	/* decoded UTF-8 characters */
+EXTERN u8char_T	*ScreenLinesC[MAX_MCO];		/* composing characters */
+```
+
+unicode then:
+4.1.0  	2005-03-25 https://www.unicode.org/reports/tr29/tr29-9.html
+
+
+First version with _extended_ grapheme clusters:
+2008-03-25  	Unicode 5.1.0
+https://www.unicode.org/reports/tr29/tr29-13.html
+
+Not very exciting, a few language-specific spacing_marks
+
+2012-09-12 Unicode 6.2.0
+https://www.unicode.org/reports/tr29/tr29-21.html
+
+First mention of RI-sequences, but they are cursed (no lenght limit?)
+
+

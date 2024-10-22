@@ -592,9 +592,61 @@ s:slide('vimhistory', function()
   -- so "multibyte" is not UTF-8?? explain
 end)
 
+s:slide('vim6', function()
+  m.header 'vim6 compiled'
+end)
+
+s:slide_multi('vimscreen', 2, function(i)
+  m.header 'vim in encoding=utf-8 mode'
+
+  sf {r=4, text="ee"}
+
+  sf {r=6, text="but in the screen buffers, it looks like this"}
+
+  texte = {[[
+EXTERN schar_T  *ScreenLines INIT(= NULL);
+EXTERN u8char_T *ScreenLinesUC INIT(= NULL); // decoded UTF-8 characters
+EXTERN u8char_T *ScreenLinesC[MAX_MCO];      // composing characters
+  ]], [[
+uint8_t ScreenLines[rows*cols]
+int32_t ScreenLinesUC[rows*cols]         // decoded UTF-8 characters
+int32_t ScreenLinesC[p_mco][rows*cols];  // composing characters
+int p_mco;  // 'maxcombine' option, up to MAX_MCO = 6
+]]}
+
+  sf {r=8, w=80, text=texte[i]}
+
+sf {r=13, text="so when rendering a window:"}
+sf {r=14, text="buffer UTF-8 text is converted to UTF-32 + 6 * UTF-32"}
+sf {r=15, text=".. and then converted back to UTF-8 for the terminal (or gtk)"}
+
+end)
+
+s:slide('vimunidata' ,function()
+  m.header 'vim unicode data'
+
+  sf {r=4, text=[[
+" Edit the Unicode text file.  Requires the netrw plugin.
+edit http://unicode.org/Public/UNIDATA/UnicodeData.txt
+
+" Parse each line, create a list of lists.
+call ParseDataToProps()
+
+" Build the toLower table.
+call BuildCaseTable("Lower", 13)
+
+" Build the toUpper table.
+call BuildCaseTable("Upper", 12)
+
+" Build the ranges of composing chars.
+call BuildCombiningTable()
+]]}
+end)
+
 s:slide('emoji_intro', function()
   m.header 'emojis: what, whow, why'
 end)
+
 
 s:slide_multi('emoji_variants', 4, function(i)
   m.header 'how emojis are encoded'
