@@ -67,4 +67,6 @@ https://www.unicode.org/reports/tr29/tr29-21.html
 
 First mention of RI-sequences, but they are cursed (no lenght limit?)
 
+2016-06-20  	Unicode 9.0.0 https://www.unicode.org/reports/tr29/tr29-29.html
 
+glue_after_zwj
