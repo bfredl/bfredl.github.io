@@ -721,6 +721,30 @@ end)
 
 s:slide('zwjmania', function()
   m.header "modifiers and ZWJ: a grammar for emoji"
+
+  function emojiat(row, col, emoji)
+    local bg = cbackdark
+    sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
+      if true then
+        hl('AltFont', 0, 0, -1)
+      end
+    end}
+    sf {r=row, c=col, w=10, h=5, bg=bg}
+  end
+
+  --   adult       man      woman
+  --    🧑          👨        👩
+  --    plus ZWJ + 🎨
+  --     🧑‍🎨        👨‍🎨         👩‍🎨
+  d = 12
+  emojiat(4, 10, '🧑')
+  emojiat(4, 10+d, '👨')
+  emojiat(4, 10+2*d, '👩')
+
+  emojiat(11, 10, '🧑‍🎨')
+  emojiat(11, 10+d, '👨‍🎨')
+  emojiat(11, 10+2*d, '👩‍🎨')
+
   -- emoji modifiers:
   -- the three genders: person, man, woman
   -- skin colors
