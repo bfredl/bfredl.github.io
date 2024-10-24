@@ -601,18 +601,22 @@ grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
          (Grapheme_Extend | spacing_mark) * | . )]],
 [[
 ( CRLF | Prepend* ( RI-sequence | Hangul | xpicto-sequence | indic-conjuncts | !Control )
-         (Grapheme_Extend | spacing_mark) * | . )]],
+         (Grapheme_Extend | ZWJ | spacing_mark) * | . )]],
   }
 
   sf {r=15, text=texte[i]}
 
-
-
-  sf {r=25, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]}
-  sf {r=26, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]}
-  sf {r=27, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]}
-  sf {r=28, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]}
+  sf {r=20, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]}
+  sf {r=21, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]}
+  sf {r=22, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]}
+  sf {r=23, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]}
   --
+  if i>=6 then sf {r=26, text=[[
+This document defines a default specification for grapheme clusters. It may
+be customized for particular languages, operations, or other situations.
+For example, arrow key movement could be tailored by language, or could use
+knowledge specific to particular fonts to move in a more granular manner,
+in circumstances where it would be useful to edit individual components. ]]} end
 end)
 
 s:slide('vimhistory', function()
