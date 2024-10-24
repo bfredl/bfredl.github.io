@@ -34,6 +34,7 @@ a.set_hl(0, "StartFg", {fg="#22FF33"})
 a.set_hl(0, "ContBg", {bg="#441111"})
 a.set_hl(0, "ContFg", {fg="#cc1111"})
 a.set_hl(0, "AltFont", {altfont=true})
+a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 
 ns = a.create_namespace'pres'
 
@@ -573,7 +574,7 @@ s:slide('whatis', function()
 
 end)
 
-s:slide('Graphemes', function()
+s:slide_multi('Graphemes', 6, function(i)
   m.header 'grapheme clusters'
 
   sf {r=3, text='UAX #29 : text segmentation'}
@@ -582,6 +583,35 @@ This annex describes guidelines for determining default segmentation
 boundaries between certain significant text elements:
 grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
+  if i>= 2 then sf {r=9, text="Unicode 4.0 (2003): non-spacing marks and hangul syllabes"} end -- 29-8(?) 
+  if i>= 3 then sf {r=10, text="Unicode 5.1 (2008): Extended Grahpeme clusters"} end -- 29-13
+  if i>= 4 then sf {r=11, text="Unicode 6.0 (2012): non-spacing marks and hangul syllabes"} end
+  if i>= 5 then sf {r=12, text="Unicode 9.0 (2016): Emoji (first try)"} end
+  if i>= 6 then sf {r=13, text="Unicode 16.0 (2024): today"} end
+
+  texte = {
+    "( CRLF | !Control  Grapheme_Extend* | Control )",
+    "( CRLF | ( Hangul-syllable | !Control ) Grapheme_Extend* | . )",
+    "( CRLF | Prepend* ( Hangul-syllable | !Control ) (Grapheme_Extend | spacing_mark) * | . )",
+[[
+( CRLF | Prepend* ( RI-sequence | Hangul-syllable | !Control )
+         (Grapheme_Extend | spacing_mark) * | . )]],
+[[
+( CRLF | Prepend* ( RI-sequence | Hangul-syllable | emoji-sequence | !Control )
+         (Grapheme_Extend | spacing_mark) * | . )]],
+[[
+( CRLF | Prepend* ( RI-sequence | Hangul | xpicto-sequence | indic-conjuncts | !Control )
+         (Grapheme_Extend | spacing_mark) * | . )]],
+  }
+
+  sf {r=15, text=texte[i]}
+
+
+
+  sf {r=25, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]}
+  sf {r=26, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]}
+  sf {r=27, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]}
+  sf {r=28, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]}
   --
 end)
 
@@ -765,28 +795,84 @@ s:slide('zwjmania', function()
   -- and then "holding hands", "family" combinatorial explosions
 end)
 
-s:slide_multi('countryflags', 2, function(i)
+s:slide_multi('countryflags', 4, function(i)
   m.header "But there's more: country flags!"
+
+  sf {r=3, text="regional indicator code points: 🇦- 🇿"}
+  sf {r=4, text="Juxtaposing two of these and using ISO country codes gives flags"}
+
+  sf {r=6, c=12, text=" 🇧 🇷 =  🇧🇷 "}
+  sf {r=7, c=12, text=" 🇸 🇪 =  🇸🇪 "}
 
   d = 12
   r = 12
   -- 🇩🇪🇪🇨🇨🇦🇦🇷
-  strings = {'🇩', '-', '🇪', '🇨', '🇦', '🇷'}
-  if i >= 2 then
+  strings = {'🇩', '-', '🇪', '🇨', '🇦', '🇷', '!'}
+  str = {
+    '🇩-🇪🇨 🇦🇷 !',
+    '🇩🇪 🇨🇦 🇷!'
+  }
+
+  -- fina strängen
+  local tep = math.floor((i+1)/2)
+  sf {r=10, text="my_string = '"..str[tep].."'", fn=function()
+    if i == 1 then
+      hl("FAkeCursor", 0, 0, 1)
+    elseif i == 2 then
+      hl("FAkeCursor", 0, 13+4, 13+5)
+    elseif i == 4 then
+      hl("FAkeCursor", 0, 13+22, 13+23)
+    end
+  end}
+  if i >= 3 then
     table.remove(strings, 2)
   end
   for j = 1,#strings do
-    emojiat(r, 5+11*(j-(2-i)), strings[j])
+    emojiat(r, 5+11*(j-(2-tep)), strings[j])
   end
 
-  sf {r=20, c=8, text=table.concat(strings)}
+  -- 
+
+  --sf {r=20, c=8, text=table.concat(strings)}
 
 
 
 end)
 
-s:slide('tagsequences', function()
+s:slide_multi('tagsequences', 3, function(i)
   m.header 'yoo dawg I heard you like ascii'
+
+  sf {r=3, text="Only countries and self-ruling territories have 2-letter ISO codes"}
+  sf {r=5, text="Many sub-national entries such as provinces, federatal states have flags"}
+
+  sf {r=6, text="ISO-foo provides standardized subnational codes"}
+
+  sf {r=8, text="Unicode XX added a few of these, such as scotand"}
+  sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
+
+  local strings = {"🏴", "G⃞", "B⃞", "S⃞", "C⃞", "T⃞", "[STOP]"}
+  if i>=2 then
+    for j = 1,#strings do
+      emojiat(14, 5+11*(j-1), strings[j])
+    end
+  end
+
+  if i >=3 then
+    sf {r=22, center='c', text='Unicode Block: Tag sequences'}
+    sf {r=24, c=7, h=8, w=75, text=[[
+U+E0020  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+U+E0030   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+U+E0040   @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+U+E0050   P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+U+E0060   `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
+]], fn=function()
+      hl("DimFg", 7, 64, -1)
+      for i=0,7 do
+        hl("Number", i, 0, 7)
+      end
+    end}
+  end
 
   -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
 end)
