@@ -573,6 +573,18 @@ s:slide('whatis', function()
 
 end)
 
+s:slide('Graphemes', function()
+  m.header 'grapheme clusters'
+
+  sf {r=3, text='UAX #29 : text segmentation'}
+  sf {r=5, w=80, text=[[
+This annex describes guidelines for determining default segmentation
+boundaries between certain significant text elements:
+grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
+
+  --
+end)
+
 s:slide('vimhistory', function()
   m.header 'vim-history'
 
@@ -719,18 +731,19 @@ FE0F;VARIATION SELECTOR-16]]
   ]]
 end)
 
+function emojiat(row, col, emoji)
+  local bg = cbackdark
+  sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
+    if true then
+      hl('AltFont', 0, 0, -1)
+    end
+  end}
+  sf {r=row, c=col, w=10, h=5, bg=bg}
+end
+
 s:slide('zwjmania', function()
   m.header "modifiers and ZWJ: a grammar for emoji"
 
-  function emojiat(row, col, emoji)
-    local bg = cbackdark
-    sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
-      if true then
-        hl('AltFont', 0, 0, -1)
-      end
-    end}
-    sf {r=row, c=col, w=10, h=5, bg=bg}
-  end
 
   --   adult       man      woman
   --    🧑          👨        👩
@@ -752,14 +765,35 @@ s:slide('zwjmania', function()
   -- and then "holding hands", "family" combinatorial explosions
 end)
 
-s:slide('countryflags', function()
+s:slide_multi('countryflags', 2, function(i)
   m.header "But there's more: country flags!"
+
+  d = 12
+  r = 12
+  -- 🇩🇪🇪🇨🇨🇦🇦🇷
+  strings = {'🇩', '-', '🇪', '🇨', '🇦', '🇷'}
+  if i >= 2 then
+    table.remove(strings, 2)
+  end
+  for j = 1,#strings do
+    emojiat(r, 5+11*(j-(2-i)), strings[j])
+  end
+
+  sf {r=20, c=8, text=table.concat(strings)}
+
+
+
 end)
 
 s:slide('tagsequences', function()
   m.header 'yoo dawg I heard you like ascii'
 
   -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
+end)
+
+s:slide('emoji-test.txt', function()
+  m.header 'emoji-test.txt'
+  embedditor('showcase/emoji-test.txt')
 end)
 
 s:slide('references', function()
