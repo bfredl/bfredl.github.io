@@ -497,6 +497,15 @@ s:slide('utf-16', function()
 
   sf {r=6, text="unicode 2.0: reserved space for surrogates"}
 
+  sf {r=7, text="High surrogates U+D800 to U+DBFF (2^10 distinct values)"}
+  sf {r=8, text="low surrogates: U+DC00 to U+DFFF (2^10 distinct values)"}
+
+  sf {r=10, text="These exists within the UCS-2 space but are not charcters per se"}
+  sf {r=11, text="instead a sequence high+low encodes 2^20 ~= 1 million codepoints"}
+
+  sf {r=15, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
+
+
   sf {r=20, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
   sf {r=21, text="looking inside:"}
   sf {r=22, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
