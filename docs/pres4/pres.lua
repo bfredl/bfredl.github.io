@@ -736,6 +736,12 @@ int utfc_ptr2len(unsigned char *p)
 ]]
 end)
 
+s:slide('utf8proc', function()
+  -- somehow showcase/utf8proc.c
+
+  -- this is very complex, but not our problem!
+end)
+
 s:slide('vimunidata' ,function()
   m.header 'vim unicode data'
 
