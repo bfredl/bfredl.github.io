@@ -691,6 +691,7 @@ int utfc_ptr2len(unsigned char *p)
   int pos = utf_ptr2len(p); // single codepoint length
 
   // Check for composing characters.
+
   while (true) {
     bool composing = p[pos] >= 0x80 // is multibyte
                      && (utf_iscomposing(&p[pos]) || arabic_combine(&p[prevpos], &p[pos]));
@@ -703,6 +704,9 @@ int utfc_ptr2len(unsigned char *p)
   }
 }
 ]]
+  sf {r=2, w=80, text=code, bg=cbackdark, fn=function()
+    vim.cmd [[ set ft=c ]]
+  end}
 end)
 
 s:slide('nvim11ptr' ,function()
@@ -734,10 +738,16 @@ int utfc_ptr2len(unsigned char *p)
   }
 }
 ]]
+  sf {r=2, w=85, text=code, bg=cbackdark, fn=function()
+    vim.cmd [[ set ft=c ]]
+  end}
 end)
 
 s:slide('utf8proc', function()
-  -- somehow showcase/utf8proc.c
+  local fil = vim.fn.bufadd("showcase/utf8proc.c")
+  sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
+    -- vim.cmd [[ set ft=c ]]
+  end}
 
   -- this is very complex, but not our problem!
 end)
