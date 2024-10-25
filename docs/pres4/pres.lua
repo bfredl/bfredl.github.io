@@ -997,6 +997,15 @@ s:slide('emoji-test.txt', function()
   embedditor('showcase/emoji-test.txt')
 end)
 
+s:slide_multi('takeaway', 2, function(i)
+  m.header 'take away messages'
+
+  sf {r=4, text='plain text is now a big mess, but we need to do the work'}
+  if i < 2 then return end
+
+  sf {r=6, text='- One does not simply index a string "by character"'}
+end)
+
 s:slide('references', function()
   m.header 'futher information'
 
