@@ -535,7 +535,7 @@ s:slide('UnicodeData.txt', function()
   embedditor('showcase/UnicodeData.txt')
 end)
 
-s:slide('normalization', function()
+no_slide('normalization', function()
   m.header 'Normalization'
 
   sf {r=4, text=[[
@@ -677,6 +677,65 @@ sf {r=15, text=".. and then converted back to UTF-8 for the terminal (or gtk)"}
 
 end)
 
+s:slide('vimptr', function()
+  code = [[
+/// Return the number of bytes occupied by a UTF-8 character in a string
+/// This includes following composing characters.
+int utfc_ptr2len(unsigned char *p)
+{
+  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
+    return 1;
+  }
+
+  int prevpos = 0;
+  int pos = utf_ptr2len(p); // single codepoint length
+
+  // Check for composing characters.
+  while (true) {
+    bool composing = p[pos] >= 0x80 // is multibyte
+                     && (utf_iscomposing(&p[pos]) || arabic_combine(&p[prevpos], &p[pos]));
+    if (!composing);
+      return pos;
+    }
+
+    // Skip over composing char.
+    prevpos = pos; pos += utf_ptr2len(p + pos);
+  }
+}
+]]
+end)
+
+s:slide('nvim11ptr' ,function()
+  code = [[
+/// Return the number of bytes occupied by a UTF-8 character in a string
+/// This includes following composing characters.
+int utfc_ptr2len(unsigned char *p)
+{
+  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
+    return 1;
+  }
+
+  int prevpos = 0;
+  int pos = utf_ptr2len(p); // single codepoint length
+
+  // Check for composing characters.
+
+  utf8proc_int32_t state = GRAPHEME_STATE_INIT;
+  while (true) {
+    bool composing = p[pos] >= 0x80 // is multibyte,
+                     && (utf8proc_grapheme_break_stateful(&p[prevpos], &p[pos], state)
+                         || arabic_combine(&p[prevpos], &p[pos]));
+    if (!composing);
+      return pos;
+    }
+
+    // Skip over composing char.
+    prevpos = pos; pos += utf_ptr2len(p + pos);
+  }
+}
+]]
+end)
+
 s:slide('vimunidata' ,function()
   m.header 'vim unicode data'
 
@@ -700,6 +759,21 @@ end)
 
 s:slide('emoji_intro', function()
   m.header 'emojis: what, whow, why'
+
+  sf {r=3, text="unicode has always included pictographs"}
+  sf {r=4, text="not part of any languages's alphabet but symbols common in existing fonts:"}
+  sf {r=6, c=10, text="☺ ♜ ☿ ♥"}
+
+  sf {r=8, text="in the early 2000:s, color emoji was part of japanese messaging services"}
+  sf {r=9, text="But different carriers and phone manufactured used incompatible sets!"}
+  sf {r=10, text="in general adaption of Unicode in japan was slow (han unification, etc)"}
+
+  sf {r=12, text="Explicit goal of unicode: compatibility with existing encodings"}
+  sf {r=13, text="Thus, a set of 720 emoji was added to unicode 5.2"}
+  sf {r=14, text="including giving emoji presentation to existing B/W pictographs!"}
+
+  sf {r=17, text="Naturally, this 'comptibility' feature become very popular around the world.."}
+
 end)
 
 
@@ -774,17 +848,20 @@ FE0F;VARIATION SELECTOR-16]]
   ]]
 end)
 
-function emojiat(row, col, emoji)
+function emojiat(row, col, emoji, lowtext)
   local bg = cbackdark
   sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
     if true then
       hl('AltFont', 0, 0, -1)
     end
   end}
+  if lowtext then
+    sf {r=row+4, c=col, bg=bg, text=lowtext}
+  end
   sf {r=row, c=col, w=10, h=5, bg=bg}
 end
 
-s:slide('zwjmania', function()
+s:slide_multi('zwjmania', 3, function(i)
   m.header "modifiers and ZWJ: a grammar for emoji"
 
 
@@ -793,14 +870,33 @@ s:slide('zwjmania', function()
   --    plus ZWJ + 🎨
   --     🧑‍🎨        👨‍🎨         👩‍🎨
   d = 12
-  emojiat(4, 10, '🧑')
-  emojiat(4, 10+d, '👨')
-  emojiat(4, 10+2*d, '👩')
+  emojiat(4, 10, '🧑', '    ADULT')
+  emojiat(4, 10+d, '👨', '     MAN')
+  emojiat(4, 10+2*d, '👩', '    WOMAN')
 
-  emojiat(11, 10, '🧑‍🎨')
-  emojiat(11, 10+d, '👨‍🎨')
-  emojiat(11, 10+2*d, '👩‍🎨')
+  if i >= 2 then
+    emojiat(11, 10, '🧑‍🎨', 'ARTIST')
+    emojiat(11, 10+d, '👨‍🎨', 'MAN ARTIST')
+    emojiat(11, 10+2*d, '👩‍🎨', 'W. ARTIST')
 
+    emojiat(4, 60, '    ZWJ')
+    emojiat(4, 60+d, '🎨')
+  end
+
+  if i >= 3 then
+    --: 🏻 🏼 🏽 🏾 🏿
+    --: 🏼 🏽 🏾 🏿
+    emojiat(18, 10, ' 🏼', 
+    'LIGHT')
+    emojiat(18, 10+d, ' 🏽', 
+    'MID-LIGHT')
+    emojiat(18, 10+2*d, ' 🏽', 
+    'MEDIUM')
+    emojiat(18, 10+3*d, ' 🏾', 
+    'MID-DARK')
+    emojiat(18, 10+4*d, ' 🏿', 
+    'DARK')
+  end
   -- emoji modifiers:
   -- the three genders: person, man, woman
   -- skin colors
