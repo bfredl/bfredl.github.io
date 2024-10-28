@@ -1,0 +1,30 @@
+29,80
+[H[2J(B[0;1m~                                                                               
+(B[m:version                                                                        
+VIM - Vi IMproved 6.0d ALPHA (2000 Jul 30)                                      
+Compiled by bfredl@sandsee                                                      
+Big version with X11-Athena GUI.  Features included (+) or not (-):             
++autocmd -balloon_eval +browse ++builtin_terms +byte_offset +cindent            
++cmdline_compl +cmdline_info +comments +cryptv +cscope +dialog_con_gui          
++digraphs -ebcdic +emacs_tags +eval +ex_extra +extra_search +farsi              
++file_in_path -osfiletype +find_in_path -footer +fork() +gettext -hangul_input  
++insert_expand +langmap +libcall -line_highlight +linebreak +lispindent         
++localmap +menu +mksession +modify_fname +mouse +mouseshape +mouse_dec          
++mouse_gpm -mouse_jsbterm +mouse_netterm +mouse_xterm +multi_byte +multi_lang   
++path_extra -perl -python +quickfix +rightleft +scrollbind -signs +smartindent  
+-sniff +statusline -sun_workshop +syntax +tag_binary +tag_old_static            
+-tag_any_white -tcl -terminfo +textobjects +title -toolbar +user_commands       
++vertsplit +virtualedit +visual +visualextra +viminfo +wildignore +wildmenu     
++windows +writebackup +X11 -xfontset -xim +xterm_clipboard -xterm_save          
+   system vimrc file: "$VIM/vimrc"                                              
+     user vimrc file: "$HOME/.vimrc"                                            
+      user exrc file: "$HOME/.exrc"                                             
+  system gvimrc file: "$VIM/gvimrc"                                             
+    user gvimrc file: "$HOME/.gvimrc"                                           
+    system menu file: "$VIMRUNTIME/menu.vim"                                    
+  fall-back for $VIM: "/usr/local/share/vim"                                    
+Compilation:                                                                    
+gcc -c -I. -Iproto -DHAVE_CONFIG_H  -DFEAT_GUI_ATHENA  -I.  -g -O2 -Wall        
+Linking: gcc  -L.  -o vim -lXaw -lXmu -lXext -lXt -lX11 -lXdmcp -lgpm           
+Press RETURN or enter command to continue(B[0;7m (B[m                                      
+                                                              72,58         Bot 
