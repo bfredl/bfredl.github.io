@@ -37,6 +37,7 @@ a.set_hl(0, "ContFg", {fg="#cc1111"})
 a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#AADDFF", bg=cmiddark})
+a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 
 ns = a.create_namespace'pres'
 
@@ -130,8 +131,8 @@ s:slide("whoami", function()
 end)
 
 function chapter(nam) 
-  sf {r=10, center='c', c=50, bg='FloatBorder', text=nam}
-  sf {r=7, c=16, h=5, w=66, bg='FloatBorder', border='double'}
+  sf {r=10, center='c', c=40, bg='FloatBorder', text=nam}
+  sf {r=7, c=8, h=5, w=66, bg='FloatBorder', border='double'}
 end
 
 s:slide("part1", function()
@@ -268,6 +269,10 @@ end)
 s:slide_multi('dbcsworld', 2, function(i)
   m.header 'double byte character sets (east asian)'
 
+  sf {r=3, text="first multi-byte encodings for Asian languages"}
+
+  sf {r=6, c=40, text="Shift-JIS"}
+
   sf {r=8, c=9, h=16, w=68, text=[[
 00  NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
 10  DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
@@ -307,9 +312,12 @@ F    S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
     end
   end
 end}
-  -- TODO: colors!
-  sf {r=16, c=9, h=8, w=68, text=[[
-]]}
+
+  sf {r=26, text="A start byte + lead byte w some restrictions"}
+  sf {r=27, text="94*94 = 8836 possible double-byte codes"}
+
+  sf {r=29, text="+ byte width = terminal column width!"}
+  sf {r=30, text="- not self-synchronizing, partial overlap with ASCII"}
 end)
 
 s:slide_multi('xkcdstandards', 3, function(i)
@@ -323,23 +331,24 @@ s:slide_multi('xkcdstandards', 3, function(i)
 
 
   if i >= 2 then
-    sf {r=8, c=32, text="Unicode vs ISO/IEC"}
+    sf {r=10, c=32, text="Unicode vs ISO/IEC"}
 
-    sf {r=10, text="unicode: a set of rules for processing international text"}
-    sf {r=11, text="- 16-bit character set: max 65 536 unicodes possible"}
-    sf {r=12, text="- combining unicodes allow more possible glyphs"}
+    sf {r=12, text="unicode: a set of rules for processing international text"}
+    sf {r=13, text="- 16-bit character set: max 65 536 unicodes possible"}
+    sf {r=14, text=[[- some chars combine to form more glyphs]]}
 
-    sf {r=16, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=17, text="- 31 byte code space with some restrictions: 600 million characters"}
-    sf {r=18, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ascii"}
-    sf {r=19, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+    sf {r=19, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
+    sf {r=20, text="- 31 byte code space with some restrictions: 600 million characters"}
+    sf {r=21, text="- Most common chars in the 16-bit Basic Multilingual plane (UCS-2)"}
+    sf {r=22, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ascii"}
+    sf {r=23, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
   end
 
   if i >= 3 then
     -- HANDSHAKE EMOJI
-    sf {r=14, c=40, text="🤝"}
-    sf {r=22, text=[[Agreement: there should be one shared character database ]]}
-    sf {r=23, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0]]}
+    sf {r=16, c=40, text="🤝"}
+    sf {r=25, text=[[Agreement: there should be one shared character database ]]}
+    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0]]}
   end
 end)
 
@@ -589,6 +598,12 @@ s:slide('whatis', function()
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+030A', center='c'}
   sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
 
+  sf {r=18, c=9, text="NFC"}
+  sf {r=19, c=7, text="Composed"}
+
+  sf {r=18, c=39, text="NFD"}
+  sf {r=19, c=35, text="Decomposed"}
+
   sf {r=25, text="(1) i.e. well-formed UTF-8/16/32 which maps to assigned code points"}
 
 end)
@@ -625,17 +640,23 @@ grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
   sf {r=15, text=texte[i]}
 
-  sf {r=20, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]}
-  sf {r=21, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]}
-  sf {r=22, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]}
-  sf {r=23, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]}
+  if i>=1 then sf {r=19, text=[[ Grapheme_Extend := Nonspacing_Mark | Enclosing_Mark ]]} end
+  if i>=2 then sf {r=20, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]} end
+  if i>=4 then sf {r=21, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]} end
+  if i>=5 then sf {r=22, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]} end
+  if i>=6 then sf {r=23, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]} end
   --
   if i>=6 then sf {r=26, text=[[
 This document defines a default specification for grapheme clusters. It may
 be customized for particular languages, operations, or other situations.
 For example, arrow key movement could be tailored by language, or could use
 knowledge specific to particular fonts to move in a more granular manner,
-in circumstances where it would be useful to edit individual components. ]]} end
+in circumstances where it would be useful to edit individual components. ]], fn=function()
+  hl('AccentFg', 1, 2, 38)
+  hl('AccentFg', 3, 0, 38)
+end}
+end
+
 end)
 
 s:slide("part2", function()
@@ -661,33 +682,54 @@ s:slide('vimhistory', function()
   -- so "multibyte" is not UTF-8?? explain
 end)
 
-s:slide('vim6', function()
+s:slide_multi('vim6', 2, function(i)
   m.header 'vim6 compiled'
+
+  fn = {'showcase/vim6_intro.cat', 'showcase/vim6_version.cat'}
+
+  sf {r=3, c=6, h=23, w=81, bg="Termish", fn=function()
+    local term = vim.api.nvim_open_term(0, {})
+    local ros = io.open(fn[i]):read'*a'
+    vim.api.nvim_chan_send(term, ros)
+  end}
 end)
 
-s:slide_multi('vimscreen', 2, function(i)
+s:slide_multi('vimscreen', 3, function(i)
   m.header 'vim in encoding=utf-8 mode'
 
-  sf {r=4, text="ee"}
+  sf {r=4, text="Buffer lines are NUL-terminated strings encoded as UTF-8"}
 
   sf {r=6, text="but in the screen buffers, it looks like this"}
 
   texte = {[[
-EXTERN schar_T  *ScreenLines INIT(= NULL);
+EXTERN schar_T  *ScreenLines INIT(= NULL);   // ASCII only! otherwise 0
 EXTERN u8char_T *ScreenLinesUC INIT(= NULL); // decoded UTF-8 characters
 EXTERN u8char_T *ScreenLinesC[MAX_MCO];      // composing characters
-  ]], [[
-uint8_t ScreenLines[rows*cols]
-int32_t ScreenLinesUC[rows*cols]         // decoded UTF-8 characters
+]],
+[[
+uint8_t ScreenLines[rows*cols];          // ASCII only! otherwise 0
+int32_t ScreenLinesUC[rows*cols];        // decoded UTF-8 characters
 int32_t ScreenLinesC[p_mco][rows*cols];  // composing characters
-int p_mco;  // 'maxcombine' option, up to MAX_MCO = 6
-]]}
+int p_mco;  // 'maxcombine' option, up to MAX_MCO = 6 ]]}
 
-  sf {r=8, w=80, text=texte[i]}
+  sf {r=8, w=80, text=texte[math.min(i, 2)], bg=cbackdark}
 
 sf {r=13, text="so when rendering a window:"}
 sf {r=14, text="buffer UTF-8 text is converted to UTF-32 + 6 * UTF-32"}
 sf {r=15, text=".. and then converted back to UTF-8 for the terminal (or gtk)"}
+
+if i>= 3 then
+  sf {r=17, text="This has gone through multiple revisions in Neovim, currently"}
+
+  nvimtext = [[
+typedef char[4] schar_T;
+schar_T  chars[rows*cols];   // ASCII only! otherwise 0
+char glyph_cache[size];      // cache of NUL-terminated glyphs
+]]
+  sf {r=20, w=80, text=nvimtext, bg=cbackdark}
+end
+
+-- TODO illustration of schar_T
 
 end)
 
