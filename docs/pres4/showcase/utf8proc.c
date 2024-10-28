@@ -1,17 +1,21 @@
+ UTF8PROC_DLLEXPORT utf8proc_bool utf8proc_grapheme_break_stateful(
+    utf8proc_int32_t c1, utf8proc_int32_t c2, utf8proc_int32_t *state) {
+
+  const utf8proc_property_t *p1 = utf8proc_get_property(c1);
+  const utf8proc_property_t *p2 = utf8proc_get_property(c2);
+  return grapheme_break_extended(p1->boundclass,
+                                 p2->boundclass,
+                                 p1->indic_conjunct_break,
+                                 p2->indic_conjunct_break,
+                                 state);
+}
+
 /* return whether there is a grapheme break between boundclasses lbc and tbc
    (according to the definition of extended grapheme clusters)
 
   Rule numbering refers to TR29 Version 29 (Unicode 9.0.0):
   http://www.unicode.org/reports/tr29/tr29-29.html
 
-  CAVEATS:
-   Please note that evaluation of GB10 (grapheme breaks between emoji zwj sequences)
-   and GB 12/13 (regional indicator code points) require knowledge of previous characters
-   and are thus not handled by this function. This may result in an incorrect break before
-   an E_Modifier class codepoint and an incorrectly missing break between two
-   REGIONAL_INDICATOR class code points if such support does not exist in the caller.
-
-   See the special support in grapheme_break_extended, for required bookkeeping by the caller.
 */
 static utf8proc_bool grapheme_break_simple(int lbc, int tbc) {
   return
@@ -96,3 +100,4 @@ static utf8proc_bool grapheme_break_extended(int lbc, int tbc, int licb, int tic
   else
     return grapheme_break_simple(lbc, tbc);
 }
+

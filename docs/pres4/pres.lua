@@ -20,6 +20,7 @@ cback = "#1199DD"
 cbackdark = "#042367"
 caccent = "#E8BB22"
 cmid = "#6822AA"
+cmiddark = "#340168"
 
 a.set_hl(0, "BrightFg", {fg=clight, bold=true})
 a.set_hl(0, "FwdFg", {fg=cfwd, bold=true})
@@ -35,6 +36,7 @@ a.set_hl(0, "ContBg", {bg="#441111"})
 a.set_hl(0, "ContFg", {fg="#cc1111"})
 a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
+a.set_hl(0, "FloatBorder", {fg="#AADDFF", bg=cmiddark})
 
 ns = a.create_namespace'pres'
 
@@ -81,28 +83,6 @@ s:slide('titlepage', function()
   -- IMAGEN
 end)
 
-s:slide("intro", function()
-  m.header 'Overview'
-  sf {r=3, w=70, c=3, text=[[
-- baaaa
-  ]]}
-end)
-
-s:slide("whoami", function()
-  m.header 'Whoami'
-  sf {r=4, w=58, text=[[
-- One of the old---s at this point
-- core maintainer, focus on stuff
-- Paid contributor, very thanks to our sponsors
-  ]]}
-
-  -- IMAGEN
-
-  sf {r=12, text=[[
-- github.com/bfredl                matrix.to/#/@bfredl:matrix.org
-  ]], bg="#", fg=caccent}
-end)
-
 s:slide('nvim11', function()
   m.header 'New in Neovim 0.11: emoji support'
 
@@ -126,6 +106,36 @@ s:slide('nvim11', function()
   sf {r=14, text="most of there in unicode XX or earier"}
   sf {r=15, text="Why did id take so long? and why do they fail so differently?"}
   sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
+end)
+s:slide("intro", function()
+  m.header 'Overview'
+  sf {r=3, w=70, c=3, text=[[
+- baaaa
+  ]]}
+end)
+
+s:slide("whoami", function()
+  m.header 'Whoami'
+  sf {r=4, w=58, text=[[
+- One of the old---s at this point
+- core maintainer, focus on stuff
+- Paid contributor, very thanks to our sponsors
+  ]]}
+
+  -- IMAGEN
+
+  sf {r=12, text=[[
+- github.com/bfredl                matrix.to/#/@bfredl:matrix.org
+  ]], bg="#", fg=caccent}
+end)
+
+function chapter(nam) 
+  sf {r=10, center='c', c=50, bg='FloatBorder', text=nam}
+  sf {r=7, c=16, h=5, w=66, bg='FloatBorder', border='double'}
+end
+
+s:slide("part1", function()
+  chapter("Part 1: Origin and evolution of Unicode")
 end)
 
 function ascii(row)
@@ -628,6 +638,10 @@ knowledge specific to particular fonts to move in a more granular manner,
 in circumstances where it would be useful to edit individual components. ]]} end
 end)
 
+s:slide("part2", function()
+  chapter("part 2: unicode in vim and neovim")
+end)
+
 s:slide('vimhistory', function()
   m.header 'vim-history'
 
@@ -677,81 +691,6 @@ sf {r=15, text=".. and then converted back to UTF-8 for the terminal (or gtk)"}
 
 end)
 
-s:slide('vimptr', function()
-  code = [[
-/// Return the number of bytes occupied by a UTF-8 character in a string
-/// This includes following composing characters.
-int utfc_ptr2len(unsigned char *p)
-{
-  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
-    return 1;
-  }
-
-  int prevpos = 0;
-  int pos = utf_ptr2len(p); // single codepoint length
-
-  // Check for composing characters.
-
-  while (true) {
-    bool composing = p[pos] >= 0x80 // is multibyte
-                     && (utf_iscomposing(&p[pos]) || arabic_combine(&p[prevpos], &p[pos]));
-    if (!composing);
-      return pos;
-    }
-
-    // Skip over composing char.
-    prevpos = pos; pos += utf_ptr2len(p + pos);
-  }
-}
-]]
-  sf {r=2, w=80, text=code, bg=cbackdark, fn=function()
-    vim.cmd [[ set ft=c ]]
-  end}
-end)
-
-s:slide('nvim11ptr' ,function()
-  code = [[
-/// Return the number of bytes occupied by a UTF-8 character in a string
-/// This includes following composing characters.
-int utfc_ptr2len(unsigned char *p)
-{
-  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
-    return 1;
-  }
-
-  int prevpos = 0;
-  int pos = utf_ptr2len(p); // single codepoint length
-
-  // Check for composing characters.
-
-  utf8proc_int32_t state = GRAPHEME_STATE_INIT;
-  while (true) {
-    bool composing = p[pos] >= 0x80 // is multibyte,
-                     && (utf8proc_grapheme_break_stateful(&p[prevpos], &p[pos], state)
-                         || arabic_combine(&p[prevpos], &p[pos]));
-    if (!composing);
-      return pos;
-    }
-
-    // Skip over composing char.
-    prevpos = pos; pos += utf_ptr2len(p + pos);
-  }
-}
-]]
-  sf {r=2, w=85, text=code, bg=cbackdark, fn=function()
-    vim.cmd [[ set ft=c ]]
-  end}
-end)
-
-s:slide('utf8proc', function()
-  local fil = vim.fn.bufadd("showcase/utf8proc.c")
-  sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
-    -- vim.cmd [[ set ft=c ]]
-  end}
-
-  -- this is very complex, but not our problem!
-end)
-
 s:slide('vimunidata' ,function()
   m.header 'vim unicode data'
 
@@ -771,6 +710,92 @@ call BuildCaseTable("Upper", 12)
 " Build the ranges of composing chars.
 call BuildCombiningTable()
 ]]}
+end)
+
+s:slide('vimptr', function()
+  m.header "User editable chars in vim and nvim 0.10" --- {{{
+  code = [[
+/// Return the number of bytes occupied by a UTF-8 character in a string
+/// This includes following composing characters.
+int utfc_ptr2len(unsigned char *p)
+{
+  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
+    return 1;
+  }
+
+  int prevpos = 0;
+  int pos = utf_ptr2len(p); // single codepoint length
+
+  // Check for composing characters.
+
+
+  while (true) {
+    bool composing = p[pos] >= 0x80 // is multibyte
+                     && (utf_iscomposing(&p[pos])
+                         || arabic_combine(&p[prevpos], &p[pos]));
+
+    if (!composing);
+      return pos;
+    }
+
+    // Skip over composing char.
+    prevpos = pos; pos += utf_ptr2len(p + pos);
+  }
+}
+]]
+-- }}}
+  sf {r=4, c=4, w=87, text=code, bg=cbackdark, fn=function()
+    vim.cmd [[ set ft=c ]]
+  end}
+end)
+
+s:slide('nvim11ptr' ,function()
+  m.header "User editable chars in nvim 0.11-dev" -- {{{
+  code = [[
+/// Return the number of bytes occupied by a UTF-8 character in a string
+/// This includes following composing characters.
+int utfc_ptr2len(unsigned char *p)
+{
+  if (p[0] < 0x80 && p[1] < 0x80) {  // be quick for ASCII
+    return 1;
+  }
+
+  int prevpos = 0;
+  int pos = utf_ptr2len(p); // single codepoint length
+
+  // Check for composing characters.
+
+  utf8proc_int32_t state = GRAPHEME_STATE_INIT;
+  while (true) {
+    bool composing = p[pos] >= 0x80 // is multibyte
+                     && (utf8proc_grapheme_break_stateful(ptr2char(&p[prevpos]),
+                                                          ptr2char(&p[pos]), state)
+                         || arabic_combine(&p[prevpos], &p[pos]));
+    if (!composing);
+      return pos;
+    }
+
+    // Skip over composing char.
+    prevpos = pos; pos += utf_ptr2len(p + pos);
+  }
+}]]
+  -- }}}
+  sf {r=4, c=4, w=87, text=code, bg=cbackdark, fn=function()
+    vim.cmd [[ set ft=c ]]
+  end}
+end)
+
+s:slide('utf8proc', function()
+  local fil = vim.fn.bufadd("showcase/utf8proc.c")
+  sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
+    -- vim.cmd [[ set ft=c ]]
+  end}
+
+  -- this is very complex, but not our problem!
+end)
+
+s:slide("part3", function()
+  chapter("part 3: emoji")
 end)
 
 s:slide('emoji_intro', function()
