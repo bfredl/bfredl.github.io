@@ -20,7 +20,7 @@ cback = "#1199DD"
 cbackdark = "#042367"
 caccent = "#E8BB22"
 cmid = "#6822AA"
-cmiddark = "#340168"
+cmiddark = "#32016b"
 
 a.set_hl(0, "BrightFg", {fg=clight, bold=true})
 a.set_hl(0, "FwdFg", {fg=cfwd, bold=true})
@@ -36,8 +36,9 @@ a.set_hl(0, "ContBg", {bg="#441111"})
 a.set_hl(0, "ContFg", {fg="#cc1111"})
 a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
-a.set_hl(0, "FloatBorder", {fg="#AADDFF", bg=cmiddark})
+a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
+a.set_hl(0, "Tagged", {reverse=true})
 
 ns = a.create_namespace'pres'
 
@@ -108,18 +109,12 @@ s:slide('nvim11', function()
   sf {r=15, text="Why did id take so long? and why do they fail so differently?"}
   sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
 end)
-s:slide("intro", function()
-  m.header 'Overview'
-  sf {r=3, w=70, c=3, text=[[
-- baaaa
-  ]]}
-end)
 
 s:slide("whoami", function()
   m.header 'Whoami'
   sf {r=4, w=58, text=[[
-- One of the old---s at this point
-- core maintainer, focus on stuff
+- One of the long-time contributors at this point
+- core maintainer, focus on low-level stuff
 - Paid contributor, very thanks to our sponsors
   ]]}
 
@@ -132,7 +127,7 @@ end)
 
 function chapter(nam) 
   sf {r=10, center='c', c=40, bg='FloatBorder', text=nam}
-  sf {r=7, c=8, h=5, w=66, bg='FloatBorder', border='double'}
+  sf {r=7, c=8, h=5, w=66, bg='FloatBorder', border='single'}
 end
 
 s:slide("part1", function()
@@ -169,14 +164,17 @@ s:slide('ascii', function()
   sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
   sf {r=6, text="with some ambiguities locked down in 1977"}
 
+  sf {r=8, text="Originally designed for for teletypewriters (digitalized telegraphs)"}
+  sf {r=9, text="which evolved into (printing!) computer terminals"}
+
   -- ASCII table here
-  ascii(9)
+  ascii(11)
 
-  sf {r=18, text="the personal computing world standardized on 8-bit bytes, with a 7-bit text encoding"}
+  sf {r=20, text="Meanwhile, the personal computing world standardized on 8-bit bytes"}
 
 
-  sf {r=20, text="There was also the rival standard EBCDIC used by IBM mainframes"}
-  sf {r=21, text="We are not going to talk about EBCDIC"}
+  sf {r=24, text="There was also the rival standard EBCDIC used by IBM mainframes"}
+  sf {r=25, text="We are not going to talk about EBCDIC"}
 end)
 
 
@@ -184,7 +182,7 @@ s:slide_multi('8bitworld', 6, function(i)
   m.header '8-bit codepages (what is "plain text" anyway)'
 
   sf {r=3, text="A file stored on disk or in memory is a sequence of 8-bit numbers (0-255)"}
-  sf {r=4, text="to interpret these as text, an Encoding is needed"}
+  sf {r=4, text="to show these as text on a printer or screen, an Encoding is needed"}
 
   ascii(9)
   local thetext, thename = "", ""
@@ -259,9 +257,11 @@ end
   sf {r=7, c=43, center="c", text=thename}
   sf {r=17, c=9, h=8, w=68, text=thetext}
 
-  sf {r=28, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
-  sf {r=29, text="ASCII become the lingua franca for interpreting 0-127 byte values"}
-  sf {r=30, text=[[intepreting the rest required choosing a "code page" (locale settings, ugh)]]}
+  if i >= 6 then
+    sf {r=28, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
+    sf {r=29, text="ASCII become the lingua franca for interpreting 0-127 byte values"}
+    sf {r=31, text=[[intepreting the rest required choosing a "code page" (locale settings, ugh)]]}
+  end
   -- ASCI values are preserved between MS-DOS, lose-DOS, lunix, mac etc.
   -- the others: not so much
 end)
@@ -336,11 +336,12 @@ s:slide_multi('xkcdstandards', 3, function(i)
     sf {r=12, text="unicode: a set of rules for processing international text"}
     sf {r=13, text="- 16-bit character set: max 65 536 unicodes possible"}
     sf {r=14, text=[[- some chars combine to form more glyphs]]}
+    sf {r=15, text=[[- Rules for handling of Right-to-left text, etc]]}
 
     sf {r=19, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
     sf {r=20, text="- 31 byte code space with some restrictions: 600 million characters"}
     sf {r=21, text="- Most common chars in the 16-bit Basic Multilingual plane (UCS-2)"}
-    sf {r=22, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ascii"}
+    sf {r=22, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ASCII"}
     sf {r=23, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
   end
 
@@ -348,7 +349,7 @@ s:slide_multi('xkcdstandards', 3, function(i)
     -- HANDSHAKE EMOJI
     sf {r=16, c=40, text="🤝"}
     sf {r=25, text=[[Agreement: there should be one shared character database ]]}
-    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0]]}
+    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0 (1991)]]}
   end
 end)
 
@@ -377,7 +378,7 @@ scripts contain fewer than 65,536 of them?
 
 The answer to this is Yes. (Of course, the converse need not be true, i.e.
 it is certainly possible, albeit uninteresting, to come up with
-unreasonable definitions of “character such that there are more than 65,536
+unreasonable definitions of “character" such that there are more than 65,536
 of them.)]]}
 
 
@@ -386,9 +387,9 @@ of them.)]]}
   sf {r=20, c=9, text=[["""the union of all papers and magazines printed in the world in 1988"""]]}
   sf {r=22, text=[[Han unification (Japanese, Chinese, Korean)]]}
 
-  sf {r=24, text=[[ """Also, Unicode avoids tens of thousands of character
-replications by consolidating together the ideographic characters used in writing
-Chinese, Japanese, and Korean."""]]}
+  sf {r=24, w=70, text=[[ """Also, Unicode avoids tens of thousands of character
+replications by consolidating together the ideographic characters
+used in writing Chinese, Japanese, and Korean."""]]}
 
   sf {r=28, text=[[ - this is a somewhat controversial topic, and I am not a speaker of any of these languages]]}
   sf {r=29, text=[[ - regardless, it is fair to say that the sizing constraint imposed a ]]}
@@ -455,12 +456,13 @@ introduced.
 ]]
 
   sf {r=19, text="in this mindset, unicode just IS UCS-2, i e unicode is an encoding"}
+  sf {r=20, text="yes but: byte order UCS-2BE vs UCS-2LE (big vs little endian)"}
 
   -- explain how this is the seed of the mayhem which will ensure
-  sf {r=21, text="yes but: spacing marks"}
+  sf {r=22, text="yes but: spacing marks"}
 
-  sf {r=24, text="WIDECHAR word:"}
-  sf {r=25, text="java, javascript, windows NT"}
+  sf {r=26, text="WIDECHAR word:"}
+  sf {r=27, text="java, javascript, windows NT"}
 
 end)
 
@@ -608,7 +610,7 @@ s:slide('whatis', function()
 
 end)
 
-s:slide_multi('Graphemes', 6, function(i)
+s:slide_multi('Graphemes', 7, function(i)
   m.header 'grapheme clusters'
 
   sf {r=3, text='UAX #29 : text segmentation'}
@@ -619,7 +621,7 @@ grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
   if i>= 2 then sf {r=9, text="Unicode 4.0 (2003): non-spacing marks and hangul syllabes"} end -- 29-8(?) 
   if i>= 3 then sf {r=10, text="Unicode 5.1 (2008): Extended Grahpeme clusters"} end -- 29-13
-  if i>= 4 then sf {r=11, text="Unicode 6.0 (2012): non-spacing marks and hangul syllabes"} end
+  if i>= 4 then sf {r=11, text="Unicode 6.0 (2012): RI-sequences (country codes)"} end
   if i>= 5 then sf {r=12, text="Unicode 9.0 (2016): Emoji (first try)"} end
   if i>= 6 then sf {r=13, text="Unicode 16.0 (2024): today"} end
 
@@ -637,16 +639,17 @@ grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 ( CRLF | Prepend* ( RI-sequence | Hangul | xpicto-sequence | indic-conjuncts | !Control )
          (Grapheme_Extend | ZWJ | spacing_mark) * | . )]],
   }
+  texte[7] = texte[6]
 
   sf {r=15, text=texte[i]}
 
   if i>=1 then sf {r=19, text=[[ Grapheme_Extend := Nonspacing_Mark | Enclosing_Mark ]]} end
   if i>=2 then sf {r=20, text=[[ Hangul-Syllable := L* V+ T*| L* LV V* T* | L* LVT T*| L+ | T+ ]]} end
   if i>=4 then sf {r=21, text=[[ Emoji-sequence := E_Base (Extend | E_modifier)* (ZWJ E_Base_after_Modifier)*  ]]} end
-  if i>=5 then sf {r=22, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]} end
+  if i>=6 then sf {r=22, text=[[ xpicto-sequence := Extended_Pictographic (Extend* ZWJ Extended_Pictographic})*  ]]} end
   if i>=6 then sf {r=23, text=[[ indic-conjucts := Consonant ([Extend Linker]* Linker Extend Linker]* Consonant)+]]} end
   --
-  if i>=6 then sf {r=26, text=[[
+  if i>=7 then sf {r=26, text=[[
 This document defines a default specification for grapheme clusters. It may
 be customized for particular languages, operations, or other situations.
 For example, arrow key movement could be tailored by language, or could use
@@ -672,8 +675,8 @@ s:slide('vimhistory', function()
   sf {r=7, text="vim 4.0 and earlier: charset.c"}
   sf {r=8, text="support for character properties for 8-bit codepages"}
 
-  sf {r=10, text="vim 5.2, date: first version with multibyte support"}
-  sf {r=11, text="vim 6.0, UTF-8 support"}
+  sf {r=10, text="vim 5.2, 199x first version with multibyte support"}
+  sf {r=11, text="vim 6.0, 2000 UTF-8 support"}
 
   sf {r=13, text="🤔", bg="AltFont"}
 
@@ -733,7 +736,7 @@ end
 
 end)
 
-s:slide('vimunidata' ,function()
+no_slide('vimunidata' ,function()
   m.header 'vim unicode data'
 
   sf {r=4, text=[[
@@ -979,6 +982,8 @@ s:slide_multi('zwjmania', 3, function(i)
     'MID-DARK')
     emojiat(18, 10+4*d, ' 🏿', 
     'DARK')
+
+   sf {r=32, text=[[unicode.org/emoji/about-emoji: "Race is Not a Skin Tone. Gender is Not a Haircut."]]}
   end
   -- emoji modifiers:
   -- the three genders: person, man, woman
@@ -1042,10 +1047,11 @@ s:slide_multi('tagsequences', 3, function(i)
   sf {r=8, text="Unicode XX added a few of these, such as scotand"}
   sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
 
-  local strings = {"🏴", "G⃞", "B⃞", "S⃞", "C⃞", "T⃞", "[STOP]"}
+  local strings = {"🏴", "G⃞", "B⃞", "S⃞", "C⃞", "T⃞", "[END]"}
+  local chars = {"1F3F4", "E0067", "E0062", "E0073", "E0063", "E0074", "E007F"}
   if i>=2 then
     for j = 1,#strings do
-      emojiat(14, 5+11*(j-1), strings[j])
+      emojiat(14, 5+11*(j-1), strings[j], '  U+'..chars[j])
     end
   end
 
@@ -1062,14 +1068,19 @@ U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
       hl("DimFg", 7, 64, -1)
       for i=0,7 do
         hl("Number", i, 0, 7)
+        for k=0,15 do
+          hl("Tagged", i, 10+4*k,11+4*k)
+        end
       end
+      hl("Tagged", 0, 9,12)
+      hl("Tagged", 5, 69,72)
     end}
   end
 
   -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
 end)
 
-s:slide('emoji-test.txt', function()
+no_slide('emoji-test.txt', function()
   m.header 'emoji-test.txt'
   embedditor('showcase/emoji-test.txt')
 end)
