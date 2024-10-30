@@ -40,7 +40,7 @@ a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 --a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
-a.set_hl(0, "Tagged", {sp="#FFFFFF", underdouble=true})
+a.set_hl(0, "Tagged", {sp="#bbbbbb", underdouble=true})
 a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 
