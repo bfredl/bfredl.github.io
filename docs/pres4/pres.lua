@@ -39,7 +39,8 @@ a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
-a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
+--a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
+a.set_hl(0, "Tagged", {sp="#FFFFFF", underdouble=true})
 a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 
@@ -1099,15 +1100,15 @@ s:slide_multi('tagsequences', 3, function(i)
   if i >=3 then
     sf {r=21, center='c', text='Unicode Block: Tag sequences'}
     sf {r=23, c=7, h=12, w=75, text=[[
-U+E0020  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+U+E0020  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   / 
 
-U+E0030   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+U+E0030   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ? 
 
-U+E0040   @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+U+E0040   @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O 
 
-U+E0050   P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+U+E0050   P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _ 
 
-U+E0060   `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+U+E0060   `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o 
 
 U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
 ]], fn=function()
@@ -1115,11 +1116,11 @@ U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
       for i=0,7 do
         hl("Number", 2*i, 0, 7)
         for k=0,15 do
-          hl("unTagged", i*2, 10+4*k,11+4*k)
+          hl("Tagged", i*2, 9+4*k,12+4*k)
         end
       end
-      hl("Tagged", 0, 9,12)
-      hl("Tagged", 10, 69,72)
+      --hl("Tagged", 0, 9,12)
+      --hl("Tagged", 10, 69,72)
     end}
   end
 
