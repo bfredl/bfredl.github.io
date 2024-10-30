@@ -187,7 +187,7 @@ s:slide_multi('8bitworld', 6, function(i)
   ascii(9)
   local thetext, thename = "", ""
 
-if i == 1 then
+if i == 2 then
   thename = "iso latin-1 (ISO/IEC 8859-1)"
   thetext=[[
 80                   ( C1: more control codes
@@ -200,7 +200,7 @@ E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   
 F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
 ]]
 
-elseif i == 2 then
+elseif i == 3 then
   thename = [[MS WINDOWS cp-1252 ("latin-1")]]
   thetext=[[
 80   €       ‚   ƒ   „   …   †   ‡   ˆ   ‰   Š   ‹   Œ       Ž
@@ -213,7 +213,7 @@ E0   à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   
 F0   ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
 ]]
 
-elseif i == 3 then
+elseif i == 1 then
   -- TODO: show the 00 10 overlay (not usable in text)
   thename = "MS-DOS (IBM PC OEM code page)"
   thetext = [[
@@ -289,7 +289,7 @@ B0   ｰ   ｱ   ｲ   ｳ   ｴ   ｵ   ｶ   ｷ   ｸ   ｹ   ｺ   ｻ   ｼ
 C0   ﾀ   ﾁ   ﾂ   ﾃ   ﾄ   ﾅ   ﾆ   ﾇ   ﾈ   ﾉ   ﾊ   ﾋ   ﾌ   ﾍ   ﾎ   ﾏ 
 D0   ﾐ   ﾑ   ﾒ   ﾓ   ﾔ   ﾕ   ﾖ   ﾗ   ﾘ   ﾙ   ﾚ   ﾛ   ﾜ   ﾝ   ﾞ   ﾟ 
 E0   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S   S 
-F    S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
+F0   S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
 ]], fn=function() 
   hl("DimFg", 0, 4, 40)
   hl("DimFg", 0, 47, -1)
@@ -333,23 +333,23 @@ s:slide_multi('xkcdstandards', 3, function(i)
   if i >= 2 then
     sf {r=10, c=32, text="Unicode vs ISO/IEC"}
 
-    sf {r=12, text="unicode: a set of rules for processing international text"}
-    sf {r=13, text="- 16-bit character set: max 65 536 unicodes possible"}
-    sf {r=14, text=[[- some chars combine to form more glyphs]]}
-    sf {r=15, text=[[- Rules for handling of Right-to-left text, etc]]}
+    sf {r=13, text="unicode: a set of rules for processing international text"}
+    sf {r=14, text="- 16-bit character set: max 65 536 unicodes possible"}
+    sf {r=15, text=[[- some chars combine to form more glyphs]]}
+    sf {r=16, text=[[- Rules for handling of Right-to-left text, etc]]}
 
-    sf {r=19, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=20, text="- 31 byte code space with some restrictions: 600 million characters"}
-    sf {r=21, text="- Most common chars in the 16-bit Basic Multilingual plane (UCS-2)"}
-    sf {r=22, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ASCII"}
-    sf {r=23, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+    sf {r=21, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
+    sf {r=22, text="- 31 byte code space with some restrictions: 600 million characters"}
+    sf {r=23, text="- Most common chars in the 16-bit Basic Multilingual plane (UCS-2)"}
+    sf {r=24, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ASCII"}
+    sf {r=25, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
   end
 
   if i >= 3 then
     -- HANDSHAKE EMOJI
-    sf {r=16, c=40, text="🤝"}
-    sf {r=25, text=[[Agreement: there should be one shared character database ]]}
-    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0 (1991)]]}
+    sf {r=18, c=40, text="🤝"}
+    sf {r=29, text=[[Agreement: there should be one shared character database ]]}
+    sf {r=30, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0 (1991)]]}
   end
 end)
 
@@ -391,7 +391,7 @@ of them.)]]}
 replications by consolidating together the ideographic characters
 used in writing Chinese, Japanese, and Korean."""]]}
 
-  sf {r=28, text=[[ - this is a somewhat controversial topic, and I am not a speaker of any of these languages]]}
+  sf {r=28, text=[[ - Still a somewhat controversial topic, and I'm not a speaker of any of these languages]]}
   sf {r=29, text=[[ - regardless, it is fair to say that the sizing constraint imposed a ]]}
   sf {r=30, text=[[   _bias_ towards unifying more characters rather than less]]}
 end)
@@ -463,6 +463,7 @@ introduced.
 
   sf {r=26, text="WIDECHAR word:"}
   sf {r=27, text="java, javascript, windows NT"}
+  sf {r=28, text="rewrite your c/c++ softwares to use wchar_T * instead of char *"}
 
 end)
 
@@ -476,17 +477,14 @@ s:slide('robpike', function()
   m.header '1992: An encoding backwards compat with ASCII?'
   -- praise our lord and saviour: plan-9
   
-  sf {r=5, text="as part of the ISO/IEC 10646 draft (UCS-4, 2 billion chars)"}
-  sf {r=6, text="was a multibyte encoding for interoperability with ascii: UTF-1"}
-  --
-  sf {r=8, text="This scheme was very efficient, however just like DBSC ascii bytes became ambigous"}
+  sf {r=3, text="ISO/IEC 10646 draft (4 byte chars): multibyte encoding to save space, UTF-1"}
 
-  sf {r=10, text="A new propsal by IBM and the X/Open unix group: multibyte chars must only use 128-225"}
-  sf {r=11, text="This was modified by Rob Pike and Ken Thomson to be fully self-synchronizing"}
+  sf {r=4, text="A new propsal by IBM and X/Open in collaboration with Rob Pike and Ken thompson:"}
 
-  ascii(13)
+  sf {r=7, c=40, text="UTF-8"}
+  ascii(9)
   -- TODO: colors!
-  sf {r=21, c=9, h=8, w=68, text=[[
+  sf {r=17, c=9, h=8, w=68, text=[[
 80   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
 90   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
 A0   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
@@ -496,6 +494,9 @@ D0  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2  S2
 E0  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3  S3
 F0  S4  S4  S4  S4  S4  S4  S4  S4  S5  S5  S5  S5  S6  S6   X   X
 ]], fn=function()
+  for l=0,7 do
+    hl("Number", l, 0, 2)
+  end
     for l=0,3 do
       hl("ContFg", l, 4, -1)
     end
@@ -506,17 +507,21 @@ F0  S4  S4  S4  S4  S4  S4  S4  S4  S5  S5  S5  S5  S6  S6   X   X
     end
 end}
 
-  sf {r=13, text=""}
+  sf {r=27, text=[[- 00-7F bytes encode ASCII and ONLY ASCII (UCS text inside "mostly ASCII" fileformats) ]]}
+  sf {r=28, text="- Raw encoding supports up to 2 billion chars (limited in practice by Unicode)"}
+  sf {r=29, text="- Fully self-synchronizing: start bytes are unique"}
+
   sf {r=17, c=9, h=8, w=68, text=thetext}
   
-  sf {r=30, text="MULTIBYTE word: HTML/XML, modern linux, vim!!!!"}
+  sf {r=32, text="MULTIBYTE word: plan9, HTML/XML, modern POSIX, vim!!"}
+  --sf {r=31, text=[[Software which stores/transmits extended ASCII can be unmodified!]]}
   -- "multibyte" like earlier DBSC encod in g
 end)
 
 s:slide('utf-16', function()
   m.header "what if 65 536 characters are NOT enough?"
 
-  sf {r=6, text="unicode 2.0: reserved space for surrogates"}
+  sf {r=4, text=[[unicode 2.0 (1996): oooooopsie!]]}
 
   sf {r=7, text="High surrogates U+D800 to U+DBFF (2^10 distinct values)"}
   sf {r=8, text="low surrogates: U+DC00 to U+DFFF (2^10 distinct values)"}
@@ -526,11 +531,19 @@ s:slide('utf-16', function()
 
   sf {r=15, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
 
+  sf {r=17, c=20, w=50, text=[[
+encoding | size of codepoint | compatibility
+---------|-------------------|---------------
+ UTF-8   | 1-4 bytes         | Extended ASCII
+ UTF-16  | 2 (BMP) or 4      | Unicode 1.0 (UCS-2)
+ UTF-32  | 4 bytes           |
+  ]]}
 
-  sf {r=20, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
-  sf {r=21, text="looking inside:"}
-  sf {r=22, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
-  sf {r=23, text="jabbascript: but UTF-16 as the PROCESSING format"}
+
+  sf {r=25, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
+  sf {r=26, text="looking inside:"}
+  sf {r=27, text="HTTPS/HTML/JSON: UTF-8 as the universal TRANSMISSION format"}
+  sf {r=28, text="javascript: but UTF-16 as the PROCESSING format"}
 end)
 
 s:slide('whatisunicode', function()
