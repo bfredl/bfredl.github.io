@@ -39,7 +39,8 @@ a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
-a.set_hl(0, "Tagged", {reverse=true})
+a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
+a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 
 ns = a.create_namespace'pres'
@@ -353,7 +354,7 @@ s:slide_multi('xkcdstandards', 3, function(i)
 
   if i >= 3 then
     -- HANDSHAKE EMOJI
-    sf {r=18, c=40, text="🤝"}
+    sf {r=19, c=40, text="🤝", bg="AltFont"}
     sf {r=29, text=[[Agreement: there should be one shared character database ]]}
     sf {r=30, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0 (1991)]]}
   end
@@ -1079,33 +1080,46 @@ s:slide_multi('tagsequences', 3, function(i)
   sf {r=8, text="Unicode XX added a few of these, such as scotand"}
   sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
 
-  local strings = {"🏴", "G⃞", "B⃞", "S⃞", "C⃞", "T⃞", "[END]"}
+  local strings = {"🏴", "G", "B", "S", "C", "T", "␄"}
   local chars = {"1F3F4", "E0067", "E0062", "E0073", "E0063", "E0074", "E007F"}
   if i>=2 then
     for j = 1,#strings do
-      emojiat(14, 5+11*(j-1), strings[j], '  U+'..chars[j])
+      bull = j == 1 and cbackdark or nil
+      row = 14
+      col = 5+11*(j-1)
+      sf {r=row+2, c=col+4, bg=bull or "Untagged", text=strings[j], center='c', fn=function()
+          hl('AltFont', 0, 0, -1)
+      end}
+      sf {r=row+1, c=col+5, w=5, h=2, bg=bull or "UnTagged", center='c'}
+      sf {r=row+4, c=col, bg=cbackdark, text='  U+'..chars[j]}
+      sf {r=row, c=col, w=10, h=5, bg=cbackdark}
     end
   end
 
   if i >=3 then
-    sf {r=22, center='c', text='Unicode Block: Tag sequences'}
-    sf {r=24, c=7, h=8, w=75, text=[[
+    sf {r=21, center='c', text='Unicode Block: Tag sequences'}
+    sf {r=23, c=7, h=12, w=75, text=[[
 U+E0020  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+
 U+E0030   0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+
 U+E0040   @   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+
 U+E0050   P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+
 U+E0060   `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+
 U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
 ]], fn=function()
       hl("DimFg", 7, 64, -1)
       for i=0,7 do
-        hl("Number", i, 0, 7)
+        hl("Number", 2*i, 0, 7)
         for k=0,15 do
-          hl("Tagged", i, 10+4*k,11+4*k)
+          hl("unTagged", i*2, 10+4*k,11+4*k)
         end
       end
       hl("Tagged", 0, 9,12)
-      hl("Tagged", 5, 69,72)
+      hl("Tagged", 10, 69,72)
     end}
   end
 
