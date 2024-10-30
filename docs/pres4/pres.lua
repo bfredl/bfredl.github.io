@@ -28,6 +28,7 @@ a.set_hl(0, "BackFg", {fg=cback, bold=true})
 a.set_hl(0, "BackMidFg", {fg="#0020CC"})
 a.set_hl(0, "BackMidFgDim", {fg="#111111", bg="#aaaaaa"})
 a.set_hl(0, "BackDarkFg", {fg=cbackdark})
+a.set_hl(0, "BackDarkBg", {bg=cbackdark})
 a.set_hl(0, "DimFg", {fg="#777777"})
 a.set_hl(0, "AccentFg", {fg=caccent, bold=true})
 a.set_hl(0, "PlainUnderline", {underline=true})
@@ -39,6 +40,7 @@ a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 a.set_hl(0, "Tagged", {reverse=true})
+a.set_hl(0, "Author", {fg="#FFCC00"})
 
 ns = a.create_namespace'pres'
 
@@ -62,7 +64,9 @@ function no_slide() end
 function embedditor(filnamn)
   local fil = vim.fn.bufadd(filnamn)
 
-  sf {r=5, c=8, h=18, w=80, bg=cbackdark, buf=fil, focusable=true}
+  sf {r=5, c=8, h=18, w=80, bg=cbackdark, buf=fil, focusable=true, fn=function()
+    vim.api.nvim_win_set_cursor(0, {1, 0})
+  end}
   sf {r=3, c=5, h=22, w=86, bg=cback}
 end
 
@@ -75,7 +79,9 @@ vim.cmd [[set winblend=0]]
 s:permanent_bar(function(name)
   if name == 'titlepage' then return end
 
-  sf {r=35, c=2, w=91, text=[[ Unicode and Neovim,   more colors here,                        bfredl ]], bg=cbackdark}
+  sf {r=35, c=2, w=91, text=[[ Unicode and Neovim                  Neovimconf 2024                            Bfredl     ]], bg=cbackdark, fn=function()
+    hl('Author', 0, 75, -1)
+end}
 end)
 
 s:slide('titlepage', function()
@@ -417,7 +423,7 @@ s:slide('unicode1.0', function()
   local bright = true
   local ascii = 'this is text'
   -- local uni = {'G', 'å', ' ', 'β', ' ', 'こ', 'ん', 'に', 'ち', 'は'}
-  local uni = {'G', 'å', ' ', 'β', ' ', '今', '日', 'は', ' ', ' ', ' '}
+  local uni = {'G', 'å', ' ', 'β', ' ', '今', '日', 'は', ' ', '⇖', '≧ ', '☺'}
 
   for i = 1,12 do
     local bg = bright and cmid or cbackdark
@@ -463,7 +469,10 @@ introduced.
 
   sf {r=26, text="WIDECHAR word:"}
   sf {r=27, text="java, javascript, windows NT"}
-  sf {r=28, text="rewrite your c/c++ softwares to use wchar_T * instead of char *"}
+  sf {r=28, text="rewrite your c/c++ codes to use wchar_T * instead of char *", fn=function()
+    hl('BackDarkBg', 0, 32, 41)
+    hl('BackDarkBg', 0, 53, 59)
+  end}
 
 end)
 
@@ -531,7 +540,7 @@ s:slide('utf-16', function()
 
   sf {r=15, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
 
-  sf {r=17, c=20, w=50, text=[[
+  sf {r=17, w=50, text=[[
 encoding | size of codepoint | compatibility
 ---------|-------------------|---------------
  UTF-8   | 1-4 bytes         | Extended ASCII
@@ -542,7 +551,7 @@ encoding | size of codepoint | compatibility
 
   sf {r=25, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
   sf {r=26, text="looking inside:"}
-  sf {r=27, text="HTTPS/HTML/JSON: UTF-8 as the universal TRANSMISSION format"}
+  sf {r=27, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
   sf {r=28, text="javascript: but UTF-16 as the PROCESSING format"}
 end)
 
@@ -846,6 +855,7 @@ end)
 s:slide('utf8proc', function()
   local fil = vim.fn.bufadd("showcase/utf8proc.c")
   sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
+    vim.api.nvim_win_set_cursor(0, {1, 0})
     -- vim.cmd [[ set ft=c ]]
   end}
 
@@ -857,7 +867,7 @@ s:slide("part3", function()
 end)
 
 s:slide('emoji_intro', function()
-  m.header 'emojis: what, whow, why'
+  m.header 'emojis: what, wow, why'
 
   sf {r=3, text="unicode has always included pictographs"}
   sf {r=4, text="not part of any languages's alphabet but symbols common in existing fonts:"}
@@ -947,8 +957,8 @@ FE0F;VARIATION SELECTOR-16]]
   ]]
 end)
 
-function emojiat(row, col, emoji, lowtext)
-  local bg = cbackdark
+function emojiat(row, col, emoji, lowtext, bg)
+  bg = bg or cbackdark
   sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
     if true then
       hl('AltFont', 0, 0, -1)
@@ -969,32 +979,41 @@ s:slide_multi('zwjmania', 3, function(i)
   --    plus ZWJ + 🎨
   --     🧑‍🎨        👨‍🎨         👩‍🎨
   d = 12
-  emojiat(4, 10, '🧑', '    ADULT')
-  emojiat(4, 10+d, '👨', '     MAN')
-  emojiat(4, 10+2*d, '👩', '    WOMAN')
+  emojiat(3, 10, '🧑', '    ADULT')
+  emojiat(3, 10+d, '👨', '     MAN')
+  emojiat(3, 10+2*d, '👩', '    WOMAN')
 
   if i >= 2 then
-    emojiat(11, 10, '🧑‍🎨', 'ARTIST')
-    emojiat(11, 10+d, '👨‍🎨', 'MAN ARTIST')
-    emojiat(11, 10+2*d, '👩‍🎨', 'W. ARTIST')
+    emojiat(10, 10, '🧑‍🎨', '  ARTIST', i>=3 and "#009038" or nil)
+    emojiat(10, 10+d, '👨‍🎨', 'MAN ARTIST')
+    emojiat(10, 10+2*d, '👩‍🎨', 'W. ARTIST')
 
-    emojiat(4, 60, '    ZWJ')
-    emojiat(4, 60+d, '🎨')
+    sf {r=5, c=52, text='+', bg='AltFont'}
+    emojiat(3, 60, '    ZWJ')
+    emojiat(3, 60+d, '🎨')
   end
 
   if i >= 3 then
+    sf {r=20, c=14, text='+', bg='AltFont'}
+    ba = 22
     --: 🏻 🏼 🏽 🏾 🏿
     --: 🏼 🏽 🏾 🏿
-    emojiat(18, 10, ' 🏼', 
+    emojiat(18, ba, ' 🏼', 
     'LIGHT')
-    emojiat(18, 10+d, ' 🏽', 
+    emojiat(18, ba+d, ' 🏽', 
     'MID-LIGHT')
-    emojiat(18, 10+2*d, ' 🏽', 
+    emojiat(18, ba+2*d, ' 🏽', 
     'MEDIUM')
-    emojiat(18, 10+3*d, ' 🏾', 
+    emojiat(18, ba+3*d, ' 🏾', 
     'MID-DARK')
-    emojiat(18, 10+4*d, ' 🏿', 
+    emojiat(18, ba+4*d, ' 🏿', 
     'DARK')
+
+    emojiat(24, ba, '🧑🏻‍🎨')
+    emojiat(24, ba+d, '🧑🏼‍🎨')
+    emojiat(24, ba+2*d, '🧑🏽‍🎨')
+    emojiat(24, ba+3*d, '🧑🏾‍🎨')
+    emojiat(24, ba+4*d, '🧑🏿‍🎨')
 
    sf {r=32, text=[[unicode.org/emoji/about-emoji: "Race is Not a Skin Tone. Gender is Not a Haircut."]]}
   end
@@ -1104,17 +1123,18 @@ s:slide_multi('takeaway', 2, function(i)
   sf {r=4, text='plain text is now a big mess, but we need to do the work'}
   if i < 2 then return end
 
-  sf {r=6, text='- One does not simply index a string "by character"'}
-end)
+  sf {r=6, text='- "Unicode" is a lot more than the UCS-4 character set'}
+  sf {r=7, text='- One does not simply index a string "by character"'}
+  sf {r=8, text='- "fixed width" vs "variable-width" encoding no longer makes sense'}
 
-s:slide('references', function()
-  m.header 'futher information'
 
-  sf {r=4, text="Emoji support in terminals"}
-  sf {r=5, text="https://mitchellh.com/writing/grapheme-clusters-in-terminals"}
+  sf {r=15, text= "Further reading:"}
 
-  sf {r=7, text="History of emoji in unicode:"}
-  sf {r=8, text="youtuuu"}
+  sf {r=17, text="Emoji support in terminals"}
+  sf {r=18, text="https://mitchellh.com/writing/grapheme-clusters-in-terminals"}
+
+  sf {r=19, text="History of emoji in unicode:"}
+  sf {r=20, text="youtuuu"}
 
 end)
 
