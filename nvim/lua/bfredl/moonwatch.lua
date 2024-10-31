@@ -12,7 +12,9 @@ function m.float(args)
     args.win = stage
   end
   args.focusable = args.focusable or false
-  m.ephemeral[b.f(args)] = true
+  local id = b.f(args)
+  m.ephemeral[id] = true
+  return id
 end
 
 function m.cls()

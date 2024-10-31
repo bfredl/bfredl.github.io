@@ -37,13 +37,14 @@ a.set_hl(0, "ContBg", {bg="#441111"})
 a.set_hl(0, "ContFg", {fg="#cc1111"})
 a.set_hl(0, "AltFont", {altfont=true})
 a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
-a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark})
+a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark, blend=0})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 --a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
 a.set_hl(0, "Tagged", {sp="#bbbbbb", underdouble=true})
 a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 a.set_hl(0, "Fuling", {sp="#FFCC00"})
+a.set_hl(0, "VeryError", {bg="#AA0000", fg="#EEFFFF", bold=true})
 
 ns = a.create_namespace'pres'
 
@@ -67,9 +68,10 @@ function no_slide() end
 function embedditor(filnamn)
   local fil = vim.fn.bufadd(filnamn)
 
-  sf {r=5, c=8, h=18, w=80, bg=cbackdark, buf=fil, focusable=true, fn=function()
+  local ww = sf {r=5, c=8, h=18, w=80, bg=cbackdark, buf=fil, focusable=true, fn=function()
     vim.api.nvim_win_set_cursor(0, {1, 0})
   end}
+  if vim.fn.has'gui_running' > 0 then vim.api.nvim_set_current_win(ww) end
   sf {r=3, c=5, h=22, w=86, bg=cback}
 end
 
@@ -580,17 +582,19 @@ s:slide('whatisunicode', function()
 
   sf {r=5, text="the Unicode Character database"}
   sf {r=6, text="- 154 998 codepoints assigned out of 1 114 111"}
-  sf {r=7, text="- Rules how to encode these as UTF-32, UTF-16, UTF-8"}
-  sf {r=8, text="- Same encoding is standardized as ISO 10646: Universal coded character set"}
+  sf {r=7, text="- Categoratizions of codepoints into letters, punctuation, numbers, etc"}
+  sf {r=8, text="- Rules how to encode these as UTF-32, UTF-16, UTF-8"}
+  sf {r=9, text="- Same encodings standardized as ISO 10646: Universal coded character set"}
 
-  sf {r=10, text="- But the unicode standard contains so much more:"}
-  sf {r=11, text="- core specification: 23 chapters"}
-  sf {r=12, text="- Unicode Standard annexes: 20 more documents "}
-  sf {r=15, text="- rules for:"}
-  sf {r=16, text="- rendering of bidirectional text"}
+  sf {r=12, text="- But the unicode standard contains so much more:"}
+  sf {r=13, text="- core specification: 23 chapters"}
+  sf {r=14, text="- Unicode Standard annexes: 20 more documents "}
+  sf {r=16, text="rules for:"}
+  sf {r=17, text="- rendering of bidirectional text (Arabic, Hebrew, etc)"}
   sf {r=18, text="- case conversion and case-insensitive comparison"}
-  sf {r=19, text="- Normalization (recognizing multiple encodings of the same 'abstract char')"}
-  sf {r=20, text="- segmenting into grahemes, words, paragraphs"}
+  sf {r=19, text="- Normalization (recognizing variations of the same 'abstract char')"}
+  sf {r=20, text="- segmenting into graphemes, words, sentences"}
+  sf {r=21, text="- East Asian Width (single, double or ambiguous width)"}
 end)
 
 s:slide('UnicodeData.txt', function()
@@ -771,6 +775,26 @@ schar_T  chars[rows*cols];   // ASCII only! otherwise 0
 char glyph_cache[size];      // cache of NUL-terminated glyphs
 ]]
   sf {r=20, w=80, text=nvimtext, bg=cbackdark}
+
+  sf {r=25, text=[[
+┌────┬────┬────┬────┐
+│ C3 │ 85 │ 00 │ 00 │
+└────┴────┴────┴────┘
+]], fn=function()
+hl('StartFg', 1, 4, 6)
+hl('ContFg', 1, 11, 13)
+end}
+
+  sf {r=29, text=[[
+┌────┬────┬────┬────┐
+│ FF │ 00 │ 01 │ 22 │
+└────┴────┴────┴────┘
+]], fn=function()
+hl('VeryError', 1, 4, 6)
+end}
+
+sf {r=26, c=30, text=[[ Up to 4 UTF-8 bytes ]]}
+sf {r=30, c=30, text=[[ 24-bit index into glyph_cache[x] ]]}
 end
 
 -- TODO illustration of schar_T
@@ -1150,23 +1174,14 @@ no_slide('emoji-test.txt', function()
 end)
 
 s:slide_multi('takeaway', 2, function(i)
-  m.header 'take away messages'
+  m.header 'Take away messages'
 
-  sf {r=4, text='plain text is now a big mess, but we need to do the work'}
+  sf {r=4, text='Plain text is now a big mess, but we need to do the work'}
   if i < 2 then return end
 
   sf {r=6, text='- "Unicode" is a lot more than the UCS-4 character set'}
   sf {r=7, text='- One does not simply index a string "by character"'}
   sf {r=8, text='- "fixed width" vs "variable-width" encoding no longer makes sense'}
-
-
-  sf {r=15, text= "Further reading:"}
-
-  sf {r=17, text="Emoji support in terminals"}
-  sf {r=18, text="https://mitchellh.com/writing/grapheme-clusters-in-terminals"}
-
-  sf {r=19, text="History of emoji in unicode:"}
-  sf {r=20, text="youtuuu"}
 
 end)
 
