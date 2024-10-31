@@ -281,8 +281,8 @@ end
   sf {r=17, c=9, h=8, w=68, text=thetext}
 
   if i >= 6 then
-    sf {r=28, text="... thus the 'extended latin' characters were often misinterpreted, but ASCII remained"}
-    sf {r=29, text="ASCII become the lingua franca for interpreting 0-127 byte values"}
+    sf {r=28, text="High risk for misinterpreting high bytes (mojibake)"}
+    sf {r=29, text="ASCII: lingua franca for interpreting 0-127 byte values"}
     sf {r=31, text=[[intepreting the rest required choosing a "code page" (locale settings, ugh)]]}
   end
   -- ASCI values are preserved between MS-DOS, lose-DOS, lunix, mac etc.
@@ -349,36 +349,34 @@ end}
   sf {r=30, text="- not self-synchronizing, partial overlap with ASCII"}
 end)
 
-s:slide_multi('xkcdstandards', 3, function(i)
+s:slide_multi('xkcdstandards', 1, function(i)
   m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
 
-  sf {r=3, text="A new encoding scheme would need to:"}
-  sf {r=4, text="  - be substantially larger than 8-bit (224 visible chars)"}
-  sf {r=5, text="  - shared across all major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
-  sf {r=6, text="     - Some form of backwards compat with ASCII"}
-  sf {r=7, text="     - and the most used language-specific extensions"}
+  sf {r=3, text="An universal encoding would need:"}
+  sf {r=4, text="  - substantially larger than 8-bit (224 visible chars)"}
+  sf {r=5, text="  - shared across major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
+  sf {r=6, text="     - backwards compat with ASCII"}
+  sf {r=7, text="     - can map to language-specific extensions"}
 
+end)
+
+
+s:slide_multi('ucscode', 2, function(i)
+    m.header "Unicode vs ISO/IEC"
+
+    sf {r=6, text="unicode: a set of rules for processing international text"}
+    sf {r=7, text="- 16-bit character set: max 65 536 codepoints"}
+    sf {r=8, text=[[- some codepoints combine to form more glyphs]]}
+
+    sf {r=15, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
+    sf {r=16, text="- 600 million codepoints (31 byte code space with some restrictions) "}
+    sf {r=17, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
 
   if i >= 2 then
-    sf {r=10, c=32, text="Unicode vs ISO/IEC"}
-
-    sf {r=13, text="unicode: a set of rules for processing international text"}
-    sf {r=14, text="- 16-bit character set: max 65 536 unicodes possible"}
-    sf {r=15, text=[[- some chars combine to form more glyphs]]}
-    sf {r=16, text=[[- Rules for handling of Right-to-left text, etc]]}
-
-    sf {r=21, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=22, text="- 31 byte code space with some restrictions: 600 million characters"}
-    sf {r=23, text="- Most common chars in the 16-bit Basic Multilingual plane (UCS-2)"}
-    sf {r=24, text="- C0 (00-20) and C1 (80-9f) protected, but NOT visible ASCII"}
-    sf {r=25, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
-  end
-
-  if i >= 3 then
     -- HANDSHAKE EMOJI
-    sf {r=19, c=40, text="🤝", bg="AltFont"}
-    sf {r=29, text=[[Agreement: there should be one shared character database ]]}
-    sf {r=30, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the same chars as unicode 1.0 (1991)]]}
+    sf {r=10, c=40, text="🤝", bg="AltFont"}
+    sf {r=25, text=[[Agreement: there should be one shared character database ]]}
+    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the codepoints chars as unicode 1.0 (1991)]]}
   end
 end)
 
@@ -412,15 +410,13 @@ of them.)]]}
 
 
   sf {r=17, text=[[The "reasonable" definition (at home):]]}
-  sf {r=19, text=[[ - only "modern use" characters]]}
-  sf {r=20, c=9, text=[["""the union of all papers and magazines printed in the world in 1988"""]]}
-  sf {r=22, text=[[Han unification (Japanese, Chinese, Korean)]]}
+  sf {r=19, text=[[ - modern use: "the union of all papers and magazines printed in the world in 1988"]]}
+  sf {r=22, text=[[Han unification:]]}
 
-  sf {r=24, w=70, text=[[ """Also, Unicode avoids tens of thousands of character
-replications by consolidating together the ideographic characters
-used in writing Chinese, Japanese, and Korean."""]]}
+  sf {r=24, w=70, text=[[ "consolidating together the ideographic characters
+used in writing Chinese, Japanese, and Korean."]]}
 
-  sf {r=28, text=[[ - Still a somewhat controversial topic, and I'm not a speaker of any of these languages]]}
+  sf {r=28, text=[[ - A somewhat controversial topic]]}
   sf {r=29, text=[[ - regardless, it is fair to say that the sizing constraint imposed a ]]}
   sf {r=30, text=[[   _bias_ towards unifying more characters rather than less]]}
 end)
@@ -484,17 +480,17 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
-  sf {r=19, text="in this mindset, unicode just IS UCS-2, i e unicode is an encoding"}
+  sf {r=19, text="Righ then: unicode just IS UCS-2, i e unicode is an encoding"}
   sf {r=20, text="yes but: byte order UCS-2BE vs UCS-2LE (big vs little endian)"}
 
   -- explain how this is the seed of the mayhem which will ensure
-  sf {r=22, text="yes but: spacing marks"}
+  --sf {r=22, text="yes but: spacing marks"}
 
-  sf {r=26, text="WIDECHAR word:"}
-  sf {r=27, text="java, javascript, windows NT"}
-  sf {r=28, text="rewrite your c/c++ codes to use wchar_T * instead of char *", fn=function()
-    hl('BackDarkBg', 0, 32, 41)
-    hl('BackDarkBg', 0, 53, 59)
+  sf {r=25, text="WIDECHAR word:"}
+  sf {r=27, text="- java, javascript, windows NT"}
+  sf {r=28, text="- rewrite your c/c++ codes to use wchar_T * instead of char *", fn=function()
+    hl('BackDarkBg', 0, 34, 43)
+    hl('BackDarkBg', 0, 55, 61)
   end}
 
 end)
@@ -587,15 +583,16 @@ s:slide('whatisunicode', function()
   sf {r=8, text="- Rules how to encode these as UTF-32, UTF-16, UTF-8"}
   sf {r=9, text="- Same encodings standardized as ISO 10646: Universal coded character set"}
 
-  sf {r=12, text="- But the unicode standard contains so much more:"}
+  sf {r=12, text="But the unicode standard contains so much more:"}
   sf {r=13, text="- core specification: 23 chapters"}
   sf {r=14, text="- Unicode Standard annexes: 20 more documents "}
-  sf {r=16, text="rules for:"}
-  sf {r=17, text="- rendering of bidirectional text (Arabic, Hebrew, etc)"}
-  sf {r=18, text="- case conversion and case-insensitive comparison"}
-  sf {r=19, text="- Normalization (recognizing variations of the same 'abstract char')"}
-  sf {r=20, text="- segmenting into graphemes, words, sentences"}
-  sf {r=21, text="- East Asian Width (single, double or ambiguous width)"}
+  sf {r=15, text="- X machine readable data files "}
+  sf {r=19, text="rules for:"}
+  sf {r=20, text="- bidirectional text (Arabic, Hebrew, etc)"}
+  sf {r=21, text="- case conversion and case-insensitive comparison"}
+  sf {r=22, text="- Normalization (composition/decomposition)"}
+  sf {r=23, text="- segmenting into graphemes, words, sentences"}
+  sf {r=24, text="- East Asian Width (single, double or ambiguous width)"}
 end)
 
 s:slide('UnicodeData.txt', function()
@@ -659,12 +656,11 @@ s:slide('whatis', function()
 end)
 
 s:slide_multi('Graphemes', 7, function(i)
-  m.header 'grapheme clusters'
+  m.header 'Grapheme clusters'
 
   sf {r=3, text='UAX #29 : text segmentation'}
   sf {r=5, w=80, text=[[
-This annex describes guidelines for determining default segmentation
-boundaries between certain significant text elements:
+determining default segmentation boundaries between text elements:
 grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
   if i>= 2 then sf {r=9, text="Unicode 4.0 (2003): non-spacing marks and hangul syllabes"} end -- 29-8(?) 
