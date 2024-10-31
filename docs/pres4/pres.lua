@@ -43,6 +43,7 @@ a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 a.set_hl(0, "Tagged", {sp="#bbbbbb", underdouble=true})
 a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
+a.set_hl(0, "Fuling", {sp="#FFCC00"})
 
 ns = a.create_namespace'pres'
 
@@ -87,7 +88,18 @@ end}
 end)
 
 s:slide('titlepage', function()
-  m.header 'Unicodes' -- TODO: fancy title
+  m.header 'Unicode and emoji in neovim'
+
+  fn = 'showcase/titlemoji.cat'
+  sf {r=6, c=28, h=17, w=45, bg="Termish", fn=function()
+    local term = vim.api.nvim_open_term(0, {})
+    local ros = io.open(fn):read'*a'
+    vim.api.nvim_chan_send(term, ros)
+  end}
+
+  sf {r=26, center='c', text="A presentation for Neovimconf 2024"}
+  sf {r=27, center='c', text="by Bfredl"}
+
 
   sf {r=35, c=3, w=90, bg="#d8d8d8"}
   -- IMAGEN
@@ -96,7 +108,7 @@ end)
 s:slide('nvim11', function()
   m.header 'New in Neovim 0.11: emoji support'
 
-  sf {r=3, text="NB: not in all terminal emulators"}
+  -- sf {r=3, text="NB: not in all terminal emulators"}
 
   local x, y = 15, 35
   sf {r=5, c=x, text="before"}
@@ -113,8 +125,8 @@ s:slide('nvim11', function()
   sf {r=11, c=x, text="🇦 🇽 🇧 🇷"}
   sf {r=11, c=y, text="🇦🇽 🇧🇷"}
 
-  sf {r=14, text="most of there in unicode XX or earier"}
-  sf {r=15, text="Why did id take so long? and why do they fail so differently?"}
+  sf {r=14, text="These were added as emoji to unicode in 2015-2022"}
+  sf {r=15, text="Why did did take so long to get them into nvim? and why do they fail so differently?"}
   sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
 end)
 
@@ -310,6 +322,12 @@ F0   S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
   hl("StartFg", 15, 4, 55)
   for l=0,15 do
     hl("Number", l, 0, 2)
+  end
+  for l=10,13 do
+    for g=0,15 do
+      -- these are not exact. just good enough for the FULING
+      hl("Fuling", l, 3+6*g, 4+6*g)
+    end
   end
   if i==2 then
     for l=4,15 do
@@ -709,11 +727,10 @@ s:slide('vimhistory', function()
   -- so "multibyte" is not UTF-8?? explain
 end)
 
-s:slide_multi('vim6', 2, function(i)
+s:slide_multi('vim6', 3, function(i)
   m.header 'vim6 compiled'
 
-  fn = {'showcase/vim6_intro.cat', 'showcase/vim6_version.cat'}
-
+  fn = {'showcase/vim6_intro.cat', 'showcase/vim6_version.cat', 'showcase/vim6_demo.cat' }
   sf {r=3, c=6, h=23, w=81, bg="Termish", fn=function()
     local term = vim.api.nvim_open_term(0, {})
     local ros = io.open(fn[i]):read'*a'
