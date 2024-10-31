@@ -45,6 +45,7 @@ a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 a.set_hl(0, "Fuling", {sp="#FFCC00"})
 a.set_hl(0, "VeryError", {bg="#AA0000", fg="#EEFFFF", bold=true})
+a.set_hl(0, "Koden", {undercurl=true, bg=cbackdark})
 
 ns = a.create_namespace'pres'
 
@@ -124,10 +125,10 @@ s:slide('nvim11', function()
   sf {r=9, c=y, text="🧑‍🌾"}
   sf {r=10, c=x, text="🏳️<200d>⚧️"} --TODO: special hl!
   sf {r=10, c=y, text="🏳️‍⚧️"}
-  sf {r=11, c=x, text="🇦 🇽 🇧 🇷"}
+  sf {r=11, c=x, text="🇦 🇽 🇧 🇷  x"}
   sf {r=11, c=y, text="🇦🇽 🇧🇷"}
 
-  sf {r=14, text="These were added as emoji to unicode in 2015-2022"}
+  sf {r=14, text="These were added as emoji to unicode in 2015-2020"}
   sf {r=15, text="Why did did take so long to get them into nvim? and why do they fail so differently?"}
   sf {r=16, text="Why is the headline feature in recent unicode revisions funny color pictures?"}
 end)
@@ -510,7 +511,7 @@ s:slide('robpike', function()
   
   sf {r=3, text="ISO/IEC 10646 draft (4 byte chars): multibyte encoding to save space, UTF-1"}
 
-  sf {r=4, text="A new propsal by IBM and X/Open in collaboration with Rob Pike and Ken thompson:"}
+  sf {r=4, text="A new proposal by IBM and X/Open in collaboration with Rob Pike and Ken thompson:"}
 
   sf {r=7, c=40, text="UTF-8"}
   ascii(9)
@@ -628,21 +629,22 @@ s:slide('whatis', function()
   sf {r=8, text="codeunits vs codepoint"}
   sf {r=10, text="Already in unicode 1.0: 'non-spacing marks'"}
 
+  local alttexter = function() hl('AltFont', 0, 0, -1) end
   local r = 12
   local c = 6
-  sf {r=r+2, c=c+5, bg=cbackdark, text='Å', center='c'}
+  sf {r=r+2, c=c+5, bg=cbackdark, text='Å', center='c', fn=alttexter}
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+00C5', center='c'}
   sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
 
   sf {r=r+2, c=22, text=':'}
 
   c=30
-  sf {r=r+2, c=c+5, bg=cbackdark, text='A', center='c'}
+  sf {r=r+2, c=c+5, bg=cbackdark, text='A', center='c', fn=alttexter}
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+0041', center='c'}
   sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
 
   c=41
-  sf {r=r+2, c=c+5, bg=cbackdark, text='°', center='c'}
+  sf {r=r+2, c=c+5, bg=cbackdark, text='°', center='c', fn=alttexter}
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+030A', center='c'}
   sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
 
@@ -709,7 +711,7 @@ end
 end)
 
 s:slide("part2", function()
-  chapter("part 2: unicode in vim and neovim")
+  chapter("Part 2: Unicode in Vim and Neovim")
 end)
 
 s:slide('vimhistory', function()
@@ -724,7 +726,7 @@ s:slide('vimhistory', function()
   sf {r=10, text="vim 5.2, 199x first version with multibyte support"}
   sf {r=11, text="vim 6.0, 2000 UTF-8 support"}
 
-  sf {r=13, text="🤔", bg="AltFont"}
+  sf {r=14, text="🤔", bg="AltFont"}
 
   -- screenshot just to boast about compiled vim6.0
 
@@ -906,7 +908,7 @@ s:slide('utf8proc', function()
 end)
 
 s:slide("part3", function()
-  chapter("part 3: emoji")
+  chapter("Part 3: Emoji")
 end)
 
 s:slide('emoji_intro', function()
@@ -958,7 +960,7 @@ FE0F;VARIATION SELECTOR-16]]
 0200D;ZERO WIDTH JOINER
 026A7;TRANSGENDER SYMBOL
 0FE0F;VARIATION SELECTOR-16]]
-    cell = {'🏳', 'VS-16', 'ZWJ', '⚧', 'VS-16', '🏳️‍⚧️'}
+    cell = {'🏳', 'VS-16', 'ZWJ', ' ⚧', 'VS-16', '🏳️‍⚧️'}
   end
   sf {r=22, w=35, h=5, text=texte}
 
@@ -966,7 +968,7 @@ FE0F;VARIATION SELECTOR-16]]
   for i=1,#cell do
     local c = cell[i]
 
-    local bg = bright and cmiddim or cbackdark
+    local bg = bright and "#115577" or cbackdark
 
     local col = 9+10*(i-1)
     if i == #cell and #cell > 1 then
@@ -987,8 +989,8 @@ FE0F;VARIATION SELECTOR-16]]
   if i == 4 then
     sf {r=15, c=9, w=20, bg='PlainUnderline'}
     sf {r=15, c=39, w=20, bg='PlainUnderline'}
-    sf {r=17, c=18, text='🏳️', bg='AltFont'}
-    sf {r=17, c=48, text='⚧️', bg='AltFont'}
+    sf {r=18, c=16, text='🏳️', bg='AltFont'}
+    sf {r=18, c=46, text='⚧️', bg='AltFont'}
   end
 
   local data = [[
@@ -1000,10 +1002,10 @@ FE0F;VARIATION SELECTOR-16]]
   ]]
 end)
 
-function emojiat(row, col, emoji, lowtext, bg)
+function emojiat(row, col, emoji, lowtext, bg, noalt)
   bg = bg or cbackdark
   sf {r=row+2, c=col+3, bg=bg, text=emoji, center='c', fn=function()
-    if true then
+    if not noalt then
       hl('AltFont', 0, 0, -1)
     end
   end}
@@ -1032,7 +1034,7 @@ s:slide_multi('zwjmania', 3, function(i)
     emojiat(10, 10+2*d, '👩‍🎨', 'W. ARTIST')
 
     sf {r=5, c=52, text='+', bg='AltFont'}
-    emojiat(3, 60, '    ZWJ')
+    emojiat(3, 60, '    ZWJ', nil, nil, true)
     emojiat(3, 60+d, '🎨')
   end
 
@@ -1041,16 +1043,16 @@ s:slide_multi('zwjmania', 3, function(i)
     ba = 22
     --: 🏻 🏼 🏽 🏾 🏿
     --: 🏼 🏽 🏾 🏿
-    emojiat(18, ba, ' 🏼', 
-    'LIGHT')
-    emojiat(18, ba+d, ' 🏽', 
-    'MID-LIGHT')
-    emojiat(18, ba+2*d, ' 🏽', 
-    'MEDIUM')
-    emojiat(18, ba+3*d, ' 🏾', 
-    'MID-DARK')
-    emojiat(18, ba+4*d, ' 🏿', 
-    'DARK')
+    emojiat(18, ba, ' 🏼 ', 
+    'LIGHT', 'Koden')
+    emojiat(18, ba+d, ' 🏽 ',  
+    'MID-LIGHT', 'Koden')
+    emojiat(18, ba+2*d, ' 🏽 ', 
+    'MEDIUM', 'Koden')
+    emojiat(18, ba+3*d, ' 🏾 ', 
+    'MID-DARK', 'Koden')
+    emojiat(18, ba+4*d, ' 🏿 ', 
+    'DARK', 'Koden')
 
     emojiat(24, ba, '🧑🏻‍🎨')
     emojiat(24, ba+d, '🧑🏼‍🎨')
@@ -1168,7 +1170,7 @@ U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
   -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
 end)
 
-no_slide('emoji-test.txt', function()
+s:slide('emoji-test.txt', function()
   m.header 'emoji-test.txt'
   embedditor('showcase/emoji-test.txt')
 end)
@@ -1183,12 +1185,10 @@ s:slide_multi('takeaway', 2, function(i)
   sf {r=7, text='- One does not simply index a string "by character"'}
   sf {r=8, text='- "fixed width" vs "variable-width" encoding no longer makes sense'}
 
+  sf {r=10, text='Thanks for listening '}
+
 end)
 
-
-s:slide('enda', function()
-  m.header 'Thanks for listening'
-end)
 
 s:show (s.slides[s.cur] and s.cur or "titlepage")
 

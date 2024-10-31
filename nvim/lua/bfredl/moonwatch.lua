@@ -35,7 +35,11 @@ function m.prepare()
     m.stage = b.f{buf=m.sbuf, enter=true}
     a.win_set_buf(m.stage, m.sbuf)
     vim.cmd [[wincmd H]]
-    a.set_current_win(save)
+    if  vim.g.moon_live then 
+      vim.cmd 'only'
+    else
+      a.set_current_win(save)
+    end
   end
   stage, sbuf = m.stage, m.sbuf
 end
