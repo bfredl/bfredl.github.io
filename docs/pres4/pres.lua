@@ -723,7 +723,7 @@ s:slide_multi('vimhistory', 2, function(i)
   m.header 'vim-history'
 
   sf {r=4, text="Github repo with reconstructed vim history"}
-  sf {r=5, text="URL"}
+  sf {r=5, text="https://github.com/vim/vim-history/"}
 
   sf {r=7, text="vim 4.0 and earlier: charset.c"}
   sf {r=8, text="support for character properties for 8-bit codepages"}
@@ -909,7 +909,7 @@ end)
 s:slide('utf8proc', function()
   m.header "Utf8proc: a modern library for unicode"
   local fil = vim.fn.bufadd("showcase/utf8proc.c")
-  local w = sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
+  local ww = sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
     vim.api.nvim_win_set_cursor(0, {1, 0})
     -- vim.cmd [[ set ft=c ]]
   end}
@@ -1133,7 +1133,7 @@ s:slide_multi('tagsequences', 3, function(i)
 
   sf {r=6, text="ISO-foo provides standardized subnational codes"}
 
-  sf {r=8, text="Unicode 10 added a few of these, such as scotand"}
+  sf {r=8, text="Unicode 10 added a few of these, such as Scotland"}
   sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
 
   local strings = {"🏴", "G", "B", "S", "C", "T", "␄"}
