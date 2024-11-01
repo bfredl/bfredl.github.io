@@ -368,17 +368,19 @@ end)
 s:slide_multi('ucscode', 2, function(i)
     m.header "Unicode vs ISO/IEC"
 
-    sf {r=6, text="unicode: a set of rules for processing international text"}
-    sf {r=7, text="- 16-bit character set: max 65 536 codepoints"}
-    sf {r=8, text=[[- some codepoints combine to form more glyphs]]}
+    sf {r=5, text="unicode: a set of rules for processing international text"}
+    sf {r=6, text="- 16-bit character set: max 65 536 codepoints"}
+    sf {r=7, text=[[- some codepoints combine to form more glyphs]]}
+    sf {r=8, text=[[- rules for bidirectional text, case conversion, sorting, normalization, etc]]}
 
     sf {r=15, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=16, text="- 600 million codepoints (31 byte code space with some restrictions) "}
-    sf {r=17, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+    sf {r=16, text="- UCS-4: 600 million codepoints (31 byte code space with some restrictions) "}
+    sf {r=17, text="- Most common chars in UCS-2 (basic multilingual plane) "}
+    sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
 
   if i >= 2 then
     -- HANDSHAKE EMOJI
-    sf {r=10, c=40, text="🤝", bg="AltFont"}
+    sf {r=12, c=40, text="🤝", bg="AltFont"}
     sf {r=25, text=[[Agreement: there should be one shared character database ]]}
     sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the codepoints chars as unicode 1.0 (1991)]]}
   end
@@ -581,7 +583,7 @@ encoding | size of codepoint | compatibility
   sf {r=29, text="javascript: but UTF-16 as the PROCESSING format"}
 end)
 
-s:slide('whatisunicode', function()
+no_slide('whatisunicode', function()
   m.header "What's in the unicode standard? anyway?"
 
   sf {r=5, text="the Unicode Character database"}
@@ -602,7 +604,7 @@ s:slide('whatisunicode', function()
   sf {r=24, text="- East Asian Width (single, double or ambiguous width)"}
 end)
 
-s:slide('UnicodeData.txt', function()
+no_slide('UnicodeData.txt', function()
   m.header 'UnicodeData.txt'
   embedditor('showcase/UnicodeData.txt')
 end)
@@ -628,13 +630,13 @@ s:slide('whatis', function()
   m.header 'Now for something completely different'
 
   sf {r=4, text="What is a character?"}
-  sf {r=5, text="given a valid unicode string(1) how _many_ characters are in it?"}
-  sf {r=7, text="strlen(str), #str, str.lenght, str.__len__()"}
-  sf {r=8, text="codeunits vs codepoint"}
-  sf {r=10, text="Already in unicode 1.0: 'non-spacing marks'"}
+  sf {r=5, text="given a valid unicode string how _many_ characters are in it?"}
+  sf {r=9, text="strlen(str), #str, str.length, str.__len__() ?"}
+  sf {r=11, c=15, text="UTF-8 bytes, UTF-16 codeunits or codepoints"}
+  sf {r=15, text="Already in unicode 1.0: 'non-spacing marks'"}
 
   local alttexter = function() hl('AltFont', 0, 0, -1) end
-  local r = 12
+  local r = 18
   local c = 6
   sf {r=r+2, c=c+5, bg=cbackdark, text='Å', center='c', fn=alttexter}
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+00C5', center='c'}
@@ -652,13 +654,13 @@ s:slide('whatis', function()
   sf {r=r+4, c=c+5, bg=cbackdark, text='U+030A', center='c'}
   sf {r=r+0, c=c+0, w=10, h=5, bg=cbackdark}
 
-  sf {r=18, c=9, text="NFC"}
-  sf {r=19, c=7, text="Composed"}
+  sf {r=r+6, c=9, text="NFC"}
+  sf {r=r+7, c=7, text="Composed"}
 
-  sf {r=18, c=39, text="NFD"}
-  sf {r=19, c=35, text="Decomposed"}
+  sf {r=r+6, c=39, text="NFD"}
+  sf {r=r+7, c=35, text="Decomposed"}
 
-  sf {r=25, text="(1) i.e. well-formed UTF-8/16/32 which maps to assigned code points"}
+  --sf {r=25, text="(1) i.e. well-formed UTF-8/16/32 which maps to assigned code points"}
 
 end)
 
@@ -667,7 +669,7 @@ s:slide_multi('Graphemes', 7, function(i)
 
   sf {r=3, text='UAX #29 : text segmentation'}
   sf {r=5, w=80, text=[[
-determining default segmentation boundaries between certain significant text elements:
+determining default segmentation boundaries between certain text elements:
 grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
   if i>= 2 then sf {r=9, text="Unicode 4.0 (2003): non-spacing marks and hangul syllabes"} end -- 29-8(?) 
@@ -717,7 +719,7 @@ s:slide("part2", function()
   chapter("Part 2: Unicode in Vim and Neovim")
 end)
 
-s:slide('vimhistory', function()
+s:slide_multi('vimhistory', 2, function(i)
   m.header 'vim-history'
 
   sf {r=4, text="Github repo with reconstructed vim history"}
@@ -726,10 +728,14 @@ s:slide('vimhistory', function()
   sf {r=7, text="vim 4.0 and earlier: charset.c"}
   sf {r=8, text="support for character properties for 8-bit codepages"}
 
-  sf {r=10, text="vim 5.2, 199x first version with multibyte support"}
-  sf {r=11, text="vim 6.0, 2000 UTF-8 support"}
+  sf {r=10, text="vim 5.2, 1998 first version with multibyte support"}
+  sf {r=15, text="vim 6.0, 2000 UTF-8 support"}
 
-  sf {r=14, text="🤔", bg="AltFont"}
+  sf {r=18, text="🤔", bg="AltFont"}
+
+  if i >= 2 then
+    sf {r=12, c=20, text="DBCS encodings: strlen(x) == strwidth(x) "}
+  end
 
   -- screenshot just to boast about compiled vim6.0
 
@@ -747,7 +753,7 @@ s:slide_multi('vim6', 3, function(i)
   end}
 end)
 
-s:slide_multi('vimscreen', 3, function(i)
+no_slide('vimscreen', 3, function(i)
   m.header 'vim in encoding=utf-8 mode'
 
   sf {r=4, text="Buffer lines are NUL-terminated strings encoded as UTF-8"}
@@ -901,11 +907,14 @@ int utfc_ptr2len(unsigned char *p)
 end)
 
 s:slide('utf8proc', function()
+  m.header "Utf8proc: a modern library for unicode"
   local fil = vim.fn.bufadd("showcase/utf8proc.c")
-  sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
+  local w = sf {r=3, w=85, h=30, buf=fil, bg=cbackdark, focusable=true, fn=function()
     vim.api.nvim_win_set_cursor(0, {1, 0})
     -- vim.cmd [[ set ft=c ]]
   end}
+  if vim.fn.has'gui_running' > 0 then vim.api.nvim_set_current_win(ww) end
+
 
   -- this is very complex, but not our problem!
 end)
@@ -1018,7 +1027,7 @@ function emojiat(row, col, emoji, lowtext, bg, noalt)
   sf {r=row, c=col, w=10, h=5, bg=bg}
 end
 
-s:slide_multi('zwjmania', 3, function(i)
+s:slide_multi('zwjmania', 2, function(i)
   m.header "modifiers and ZWJ: a grammar for emoji"
 
 
@@ -1031,8 +1040,8 @@ s:slide_multi('zwjmania', 3, function(i)
   emojiat(3, 10+d, '👨', '     MAN')
   emojiat(3, 10+2*d, '👩', '    WOMAN')
 
-  if i >= 2 then
-    emojiat(10, 10, '🧑‍🎨', '  ARTIST', i>=3 and "#009038" or nil)
+  if i >= 1 then
+    emojiat(10, 10, '🧑‍🎨', '  ARTIST', i>=2 and "#009038" or nil)
     emojiat(10, 10+d, '👨‍🎨', 'MAN ARTIST')
     emojiat(10, 10+2*d, '👩‍🎨', 'W. ARTIST')
 
@@ -1041,7 +1050,7 @@ s:slide_multi('zwjmania', 3, function(i)
     emojiat(3, 60+d, '🎨')
   end
 
-  if i >= 3 then
+  if i >= 2 then
     sf {r=20, c=14, text='+', bg='AltFont'}
     ba = 22
     --: 🏻 🏼 🏽 🏾 🏿
@@ -1124,7 +1133,7 @@ s:slide_multi('tagsequences', 3, function(i)
 
   sf {r=6, text="ISO-foo provides standardized subnational codes"}
 
-  sf {r=8, text="Unicode XX added a few of these, such as scotand"}
+  sf {r=8, text="Unicode 10 added a few of these, such as scotand"}
   sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
 
   local strings = {"🏴", "G", "B", "S", "C", "T", "␄"}
@@ -1173,7 +1182,7 @@ U+E0070   p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~  END
   -- 1F3F4 E0067 E0062 E0073 E0063 E0074 E007F              ; fully-qualified     # 🏴󠁧󠁢󠁳󠁣󠁴󠁿 E5.0 flag: Scotland
 end)
 
-s:slide('emoji-test.txt', function()
+no_slide('emoji-test.txt', function()
   m.header 'emoji-test.txt'
   embedditor('showcase/emoji-test.txt')
 end)
