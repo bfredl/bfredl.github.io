@@ -290,13 +290,13 @@ end
 end)
 
 s:slide_multi('dbcsworld', 2, function(i)
-  m.header 'double byte character sets (east asian)'
+  m.header 'Double byte character sets (East Esian)'
 
-  sf {r=3, text="first multi-byte encodings for Asian languages"}
+  sf {r=3, text="Early multi-byte encodings for Japanese, Chinese, etc"}
 
-  sf {r=6, c=40, text="Shift-JIS"}
+  sf {r=5, c=40, text="Shift-JIS"}
 
-  sf {r=8, c=9, h=16, w=68, text=[[
+  sf {r=7, c=9, h=16, w=68, text=[[
 00  NUL SOH STX ETX EOT ENQ ACK BEL  BS TAB  LF  VT  FF  CR  SO  SI
 10  DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB ESC  FS  GS  RS  US
 20  SPC  !   "   #   $   %   &   '   (   )   *   +   ,   -   .   / 
@@ -342,21 +342,25 @@ F0   S   S   S   S   S   S   S   S   S   S   S   S   S   -   -   -
   end
 end}
 
-  sf {r=26, text="A start byte + lead byte w some restrictions"}
-  sf {r=27, text="94*94 = 8836 possible double-byte codes"}
+  sf {r=25, text="A Start byte + continuation byte w some restrictions", fn=function()
+    hl("StartFg", 0, 2, 7)
+    if i >= 2 then hl("ContBg", 0, 15, 32) end
+  end}
+  sf {r=26, text="94*94 = 8836 double-byte codes"}
 
-  sf {r=29, text="+ byte width = terminal column width!"}
-  sf {r=30, text="- not self-synchronizing, partial overlap with ASCII"}
+  sf {r=28, text="+ byte width == terminal column width!"}
+  sf {r=30, c=8, text=[[ strlen("ab") == 2      strlen("文字") == 4 ]]}
+  sf {r=32, text="- not self-synchronizing, partial overlap with ASCII"}
 end)
 
 s:slide_multi('xkcdstandards', 1, function(i)
   m.header "Ridiculous! we need to develop one universal standard that covers everyone's use cases"
 
-  sf {r=3, text="An universal encoding would need:"}
-  sf {r=4, text="  - substantially larger than 8-bit (224 visible chars)"}
-  sf {r=5, text="  - shared across major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
-  sf {r=6, text="     - backwards compat with ASCII"}
-  sf {r=7, text="     - can map to language-specific extensions"}
+  sf {r=8, text="An universal encoding would need:"}
+  sf {r=10, text="  - substantially larger than 8-bit (224 visible chars)"}
+  sf {r=12, text="  - shared across major vendors (IBM PC, MS, Apple, Unix)", fg=caccent}
+  sf {r=13, text="     - backwards compat with ASCII"}
+  sf {r=14, text="     - can map to language-specific extensions"}
 
 end)
 
@@ -409,11 +413,11 @@ unreasonable definitions of “character" such that there are more than 65,536
 of them.)]]}
 
 
-  sf {r=17, text=[[The "reasonable" definition (at home):]]}
-  sf {r=19, text=[[ - modern use: "the union of all papers and magazines printed in the world in 1988"]]}
-  sf {r=22, text=[[Han unification:]]}
+  sf {r=18, text=[[The "reasonable" definition:]]}
+  sf {r=20, text=[[ - modern use: "the union of all papers and magazines printed in the world in 1988"]]}
+  sf {r=23, text=[[Han unification:]]}
 
-  sf {r=24, w=70, text=[[ "consolidating together the ideographic characters
+  sf {r=25, c=15, w=70, text=[[ "consolidating together the ideographic characters
 used in writing Chinese, Japanese, and Korean."]]}
 
   sf {r=28, text=[[ - A somewhat controversial topic]]}
@@ -444,6 +448,8 @@ s:slide('unicode1.0', function()
   -- local uni = {'G', 'å', ' ', 'β', ' ', 'こ', 'ん', 'に', 'ち', 'は'}
   local uni = {'G', 'å', ' ', 'β', ' ', '今', '日', 'は', ' ', '⇖', '≧ ', '☺'}
 
+  sf {r = 3, c=21, text="ASCII"}
+  sf {r = 3, c=49, text="UNICODE"}
   for i = 1,12 do
     local bg = bright and cmid or cbackdark
 
@@ -452,15 +458,15 @@ s:slide('unicode1.0', function()
     local byt = string.byte(char)
     local bytestr = bytesof(byt,8)
 
-    sf {r=r, c=8, bg=bg, text=bytestr}
-    sf {r=r, c=19, bg=bg, text=char}
+    sf {r=r, c=10+8, bg=bg, text=bytestr}
+    sf {r=r, c=10+19, bg=bg, text=char}
 
     local unichar = uni[i]
     local num = vim.fn.char2nr(unichar)
     local numstr = bytesof(num,16)
 
-    sf {r=r, c=30, bg=bg, text=numstr}
-    sf {r=r, c=51, w=2, bg=bg, text=unichar}
+    sf {r=r, c=10+30, bg=bg, text=numstr}
+    sf {r=r, c=10+51, w=2, bg=bg, text=unichar}
 
     bright = not bright
   end
@@ -480,8 +486,8 @@ play or print text can (for the most part) remain unaltered when new scripts or 
 introduced.
 ]]
 
-  sf {r=19, text="Righ then: unicode just IS UCS-2, i e unicode is an encoding"}
-  sf {r=20, text="yes but: byte order UCS-2BE vs UCS-2LE (big vs little endian)"}
+  sf {r=19, text="Right then: Unicode just IS UCS-2, i e Unicode is an encoding"}
+  sf {r=20, text="yes but: byte order. UCS-2BE vs UCS-2LE (big vs little endian)"}
 
   -- explain how this is the seed of the mayhem which will ensure
   --sf {r=22, text="yes but: spacing marks"}
@@ -507,12 +513,12 @@ s:slide('robpike', function()
   
   sf {r=3, text="ISO/IEC 10646 draft (4 byte chars): multibyte encoding to save space, UTF-1"}
 
-  sf {r=4, text="A new proposal by IBM and X/Open in collaboration with Rob Pike and Ken thompson:"}
+  sf {r=4, text="New proposal by IBM and X/Open in collaboration with Rob Pike and Ken Thompson:"}
 
-  sf {r=7, c=40, text="UTF-8"}
-  ascii(9)
+  sf {r=6, c=40, text="UTF-8"}
+  ascii(8)
   -- TODO: colors!
-  sf {r=17, c=9, h=8, w=68, text=[[
+  sf {r=16, c=9, h=8, w=68, text=[[
 80   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
 90   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
 A0   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C   C
@@ -535,9 +541,10 @@ F0  S4  S4  S4  S4  S4  S4  S4  S4  S5  S5  S5  S5  S6  S6   X   X
     end
 end}
 
-  sf {r=27, text=[[- 00-7F bytes encode ASCII and ONLY ASCII (UCS text inside "mostly ASCII" fileformats) ]]}
-  sf {r=28, text="- Raw encoding supports up to 2 billion chars (limited in practice by Unicode)"}
-  sf {r=29, text="- Fully self-synchronizing: start bytes are unique"}
+  sf {r=26, text=[[- 00-7F bytes encode ASCII and ONLY ASCII]]}
+  sf {r=27, text=[[  UCS text inside "mostly ASCII" fileformats like c,html,lua etc ]]}
+  sf {r=29, text="- Raw encoding supports up to 2 billion chars (UCS-4)"}
+  sf {r=30, text="- Fully self-synchronizing: start bytes are unique"}
 
   sf {r=17, c=9, h=8, w=68, text=thetext}
   
@@ -557,9 +564,9 @@ s:slide('utf-16', function()
   sf {r=10, text="These exists within the UCS-2 space but are not charcters per se"}
   sf {r=11, text="instead a sequence high+low encodes 2^20 ~= 1 million codepoints"}
 
-  sf {r=15, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
+  sf {r=14, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
 
-  sf {r=17, w=50, text=[[
+  sf {r=17, c=20, w=50, text=[[
 encoding | size of codepoint | compatibility
 ---------|-------------------|---------------
  UTF-8   | 1-4 bytes         | Extended ASCII
@@ -569,9 +576,9 @@ encoding | size of codepoint | compatibility
 
 
   sf {r=25, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
-  sf {r=26, text="looking inside:"}
-  sf {r=27, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
-  sf {r=28, text="javascript: but UTF-16 as the PROCESSING format"}
+  sf {r=27, text="looking inside:"}
+  sf {r=28, text="HTTPS/HTML/XML: UTF-8 as the universal TRANSMISSION format"}
+  sf {r=29, text="javascript: but UTF-16 as the PROCESSING format"}
 end)
 
 s:slide('whatisunicode', function()
@@ -660,7 +667,7 @@ s:slide_multi('Graphemes', 7, function(i)
 
   sf {r=3, text='UAX #29 : text segmentation'}
   sf {r=5, w=80, text=[[
-determining default segmentation boundaries between text elements:
+determining default segmentation boundaries between certain significant text elements:
 grapheme clusters (“user-perceived characters”), words, and sentences. ]]}
 
   if i>= 2 then sf {r=9, text="Unicode 4.0 (2003): non-spacing marks and hangul syllabes"} end -- 29-8(?) 
@@ -910,19 +917,19 @@ end)
 s:slide('emoji_intro', function()
   m.header 'emojis: what, wow, why'
 
-  sf {r=3, text="unicode has always included pictographs"}
-  sf {r=4, text="not part of any languages's alphabet but symbols common in existing fonts:"}
-  sf {r=6, c=10, text="☺ ♜ ☿ ♥"}
+  sf {r=3, text="unicode has always included simple uncolored pictographs:"}
+  sf {r=5, c=10, text="☺ ♜ ☿ ♥"}
 
-  sf {r=8, text="in the early 2000:s, color emoji was part of japanese messaging services"}
-  sf {r=9, text="But different carriers and phone manufactured used incompatible sets!"}
-  sf {r=10, text="in general adaption of Unicode in japan was slow (han unification, etc)"}
+  sf {r=8, text="in the early 2000:s:"}
+  sf {r=9, text="color emoji Used in japanese messaging services"}
+  sf {r=10, text="But incompatible sets by different carriers and phone manufacturers !"}
+  sf {r=12, text="Adaption of Unicode in Japan was slow (han unification, etc)"}
 
-  sf {r=12, text="Explicit goal of unicode: compatibility with existing encodings"}
-  sf {r=13, text="Thus, a set of 720 emoji was added to unicode 5.2"}
-  sf {r=14, text="including giving emoji presentation to existing B/W pictographs!"}
+  sf {r=15, text="Explicit goal of unicode: compatibility with existing encodings"}
+  sf {r=16, text="Thus, a set of 720 emoji was added to unicode 5.2"}
+  sf {r=17, text="including giving color presentation to existing pictographs!"}
 
-  sf {r=17, text="Naturally, this 'comptibility' feature become very popular around the world.."}
+  sf {r=20, text="Naturally, this 'comptibility' feature become very popular around the world.."}
 
 end)
 
