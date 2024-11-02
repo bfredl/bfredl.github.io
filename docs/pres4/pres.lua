@@ -579,13 +579,14 @@ s:slide('utf-16', function()
 
   sf {r=14, text="Thus as a compromise, UCS-4 nominally exists but is limited to the range 0-10FFFF"}
 
-  sf {r=17, c=20, w=50, text=[[
-encoding | size of codepoint | compatibility
----------|-------------------|---------------
- UTF-8   | 1-4 bytes         | Extended ASCII
- UTF-16  | 2 (BMP) or 4      | Unicode 1.0 (UCS-2)
- UTF-32  | 4 bytes           |
-  ]]}
+  sf {r=16, c=20, w=52, text=[[
+
+ Encoding │ Size of codepoint │ Compatibility
+ ─────────┼───────────────────┼────────────────────
+  UTF-8   │ 1-4 bytes         │ Extended ASCII
+  UTF-16  │ 2 (BMP) or 4      │ Unicode 1.0 (UCS-2)
+  UTF-32  │ 4 bytes           │
+ ]], fg="#77DDFF"}
 
 
   sf {r=25, text="wHeN iN doUbt, foLLoW wHaT ThE wEB Is dOInG"}
