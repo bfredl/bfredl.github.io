@@ -46,6 +46,7 @@ a.set_hl(0, "Author", {fg="#FFCC00"})
 a.set_hl(0, "Fuling", {sp="#FFCC00"})
 a.set_hl(0, "VeryError", {bg="#AA0000", fg="#EEFFFF", bold=true})
 a.set_hl(0, "Koden", {undercurl=true, bg=cbackdark})
+a.set_hl(0, "RedNumber", {fg="#AA3333"})
 
 ns = a.create_namespace'pres'
 
@@ -187,7 +188,7 @@ s:slide('ascii', function()
   sf {r=5, text="ASCII-1967 very close to what we know as ASCII today"}
   sf {r=6, text="with some ambiguities locked down in 1977"}
 
-  sf {r=8, text="Originally designed for for teletypewriters (digitalized telegraphs)"}
+  sf {r=8, text="Originally designed for teletypewriters (digitalized telegraphs)"}
   sf {r=9, text="which evolved into (printing!) computer terminals"}
 
   -- ASCII table here
@@ -268,17 +269,21 @@ elseif i == 6 then
   thetext=[[
 80                   ( C1: more control codes
 90                     no one uses anymore :p )
-Ax NBSP  Ё   Ђ   Ѓ   Є   Ѕ   І   Ї   Ј   Љ   Њ   Ћ   Ќ  SHY  Ў   Џ
-Bx   А   Б   В   Г   Д   Е   Ж   З   И   Й   К   Л   М   Н   О   П 
-Cx   Р   С   Т   У   Ф   Х   Ц   Ч   Ш   Щ   Ъ   Ы   Ь   Э   Ю   Я
-Dx   а   б   в   г   д   е   ж   з   и   й   к   л   м   н   о   п
-Ex   р   с   т   у   ф   х   ц   ч   ш   щ   ъ   ы   ь   э   ю   я
-Fx   №   ё   ђ   ѓ   є   ѕ   і   ї   ј   љ   њ   ћ   ќ   §   ў   џ
+A0 NBSP  Ё   Ђ   Ѓ   Є   Ѕ   І   Ї   Ј   Љ   Њ   Ћ   Ќ  SHY  Ў   Џ
+B0   А   Б   В   Г   Д   Е   Ж   З   И   Й   К   Л   М   Н   О   П 
+C0   Р   С   Т   У   Ф   Х   Ц   Ч   Ш   Щ   Ъ   Ы   Ь   Э   Ю   Я
+D0   а   б   в   г   д   е   ж   з   и   й   к   л   м   н   о   п
+E0   р   с   т   у   ф   х   ц   ч   ш   щ   ъ   ы   ь   э   ю   я
+F0   №   ё   ђ   ѓ   є   ѕ   і   ї   ј   љ   њ   ћ   ќ   §   ў   џ
 ]]
 end
 
   sf {r=7, c=43, center="c", text=thename}
-  sf {r=17, c=9, h=8, w=68, text=thetext}
+  sf {r=17, c=9, h=8, w=68, text=thetext, fn=function()
+    for l=0,8 do
+      hl("RedNumber", l, 0, 2)
+    end
+  end}
 
   if i >= 6 then
     sf {r=28, text="High risk for misinterpreting high bytes (mojibake)"}
@@ -374,7 +379,7 @@ s:slide_multi('ucscode', 2, function(i)
     sf {r=8, text=[[- rules for bidirectional text, case conversion, sorting, normalization, etc]]}
 
     sf {r=15, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=16, text="- UCS-4: 600 million codepoints (31 byte code space with some restrictions) "}
+    sf {r=16, text="- UCS-4: 600 million codepoints (4-byte code space with some restrictions) "}
     sf {r=17, text="- Most common chars in UCS-2 (basic multilingual plane) "}
     sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
 
