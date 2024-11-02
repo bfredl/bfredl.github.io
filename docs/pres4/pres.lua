@@ -371,23 +371,29 @@ end)
 
 
 s:slide_multi('ucscode', 2, function(i)
-    m.header "Unicode vs ISO/IEC"
+    m.header "Unicode vs ISO/IEC 10646"
+    local bg1 = "#000065"
+    local bg2 = "#500000"
+    local bg3 = "#005500"
 
-    sf {r=5, text="unicode: a set of rules for processing international text"}
-    sf {r=6, text="- 16-bit character set: max 65 536 codepoints"}
-    sf {r=7, text=[[- some codepoints combine to form more glyphs]]}
-    sf {r=8, text=[[- rules for bidirectional text, case conversion, sorting, normalization, etc]]}
+    sf {r=5, text="unicode: a set of rules for processing international text", bg=bg1}
+    sf {r=6, text="- 16-bit character set: max 65 536 codepoints", bg=bg1}
+    sf {r=7, text=[[- some codepoints combine to form more glyphs]], bg=bg1}
+    sf {r=8, text=[[- rules for bidirectional text, case conversion, sorting, normalization, etc]], bg=bg1}
+    sf {r=4, c=2, w=82, h=6, bg=bg1}
 
-    sf {r=15, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets"}
-    sf {r=16, text="- UCS-4: 600 million codepoints (4-byte code space with some restrictions) "}
-    sf {r=17, text="- Most common chars in UCS-2 (basic multilingual plane) "}
-    sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)"}
+    sf {r=15, text="UCS (ISO/IEC 10646): a character set to superseed all earlier character sets", bg=bg2}
+    sf {r=16, text="- UCS-4: 600 million codepoints (4-byte code space with some restrictions) ", bg=bg2}
+    sf {r=17, text="- Most common chars in UCS-2 (basic multilingual plane) ", bg=bg2}
+    sf {r=18, text="- UTF-1, a predecessor to UTF-8 (variable width encoding)", bg=bg2}
+    sf {r=14, c=2, w=82, h=6, bg=bg2}
 
   if i >= 2 then
     -- HANDSHAKE EMOJI
     sf {r=12, c=40, text="🤝", bg="AltFont"}
-    sf {r=25, text=[[Agreement: there should be one shared character database ]]}
-    sf {r=26, text=[[- Thus ISO 10646 UCS-2 standardizes exactly the codepoints chars as unicode 1.0 (1991)]]}
+    sf {r=25, text=[[Agreement: there should be one shared character database ]], bg=bg3}
+    sf {r=26, text=[[- ISO 10646 UCS-2 standardizes the same codepoints as unicode 1.0 (1991)]], bg=bg3}
+    sf {r=24, c=2, w=82, h=4, bg=bg3}
   end
 end)
 
