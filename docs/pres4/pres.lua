@@ -40,7 +40,7 @@ a.set_hl(0, "FAkeCursor", {fg="#AADDFF", reverse=true})
 a.set_hl(0, "FloatBorder", {fg="#BBCCFF", bg=cmiddark, blend=0})
 a.set_hl(0, "Termish", {fg="#33DD44", bg="#101a10"})
 --a.set_hl(0, "Tagged", {reverse=true, sp="#000000", underdouble=true})
-a.set_hl(0, "Tagged", {sp="#bbbbbb", underdouble=true})
+a.set_hl(0, "Tagged", {sp="#667799", underdouble=true})
 a.set_hl(0, "UnTagged", {reverse=true})
 a.set_hl(0, "Author", {fg="#FFCC00"})
 a.set_hl(0, "Fuling", {sp="#FFCC00"})
@@ -374,7 +374,7 @@ s:slide_multi('ucscode', 2, function(i)
     m.header "Unicode vs ISO/IEC 10646"
     local bg1 = "#000065"
     local bg2 = "#500000"
-    local bg3 = "#005500"
+    local bg3 = nil -- "#005500"
 
     sf {r=5, text="unicode: a set of rules for processing international text", bg=bg1}
     sf {r=6, text="- 16-bit character set: max 65 536 codepoints", bg=bg1}
@@ -464,7 +464,7 @@ s:slide('unicode1.0', function()
   sf {r = 3, c=21, text="ASCII"}
   sf {r = 3, c=49, text="UNICODE"}
   for i = 1,12 do
-    local bg = bright and cmid or cbackdark
+    local bg = bright and "#440022" or cbackdark
 
     local r = 4+i
     local char = string.sub(ascii, i, i)
@@ -939,7 +939,7 @@ s:slide('emoji_intro', function()
   m.header 'emojis: what, wow, why'
 
   sf {r=3, text="unicode has always included simple uncolored pictographs:"}
-  sf {r=5, c=10, text="☺ ♜ ☿ ♥"}
+  sf {r=6, c=10, text="☺ ♜ ☿ ♥", bg="AltFont"}
 
   sf {r=8, text="in the early 2000:s:"}
   sf {r=9, text="color emoji Used in japanese messaging services"}
