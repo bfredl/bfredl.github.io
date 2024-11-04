@@ -1143,7 +1143,7 @@ s:slide_multi('tagsequences', 3, function(i)
   sf {r=3, text="Only countries and self-ruling territories have 2-letter ISO codes"}
   sf {r=5, text="Many sub-national entries such as provinces, federatal states have flags"}
 
-  sf {r=6, text="ISO-foo provides standardized subnational codes"}
+  sf {r=6, text="ISO provides standardized subnational codes"}
 
   sf {r=8, text="Unicode 10 added a few of these, such as Scotland"}
   sf {r=10, c=10, text="🏴󠁧󠁢󠁳󠁣󠁴󠁿  Scotland (GB-SCT)"}
