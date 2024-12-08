@@ -151,12 +151,6 @@ nnoremap <Plug>CH:ou :call bfredl#tagInSplit(expand("<cword>"))<cr>
 " macro {{{
 noremap <leader>c @q
 " }}}
-" is of no SPEL {{{
-noremap <Plug>ch:js ]s
-noremap <Plug>ch:ks [s
-" fix spel
-noremap <Plug>ch:es z=
-" }}}
 " grepping and searching{{{
 noremap <Plug>ch:ag :Ack!<space>
 noremap <Plug>CH:ag *:AckFromSearch!<cr>

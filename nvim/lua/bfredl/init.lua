@@ -29,13 +29,13 @@ do each (packer.use)
   'vim-conf-live/pres.vim'
   --use 'norek/bbbork'
 
+  'echasnovski/mini.nvim'
 
   'nvim-treesitter/nvim-treesitter'
 
   'jose-elias-alvarez/null-ls.nvim'
+  'nvim-lua/plenary.nvim'
 
-  {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-  {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 -- todo(packer): this should not be an error:
 -- 'nvim-lua/plenary.nvim'
 
@@ -68,7 +68,7 @@ do each (packer.use)
   'hotwatermorning/auto-git-diff'
 
   'vim-scripts/a.vim'
-  {'folke/noice.nvim', requires ={'MunifTanjim/nui.nvim', "rcarriga/nvim-notify"}}
+  -- {'folke/noice.nvim', requires ={'MunifTanjim/nui.nvim', "rcarriga/nvim-notify"}}
 
 -- filetypes
   -- 'numirias/semshi'
@@ -182,6 +182,12 @@ chmap 'jh' '<cmd>HopLineAC<cr>'
 chmap 'kh' '<cmd>HopLineBC<cr>'
 chmap 'jw' '<cmd>HopWordAC<cr>'
 chmap 'kw' '<cmd>HopWordBC<cr>'
+-- }}}
+-- is of no SPEL {{{
+chmap 'js' ']s'
+chmap 'ks' '[s'
+-- fix spel
+chmap 'es' 'z='
 -- }}}
 -- git signs {{{
 require('gitsigns').setup {
@@ -378,19 +384,15 @@ if true or h.did_ts then
 end
 -- }}}
 -- telescope {{{
-require'telescope'.setup {
-  defaults = {
-    winblend = 20;
-    border = false;
-  };
-}
+  --
+require('mini.pick').setup()
 chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
-chmap '.u' '<cmd>Telescope buffers<cr>'
-CHmap '.u' '<cmd>Telescope find_files<cr>'
-chmap 'ig' '<cmd>Telescope live_grep<cr>'
-chmap 'uc' '<cmd>Telescope current_buffer_fuzzy_find<cr>'
-chmap 'am' ':Telescope <c-z>'
-chmap 'cr' '<cmd>Telescope find_files cwd=~/config2/<cr>'
+chmap '.u' '<cmd>Pick buffers<cr>'
+CHmap '.u' '<cmd>Pick files<cr>'
+chmap 'ig' '<cmd>Pick grep_live<cr>'
+--chmap 'uc' '<cmd>Telescope current_buffer_fuzzy_find<cr>'
+-- chmap 'am' ':Telescope <c-z>'
+--chmap 'cr' '<cmd>Telescope find_files cwd=~/config2/<cr>'
 
 -- }}}
 -- color {{{
