@@ -130,8 +130,6 @@ function h.ghostzig_mod(big_cmdline)
     end
   end
 
-  modules
-
   roten = modules.root
   if roten == nil then error('we assume a -Mroot module here') end
   root_path = roten[2]
