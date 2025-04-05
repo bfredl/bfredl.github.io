@@ -101,6 +101,49 @@ function h.ghostzig(entrypoint, test)
   local command = 'zig'
   local subcmd = test and 'test' or 'build-exe'
   args = { subcmd, '-lc', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
+end
+
+big_cmdline = '/home/bfredl/local/zig14/bin/zig build-exe -ODebug --dep wasm_shelf --dep clap -Mroot=/home/bfredl/dev/wasm_anon/src/main.zig --dep forklift -Mwasm_shelf=/home/bfredl/dev/wasm_anon/src/wasm_shelf.zig -Mclap=/home/bfredl/.cache/zig/p/clap-0.10.0-oBajB434AQBDh-Ei3YtoKIRxZacVPF1iSwp3IX_ZB8f0/clap.zig -Mforklift=/home/bfredl/.cache/zig/p/forklift-0.0.0-Dkn_kZxgAwDeIOlll7z_in-S5r4a31QkMMDu5G006Ba2/src/forklift.zig --cache-dir /home/bfredl/dev/wasm_anon/.zig-cache --global-cache-dir /home/bfredl/.cache/zig --name wasm_run --zig-lib-dir /home/bfredl/local/zig14/lib/zig/ --listen=-'
+function h.ghostzig_mod(big_cmdline)
+  if type(big_cmdline) == 'string' then
+    big_cmdline = vim.split(big_cmdline, ' ')
+  end
+  local
+  fixed_cmdline = vim.deepcopy(big_cmdline)
+
+  local
+
+  modules = {}
+  for i = 1,#big_cmdline do
+    local val = big_cmdline[i]
+    if vim.startswith(val, "-M") then
+      print(val)
+      local rest = string.sub(val, 3)
+      local point = string.find(rest, "=")
+      local mod = string.sub(rest, 1, point-1)
+      local path = string.sub(rest, point+1)
+      local location = 1+#path-string.find(string.reverse(path), "/")
+      local dirpath = string.sub(path, 1, location)
+      local filnamn = string.sub(path, location+1)
+      modules[mod] = {i, dirpath, filnamn}
+      print(mod, dirpath, filnamn)
+    end
+  end
+
+  modules
+
+  roten = modules.root
+  if roten == nil then error('we assume a -Mroot module here') end
+  root_path = roten[2]
+  if not vim.endswith(root_path, "/src/") then error('fixa') end
+
+  for mod, data in pairs(modules) do
+    if data[2] == root_path then
+      fixed_cmdline[data[1]] = "-M"..mod.."="..h.ghostpath.."/src/"..data[3]
+      print("BEGHAAA", mod)
+    end
+  end
 
 end
+
 return h
