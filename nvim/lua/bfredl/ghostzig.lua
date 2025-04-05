@@ -7,6 +7,15 @@ _G.h = h
 
 local ns = a.create_namespace'ghostzig'
 h.ghostpath = vim.fn.stdpath'run'..'/ghostzig_'..vim.fn.getpid()
+h.ghostcmd = nil
+h.ghostargs = {}
+
+h.ghosted_bufs = {} -- bufs which might have stale diags
+
+a.create_autocmd({'TextChanged', 'TextChangedI'}, {
+  pattern = "*.zig";
+  callback = function() h.ghostbuild() end;
+})
 
 function h.ghostwrite()
   bufname = vim.fn.fnamemodify(vim.fn.bufname(), ':.')
@@ -21,7 +30,8 @@ function h.ghostwrite()
   ghostpipe:close()
 end
 
-function h.ghostbuild(entrypoint, test)
+function h.ghostbuild()
+  if h.ghostcmd == nil then return end -- disabled
   if h.state == "running" or h.state == "throttled" then
     -- require'luadev'.print("THROTTLE")
     h.state = "throttled"
@@ -30,13 +40,11 @@ function h.ghostbuild(entrypoint, test)
   h.state = "running"
   h.ghostwrite()
 
-  local subcmd = test and 'test' or 'build-exe'
-  args = { subcmd, '-lc', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
   local start_time = vim.fn.reltime()
   -- require'luadev'.print("START")
   local job = Job:new {
-    command = 'zig';
-    args = args;
+    command = h.ghostcmd;
+    args = h.ghostargs;
     on_exit = vim.schedule_wrap(function(j, ret)
       local time = vim.fn.reltime(start_time)
       local lines = j:stderr_result()
@@ -65,7 +73,7 @@ function h.ghostbuild(entrypoint, test)
 
       if h.state == "throttled" then
         h.state = nil
-        h.ghostbuild(entrypoint)
+        h.ghostbuild(command, args)
       else
         h.state = "done"
       end
@@ -86,13 +94,13 @@ end
 
 function h.ghostzig(entrypoint, test)
   cwd = vim.fn.getcwd()
-  h.ghosted_bufs = {}
   -- TODO: only .zig files?
   vim.fn.system({'mkdir', '-p', h.ghostpath})
   vim.fn.system({'cp', '-r', cwd .. '/src', h.ghostpath .. '/src'})
-  a.create_autocmd({'TextChanged', 'TextChangedI'}, {
-    pattern = "*.zig";
-    callback = function() h.ghostbuild(entrypoint, test) end;
-  })
+
+  local command = 'zig'
+  local subcmd = test and 'test' or 'build-exe'
+  args = { subcmd, '-lc', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
+
 end
 return h
