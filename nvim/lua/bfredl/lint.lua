@@ -24,6 +24,10 @@ function h.clint(bufnr)
 end
 
 function h.zigcheck()
+  if _bfredl_ghostzig and _bfredl_ghostzig.ghostcmd then
+      vim.diagnostic.set(ns, 0, {}, {})
+      return
+  end
   local lines = a.buf_get_lines(0, 0, -1, true)
   local data = table.concat(lines, '\n') .. '\n'
   local aout = {}

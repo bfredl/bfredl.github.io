@@ -92,28 +92,32 @@ function h.speedjump()
 end
 
 
-function h.ghostzig(entrypoint, test)
+function h.precopy()
   cwd = vim.fn.getcwd()
   -- TODO: only .zig files?
   vim.fn.system({'mkdir', '-p', h.ghostpath})
   vim.fn.system({'cp', '-r', cwd .. '/src', h.ghostpath .. '/src'})
+end
+
+function h.ghostzig(entrypoint, test)
+  h.precopy()
 
   local command = 'zig'
   local subcmd = test and 'test' or 'build-exe'
   args = { subcmd, '-lc', '-fno-emit-bin', h.ghostpath..'/'..entrypoint}
 end
 
-big_cmdline = '/home/bfredl/local/zig14/bin/zig build-exe -ODebug --dep wasm_shelf --dep clap -Mroot=/home/bfredl/dev/wasm_anon/src/main.zig --dep forklift -Mwasm_shelf=/home/bfredl/dev/wasm_anon/src/wasm_shelf.zig -Mclap=/home/bfredl/.cache/zig/p/clap-0.10.0-oBajB434AQBDh-Ei3YtoKIRxZacVPF1iSwp3IX_ZB8f0/clap.zig -Mforklift=/home/bfredl/.cache/zig/p/forklift-0.0.0-Dkn_kZxgAwDeIOlll7z_in-S5r4a31QkMMDu5G006Ba2/src/forklift.zig --cache-dir /home/bfredl/dev/wasm_anon/.zig-cache --global-cache-dir /home/bfredl/.cache/zig --name wasm_run --zig-lib-dir /home/bfredl/local/zig14/lib/zig/ --listen=-'
+h.test_big_cmdline = '/home/bfredl/local/zig14/bin/zig build-exe -ODebug --dep wasm_shelf --dep clap -Mroot=/home/bfredl/dev/wasm_anon/src/main.zig --dep forklift -Mwasm_shelf=/home/bfredl/dev/wasm_anon/src/wasm_shelf.zig -Mclap=/home/bfredl/.cache/zig/p/clap-0.10.0-oBajB434AQBDh-Ei3YtoKIRxZacVPF1iSwp3IX_ZB8f0/clap.zig -Mforklift=/home/bfredl/.cache/zig/p/forklift-0.0.0-Dkn_kZxgAwDeIOlll7z_in-S5r4a31QkMMDu5G006Ba2/src/forklift.zig --cache-dir /home/bfredl/dev/wasm_anon/.zig-cache --global-cache-dir /home/bfredl/.cache/zig --name wasm_run --zig-lib-dir /home/bfredl/local/zig14/lib/zig/ --listen=-'
 function h.ghostzig_mod(big_cmdline)
+  h.precopy()
+
   if type(big_cmdline) == 'string' then
     big_cmdline = vim.split(big_cmdline, ' ')
   end
-  local
-  fixed_cmdline = vim.deepcopy(big_cmdline)
+  local fixed_cmdline = vim.deepcopy(big_cmdline)
 
-  local
-
-  modules = {}
+  local badly = nil
+  local modules = {}
   for i = 1,#big_cmdline do
     local val = big_cmdline[i]
     if vim.startswith(val, "-M") then
@@ -128,8 +132,16 @@ function h.ghostzig_mod(big_cmdline)
       modules[mod] = {i, dirpath, filnamn}
       print(mod, dirpath, filnamn)
     end
+    -- server would be nice but we are not there yet
+    if val == "--listen=-" then
+      badly = i
+    end
+  end
+  if badly then
+    table.remove(fixed_cmdline, badly)
   end
 
+  -- maybe "root" doesn't matter? just check for paths below $CWD ??
   roten = modules.root
   if roten == nil then error('we assume a -Mroot module here') end
   root_path = roten[2]
@@ -142,6 +154,9 @@ function h.ghostzig_mod(big_cmdline)
     end
   end
 
+  h.ghostcmd = table.remove(fixed_cmdline,1)
+  table.insert(fixed_cmdline, "-fno-emit-bin")
+  h.ghostargs = fixed_cmdline
 end
 
 return h
