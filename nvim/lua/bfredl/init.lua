@@ -412,9 +412,42 @@ function h.xcolor()
 end
 v 'inoremap <F3> <c-r>=v:lua.bfredl.init.xcolor()<cr>'
 -- }}}
-if os.getenv'NVIM_INSTANCE' then
-  require'bfredl.miniline'.setup()
+-- statusline {{{
+  --
+local function stl_active()
+  local MiniStatusline = require'mini.statusline'
+  local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+  -- local git           = MiniStatusline.section_git({ trunc_width = 40 })
+  local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
+  local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+  local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
+  local filename      = MiniStatusline.section_filename({ trunc_width = 500 })  -- bigly width forces relative:p
+  local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+  -- local location      = MiniStatusline.section_location({ trunc_width = 75 })
+  -- local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+
+  if mode == "Command" then
+    mode = "C-line"
+  elseif mode == "V-Block" then
+    mode = "V-Blck"
+  end
+
+  return MiniStatusline.combine_groups({
+    { hl = mode_hl,                  strings = { mode } },
+    { hl = 'MiniStatuslineDevinfo',  strings = { diff, diagnostics, lsp } },
+    '%<', -- Mark general truncate point
+    { hl = 'MiniStatuslineFilename', strings = { filename } },
+    '%=', -- End left alignment
+    { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+    -- { hl = mode_hl,                  strings = { search, location } },
+  })
 end
+local function stl_inactive() return '%#MiniStatuslineInactive#%f%=' end
+
+require'mini.statusline'.setup { content = { active = stl_active ,  inactive = stl_inactive} }
+if os.getenv'NVIM_INSTANCE' then
+end
+-- }}}
 h.f = require'bfredl.floaty'.f
 _G.f = h.f -- HAIII
 if os.getenv'NVIM_INSTANCE' and not __devcolors then -- {{{
@@ -422,4 +455,7 @@ if os.getenv'NVIM_INSTANCE' and not __devcolors then -- {{{
 else
   v [[ hi MsgArea blend=15 guibg=#281811]]
 end -- }}}
+v [[ hi MiniStatuslineModeInsert guibg=#DDAA22]]
+v [[ hi MiniStatuslineModeCommand guibg=#22CCCC]]
+v [[ hi MiniStatuslineModeVisual guibg=#606870 guifg=fg]]
 return h

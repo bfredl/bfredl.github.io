@@ -27,6 +27,7 @@ let s:col.linenrbg   = ['#303050', 233]
 let s:col.signbg     = ['#505080', 233]
 let s:col.light_bg   = ['#1d2023', 236]
 let s:col.lighter_bg = ['#242629', 238]
+let s:col.cline_bg   = ['#303040', 238]
 let s:col.selection  = ['#606870', 238]
 let s:col.msgsep     = ['#808080', 238]
 let s:col.trailwhite = ['#707070', 238]
@@ -118,7 +119,7 @@ call s:HL('TabLineSel',      'foreground', 'statusline', 'bold')
 call s:HL('Cursor',          'none',       'foreground')
 call s:HL('CursorColumn',    'none',       'light_bg')
 call s:HL('CursorLineNr',    'special',    'light_bg')
-call s:HL('CursorLine',      'none',       'light_bg',   'none')
+call s:HL('CursorLine',      'none',       'cline_bg',   'none')
 call s:HL('StatusLine',      'statusline', 'foreground')
 call s:HL('StatusLineNC',    'light_bg',   'comment')
 call s:HL('MsgSeparator',    'none',       'msgsep')
