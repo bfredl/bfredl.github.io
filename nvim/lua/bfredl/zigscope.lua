@@ -1,12 +1,12 @@
-local h = _G._bfredl_ghostzig or {}
-_G._bfredl_ghostzig = h
+local h = _G._bfredl_zigscope or {}
+_G._bfredl_zigscope = h
 local u = require'bfredl.util'
 local a = u.a
 local Job = require'plenary.job'
 _G.h = h
 
-local ns = a.create_namespace'ghostzig'
-h.ghostpath = vim.fn.stdpath'run'..'/ghostzig_'..vim.fn.getpid()
+local ns = a.create_namespace'zigscope'
+h.ghostpath = vim.fn.stdpath'run'..'/zigscope'..vim.fn.getpid()
 h.ghostcmd = nil
 h.ghostargs = {}
 
@@ -113,6 +113,26 @@ h.test_big_cmdline = '/home/bfredl/local/zig14/bin/zig build-exe -ODebug --dep w
 -- or one repo root should just GLOM both packages
 h.test_big_cmdline2 = '/home/bfredl/local/zig14/bin/zig build-exe -ODebug --dep wasm_shelf --dep clap -Mroot=/home/bfredl/dev/wasm_anon/src/main.zig --dep forklift -Mwasm_shelf=/home/bfredl/dev/wasm_anon/src/wasm_shelf.zig -Mclap=/home/bfredl/.cache/zig/p/clap-0.10.0-oBajB434AQBDh-Ei3YtoKIRxZacVPF1iSwp3IX_ZB8f0/clap.zig -Mforklift=/home/bfredl/dev/forklift/src/forklift.zig --cache-dir /home/bfredl/dev/wasm_anon/.zig-cache --global-cache-dir /home/bfredl/.cache/zig --name wasm_run --zig-lib-dir /home/bfredl/local/zig14/lib/zig/ --listen=-'
 h.secondary_cmdline = '/home/bfredl/local/zig14/bin/zig build-exe -fllvm -ODebug --dep vaxis --dep xev -Mroot=/home/bfredl/dev/zignvim/src/tui_main.zig -ODebug --dep code_point --dep grapheme --dep DisplayWidth --dep zigimg -Mvaxis=/home/bfredl/.cache/zig/p/vaxis-0.1.0-BWNV_JEMCQBskZQsnlzh6GoyHSDgOi41bCoZIB2pW-E7/src/main.zig -Mxev=/home/bfredl/.cache/zig/p/libxev-0.0.0-86vtc-zkEgB7uv1i0Sa6ytJETZQi_lHJrImu9mLb9moi/src/main.zig -ODebug -Mcode_point=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/code_point.zig -ODebug --dep code_point --dep GraphemeData -Mgrapheme=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/grapheme.zig -ODebug --dep ascii --dep code_point --dep grapheme --dep DisplayWidthData -MDisplayWidth=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/DisplayWidth.zig -Mzigimg=/home/bfredl/.cache/zig/p/zigimg-0.1.0-lly-O6N2EABOxke8dqyzCwhtUCAafqP35zC7wsZ4Ddxj/zigimg.zig -ODebug --dep gbp -MGraphemeData=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/GraphemeData.zig -ODebug -Mascii=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/ascii.zig -ODebug --dep dwp --dep GraphemeData -MDisplayWidthData=/home/bfredl/.cache/zig/p/zg-0.13.4-AAAAAGiZ7QLz4pvECFa_wG4O4TP4FLABHHbemH2KakWM/src/WidthData.zig -Mgbp=/home/bfredl/dev/zignvim/.zig-cache/o/0f82e83670e15c49d1cbc2d29ff2574f/gbp.bin.z -Mdwp=/home/bfredl/dev/zignvim/.zig-cache/o/d129ffa595744a8b2d70918ba3303cc2/dwp.bin.z --cache-dir /home/bfredl/dev/zignvim/.zig-cache --global-cache-dir /home/bfredl/.cache/zig --name zignvim_tui --zig-lib-dir /home/bfredl/local/zig14/lib/zig/ --listen=-'
+
+function h.zigscope()
+  local paths = {
+    ['/home/bfredl/dev/wasm_anon']=h.test_big_cmdline2,
+    ['/home/bfredl/dev/forklift']=h.smol_cmdline,
+    ['/home/bfredl/dev/zignvim']=h.secondary_cmdline,
+  }
+
+  local cwd = vim.uv.cwd()
+  for k,v in pairs(paths) do
+    if vim.startswith(cwd, k) then
+      h.ghostzig_mod(v)
+      vim.keymap.set('n', '-', h.speedjump)
+      return
+    end
+  end
+  vim.api.nvim_echo({{"que?"}}, true, {})
+end
+
+
 function h.ghostzig_mod(big_cmdline)
   h.precopy()
 

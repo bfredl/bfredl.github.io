@@ -24,7 +24,7 @@ function h.clint(bufnr)
 end
 
 function h.zigcheck()
-  if _bfredl_ghostzig and _bfredl_ghostzig.ghostcmd then
+  if _bfredl_zigscope and _bfredl_zigscope.ghostcmd then
       vim.diagnostic.set(ns, 0, {}, {})
       return
   end

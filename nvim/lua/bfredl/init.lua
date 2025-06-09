@@ -342,6 +342,8 @@ h.aucmd({'BufRead','BufNewFile'}, '*.h', function()
   end
 end)
 
+a.create_user_command('ZigScope', function() require'bfredl.zigscope'.zigscope() end, {})
+
 vim.diagnostic.config {
   signs = false;
   update_in_insert = true;
