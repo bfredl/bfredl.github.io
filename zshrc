@@ -54,6 +54,8 @@ alias pager='nvim - +"set noswapfile nomodifiable nomodified ruler laststatus=1 
 alias nv='nvim.py --dev --asan'
 alias n='tnew neovim_dev nvim.py --persist --dev --asan'
 
+alias ri='NVIM_APPNAME=ri nvim'
+
 sshtmux () {
   tnew sshtmux ssh $1 -t tmux -u a
 }
