@@ -15,6 +15,16 @@ vim.pack.add {
 -- mini {{{
 require'mini.statusline'.setup {}
 -- }}}
+-- extui {{{
+require('vim._extui').enable {
+  enable = true, -- Whether to enable or disable the UI.
+  msg = { -- Options related to the message module.
+    target = 'cmd',
+    timeout = 4000, -- Time a message is visible in the message window.
+  },
+}
+
+-- }}}
 -- epilogue {{{
 if first_run then
   vim.cmd [[autocmd VimEnter * lua _G.ri.on_enter(true)]]
