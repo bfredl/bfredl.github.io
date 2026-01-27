@@ -8,9 +8,24 @@ function ri.on_enter(startup)
 end
 
 -- packages {{{
+local gh = function(x) return 'https://github.com/' .. x end
+local cb = function(x) return 'https://codeberg.org/' .. x end
+
 vim.pack.add {
-  'https://github.com/nvim-mini/mini.nvim';
+  gh 'nvim-mini/mini.nvim';
 }
+
+local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
+-- TODO: rework ibus-chords to use lzmq ffi!
+-- also more like a proper lua plugin..
+rtp_add '~/dev/ibus-chords'
+
+-- TODO: "maybe_local" abstraction. use ~/dev/nvim-luadev if present, otherwise gh'bfredl/nvim-luadev'
+
+-- }}}
+-- options {{{
+vim.o.ignorecase = true
+vim.o.smartcase = true
 -- }}}
 -- mini {{{
 require'mini.statusline'.setup {}
