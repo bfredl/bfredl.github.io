@@ -55,6 +55,7 @@ alias nv='nvim.py --dev --asan'
 alias n='tnew neovim_dev nvim.py --persist --dev --asan'
 
 alias ri='NVIM_APPNAME=ri nvim'
+alias ari='NVIM_APPNAME=ri nvim.py --dev --asan'
 
 sshtmux () {
   tnew sshtmux ssh $1 -t tmux -u a
