@@ -11,6 +11,12 @@ function ri.on_enter(startup)
   _G._did_enter = true
 end
 
+ri.augroup = vim.api.nvim_create_augroup("RiMainAutocmds", { clear = true })
+local function aucmd(which, opts)
+  opts.group = ri.augroup
+  return vim.api.nvim_create_autocmd(which, opts)
+end
+
 -- packages {{{
 local gh = function(x) return 'https://github.com/' .. x end
 local cb = function(x) return 'https://codeberg.org/' .. x end
@@ -40,6 +46,19 @@ if first_run then
   -- I liked this better:
   vim.o.dir = '.,'..vim.o.dir
 end
+
+vim.o.termguicolors = true
+vim.o.winblend = 20
+vim.o.pumblend = 20
+
+vim.o.list = true
+vim.o.listchars='tab:▸ ,extends:❯,precedes:❮,trail:█'
+vim.o.fillchars='eob:█'
+vim.o.showbreak='↪'
+
+-- easy!
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.grepformat = "%f:%l:%c:%m"
 -- }}}
 -- mappings {{{
 function ri.mapmode(mode)
@@ -88,6 +107,25 @@ map '<Leader>b' '<Plug>(miniyank-toblock)'
 map '<Leader>l' '<Plug>(miniyank-toline)'
 map '<Leader>k' '<Plug>(miniyank-tochar)'
 
+-- errorlist
+
+chmap 'ag' ':silent grep '
+aucmd("QuickFixCmdPost", { pattern = { "grep" }, command = "cwindow" })
+
+chmap 'jc' '<cmd>cnext<cr>'
+chmap 'kc' '<cmd>cprev<cr>'
+chmap 'jn' '<cmd>lnext<cr>'
+chmap 'kn' '<cmd>lprev<cr>'
+
+-- general movement
+
+chmap 'jt' 'gj'
+chmap 'kt' 'gk'
+chmap 'hn' '<cmd>noh<cr>'
+
+-- macro
+map '<leader>c' '@q'
+
 -- }}}
 -- mini.statusline {{{
 local function stl_active()
@@ -135,7 +173,6 @@ require'mini.statusline'.setup { content = { active = stl_active ,  inactive = s
 -- }}}
 -- mini.pick {{{
 require('mini.pick').setup()
-chmap 'mw' '<cmd>lua print "HAJ!"<cr>'
 chmap '.u' '<cmd>Pick buffers<cr>'
 CHmap '.u' '<cmd>Pick files<cr>'
 chmap 'ig' '<cmd>Pick grep_live<cr>'
@@ -152,7 +189,7 @@ require('vim._extui').enable {
 -- }}}
 -- epilogue {{{
 if first_run then
-  vim.cmd [[autocmd VimEnter * lua _G.ri.on_enter(true)]]
+  aucmd('VimEnter', {command = 'lua _G.ri.on_enter(true)'})
 else
   -- already dunnit, so fake it on reload
   ri.on_enter(false)
