@@ -96,6 +96,20 @@ CHmap 'hc' '<C-W>W'
 map '<Leader>s' ':sp<CR>:bn<CR>'
 
 -- clipboard and miniyank
+chmap ',.' '"+y'
+CHmap ',.' '"+yy'
+chmap 'jk' '"*y'
+CHmap 'jk' '"*yy'
+map '<Leader>p' '"+p'
+map '<Leader>P' '"+P'
+map '<Leader>i' '"*p'
+map '<Leader>I' '"*P'
+
+chmap 'it' "'[=']"
+CHmap 'it' "'[V']"
+-- ch:,u
+map 'ü' [["*p'[V']>.]]
+
 map 'p' '<Plug>(miniyank-autoput)'
 map 'P' '<Plug>(miniyank-autoPut)'
 map '<Leader>t' '<Plug>(miniyank-startput)'
@@ -178,7 +192,7 @@ CHmap '.u' '<cmd>Pick files<cr>'
 chmap 'ig' '<cmd>Pick grep_live<cr>'
 -- }}}
 -- extui {{{
-require('vim._extui').enable {
+require'vim._core.ui2'.enable {
   enable = true, -- Whether to enable or disable the UI.
   msg = { -- Options related to the message module.
     target = 'cmd',
