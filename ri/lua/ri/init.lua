@@ -23,6 +23,7 @@ local cb = function(x) return 'https://codeberg.org/' .. x end
 
 vim.pack.add {
   gh 'nvim-mini/mini.nvim';
+  gh 'lewis6991/gitsigns.nvim';
 }
 
 local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
@@ -190,6 +191,14 @@ require('mini.pick').setup()
 chmap '.u' '<cmd>Pick buffers<cr>'
 CHmap '.u' '<cmd>Pick files<cr>'
 chmap 'ig' '<cmd>Pick grep_live<cr>'
+-- }}}
+-- git signs {{{
+require('gitsigns').setup {
+   current_line_blame_formatter = '  <author_time:%Y-%m-%d> - <summary>, <author>',
+}
+chmap 'tn' '<cmd>Gitsigns next_hunk<cr>'
+CHmap 'tn' '<cmd>Gitsigns prev_hunk<cr>'
+chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 -- }}}
 -- extui {{{
 require'vim._core.ui2'.enable {
