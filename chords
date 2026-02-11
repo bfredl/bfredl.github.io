@@ -299,7 +299,7 @@ keymap['cstyle'] = {
     'ig': s('unsigned¶', 'signed¶'),
     'il': 'bool',
     'id': s('double¶', 'float¶'),
-    'iz': s('size_t', 'uintptr_t'),
+    'iz': s('size_t¶', 'uintptr_t¶'),
     'ih': s('int64_t¶', 'uint64_t¶'),
     'ir': s('int32_t¶', 'uint64_t¶'),
     'oz': h('sizeof'),

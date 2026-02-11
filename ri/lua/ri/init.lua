@@ -5,6 +5,14 @@ _G.ri = ri
 
 local a = vim.api
 _G.a = vim.api
+
+if not first_run then
+  for pack, _ in pairs(package.loaded) do
+    if vim.startswith(pack, 'ri.') then
+      package.loaded[pack] = nil
+    end
+  end
+end
 -- }}}
 
 function ri.on_enter(startup)
@@ -42,6 +50,10 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitbelow = true
 
+vim.o.timeout = false
+vim.o.ttimeout = true
+vim.o.ttimeoutlen = 10
+
 vim.o.foldmethod = 'marker'
 if first_run then
   -- I liked this better:
@@ -60,6 +72,11 @@ vim.o.showbreak='↪'
 -- easy!
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.grepformat = "%f:%l:%c:%m"
+
+-- cmdline/wildmode
+vim.o.wildmenu = true
+vim.o.wildmode = 'longest:full,full'
+vim.o.wildignorecase = true
 -- }}}
 -- mappings {{{
 function ri.mapmode(mode)
@@ -69,11 +86,15 @@ function ri.mapmode(mode)
     end
   end
 end
+local function emap(mode, lhs, rhs)
+  return a.nvim_set_keymap(mode, lhs, '', {noremap=true, expr=true, replace_keycodes=true, callback=rhs})
+end
 
 vim.g.mapleader = ','
 
 local map = ri.mapmode ''
 local imap = ri.mapmode 'i'
+local cmap = ri.mapmode 'c'
 local chmap = function(x) return map('<Plug>ch:'..x) end
 local CHmap = function(x) return map('<Plug>CH:'..x) end
 
@@ -141,7 +162,16 @@ chmap 'hn' '<cmd>noh<cr>'
 -- macro
 map '<leader>c' '@q'
 
+-- cmdline
+emap('c', '/', function()
+  if vim.fn.wildmenumode() == 1 then
+    return (vim.endswith(vim.fn.getcmdline(), '/') and '<bs>' or '')..'/<c-z>'
+  end
+  return '/'
+end)
+
 -- }}}
+require'ri.chainfire'
 -- mini.statusline {{{
 local function stl_active()
   local MiniStatusline = require'mini.statusline'
