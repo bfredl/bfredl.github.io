@@ -170,6 +170,17 @@ emap('c', '/', function()
   return '/'
 end)
 
+-- config by itself
+function ri.rt(name)
+  return a.nvim_get_runtime_file(name, 0)[1]
+end
+vim.cmd'command Reload luafile $MYVIMRC'
+-- TODO(ri): jump to open window if already exist
+map '<leader>h' ('<cmd>split '..ri.rt('lua/ri/init.lua')..'<cr>')
+-- TODO(ri): this might break when buffer was loaded via absolute path and not
+-- using the symlink which is part of runtimepath
+aucmd("BufWritePost", { pattern = { ri.rt('lua/ri/init.lua') }, command = "Reload" })
+
 -- }}}
 require'ri.chainfire'
 -- mini.statusline {{{
