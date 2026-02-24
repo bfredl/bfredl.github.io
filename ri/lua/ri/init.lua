@@ -77,6 +77,16 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest:full,full'
 vim.o.wildignorecase = true
+
+-- diagostics
+
+vim.diagnostic.config {
+  signs = false;
+  update_in_insert = true;
+  virtual_text = {
+    spacing = 2;
+  }
+}
 -- }}}
 -- mappings {{{
 function ri.mapmode(mode)
@@ -182,6 +192,15 @@ map '<leader>h' ('<cmd>split '..ri.rt('lua/ri/init.lua')..'<cr>')
 aucmd("BufWritePost", { pattern = { ri.rt('lua/ri/init.lua') }, command = "Reload" })
 
 -- }}}
+
+if false then aucmd({'BufRead','BufNewFile'}, '*.h', function()
+  if string.match(a.buf_get_name(0), 'DelugeFirmware') then
+    vim.cmd 'setfiletype cpp'
+  else
+    vim.bo.filetype = 'c'
+  end
+end) end
+
 require'ri.chainfire'
 -- mini.statusline {{{
 local function stl_active()
