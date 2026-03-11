@@ -25,6 +25,7 @@ local function aucmd(which, opts)
   return vim.api.nvim_create_autocmd(which, opts)
 end
 
+
 -- packages {{{
 local gh = function(x) return 'https://github.com/' .. x end
 local cb = function(x) return 'https://codeberg.org/' .. x end
@@ -32,6 +33,7 @@ local cb = function(x) return 'https://codeberg.org/' .. x end
 vim.pack.add {
   gh 'nvim-mini/mini.nvim';
   gh 'lewis6991/gitsigns.nvim';
+  gh 'nvim-treesitter/nvim-treesitter';
 }
 
 local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
@@ -39,6 +41,7 @@ local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
 -- also more like a proper lua plugin..
 rtp_add '~/dev/ibus-chords'
 rtp_add '~/dev/nvim-miniyank/'
+rtp_add '~/dev/nvim-luadev'
 
 -- TODO: "maybe_local" abstraction. use ~/dev/nvim-luadev if present, otherwise gh'bfredl/nvim-luadev'
 
@@ -88,6 +91,10 @@ vim.diagnostic.config {
   }
 }
 -- }}}
+
+-- half baked. the idea is that we will use mini.colors to "freeze" a goodenoughly config eventually
+require'ri.color_test'
+
 -- mappings {{{
 function ri.mapmode(mode)
   return function(lhs)
@@ -184,7 +191,7 @@ end)
 function ri.rt(name)
   return a.nvim_get_runtime_file(name, 0)[1]
 end
-vim.cmd'command Reload luafile $MYVIMRC'
+vim.cmd'command! Reload luafile $MYVIMRC'
 -- TODO(ri): jump to open window if already exist
 map '<leader>h' ('<cmd>split '..ri.rt('lua/ri/init.lua')..'<cr>')
 -- TODO(ri): this might break when buffer was loaded via absolute path and not

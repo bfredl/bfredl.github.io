@@ -6,14 +6,14 @@ local h = chainfire
 local ft = {}
 chainfire.ft = ft
 
-function bmapmode(mode)
+function bmap(mode)
   return function(lhs)
     return function(rhs)
       return a.nvim_buf_set_keymap(0, mode, lhs, rhs, {noremap=true})
     end
   end
 end
-local bimap = bmapmode'i'
+local bimap = bmap'i'
 function ft.c()
   bimap '¶)' ')'
   bimap '¶,' ','
@@ -22,6 +22,13 @@ function ft.c()
   if h.has_clangd then
     h.clangd()
   end
+  vim.treesitter.start()
+end
+function ft.lua()
+  bmap 'n' '<Plug>ch:un' '<Plug>(Luadev-RunLine)'
+  bmap 'n' '<Plug>ch:ud' '<Plug>(Luadev-RunWord)'
+  bmap 'v' '<Plug>ch:un' '<Plug>(Luadev-Run)'
+  bmap 'i' '<Plug>ch:.u' '<Plug>(Luadev-Complete)'
 end
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -31,6 +38,10 @@ vim.api.nvim_create_autocmd('FileType', {
     if func then func() end
   end
 })
+do
+    local func = ft[vim.bo.filetype]
+    if func then func() end
+end
 
 -- TODO(ri): LSP CODE IS NOT INTEGRATED
 -- LSP {{{
