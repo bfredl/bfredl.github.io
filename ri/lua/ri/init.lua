@@ -72,6 +72,12 @@ vim.o.listchars='tab:▸ ,extends:❯,precedes:❮,trail:█'
 vim.o.fillchars='eob:█'
 vim.o.showbreak='↪'
 
+-- TODO: sane way for reloading. just for updating the global defaults or for resseting curbuf?
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+
 -- easy!
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.grepformat = "%f:%l:%c:%m"
@@ -94,6 +100,9 @@ vim.diagnostic.config {
 
 -- half baked. the idea is that we will use mini.colors to "freeze" a goodenoughly config eventually
 require'ri.color_test'
+
+local hipatterns = require'mini.hipatterns'
+hipatterns.setup {highlighters = {hex_color = hipatterns.gen_highlighter.hex_color()}}
 
 -- mappings {{{
 function ri.mapmode(mode)
