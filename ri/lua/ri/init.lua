@@ -188,6 +188,19 @@ chmap 'hn' '<cmd>noh<cr>'
 -- macro
 map '<leader>c' '@q'
 
+-- insert completion
+vim.o.completeopt = "menuone,preview,longest"
+emap('i', '<tab>', function()
+  local complete = false
+  if vim.fn.pumvisible() > 0 then
+    complete = true
+  else
+    local ch = vim.fn.matchstr(a.nvim_get_current_line(), '\\%' .. (vim.fn.col('.')-1) .. 'c.')
+    complete = ch ~= "" and ch ~= " " and ch ~= "\t"
+  end
+  return (complete and "<c-n>") or "<tab>"
+end)
+
 -- cmdline
 emap('c', '/', function()
   if vim.fn.wildmenumode() == 1 then
