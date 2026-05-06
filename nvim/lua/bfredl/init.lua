@@ -52,12 +52,8 @@ do each (packer.use)
 
   { '~/dev/nvim-miniluv/', rocks = 'openssl' }
 
-  'mileszs/ack.vim'
-  'saghen/blink.cmp'
-  'rafamadriz/friendly-snippets'
-
   'phaazon/hop.nvim'
-  'ggandor/leap.nvim'
+  'https://codeberg.org/andyg/leap.nvim'
   'justinmk/vim-sneak'
   'tommcdo/vim-exchange'
 
