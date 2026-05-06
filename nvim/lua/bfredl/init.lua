@@ -203,7 +203,7 @@ chmap 'og' ':<c-u>Gitsigns toggle<c-z>'
 function h.vimenter(startup)
   if startup then
     if jit then
-      require'colorizer'.setup()
+      -- require'colorizer'.setup()
     end
     if a._fork_serve then
       _G.prepfork = true

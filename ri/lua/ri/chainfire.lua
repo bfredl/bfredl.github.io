@@ -1,10 +1,10 @@
 local ri = _G.ri
-local chainfire = ri.chainfire or {}
-ri.chainfire = chainfire
-local h = chainfire
+local a = vim.api
+local h = ri.chainfire or {}
+ri.chainfire = h
 
-local ft = {}
-chainfire.ft = ft
+h.ft = {}
+h.ft_quickcheck = {}
 
 function bmap(mode)
   return function(lhs)
@@ -14,7 +14,7 @@ function bmap(mode)
   end
 end
 local bimap = bmap'i'
-function ft.c()
+function h.ft.c()
   bimap '¶)' ')'
   bimap '¶,' ','
   bimap '¶<space>' '<space>'
@@ -24,23 +24,49 @@ function ft.c()
   end
   vim.treesitter.start()
 end
-function ft.lua()
+function h.ft.lua()
   bmap 'n' '<Plug>ch:un' '<Plug>(Luadev-RunLine)'
   bmap 'n' '<Plug>ch:ud' '<Plug>(Luadev-RunWord)'
   bmap 'v' '<Plug>ch:un' '<Plug>(Luadev-Run)'
   bmap 'i' '<Plug>ch:.u' '<Plug>(Luadev-Complete)'
 end
 
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup("RiChainFire", { clear = true });
+local chaingroup = a.nvim_create_augroup("RiChainFire", { clear = true })
+a.nvim_create_autocmd('FileType', {
+  group = chaingroup;
   callback = function(ev)
-    local func = ft[ev.match]
+    local func = h.ft[ev.match]
     if func then func() end
   end
 })
 do
-    local func = ft[vim.bo.filetype]
+    local func = h.ft[vim.bo.filetype]
     if func then func() end
+end
+
+h.ns_quickcheck = a.nvim_create_namespace'ri.chainfire.ns_quickcheck'
+a.nvim_create_autocmd({'TextChanged','TextChangedI'}, {
+  group = chaingroup;
+  callback = function(ev)
+    local func = h.ft_quickcheck[vim.bo.filetype]
+    if func then h.do_quickcheck(func) end
+  end
+})
+
+function h.do_quickcheck(cb)
+  local lines = a.nvim_buf_get_lines(0, 0, -1, true)
+  local data = table.concat(lines, '\n') .. '\n'
+  cb(data, function(res)
+      local items = vim.fn.getqflist{lines=res}
+      diags = vim.diagnostic.fromqflist(items.items)
+
+      vim.diagnostic.set(h.ns_quickcheck, 0, diags, {})
+  end)
+end
+
+function h.ft_quickcheck.lua(text, cb)
+  status, err = loadstring(text, '@<stdin>')
+  cb({status and '' or err})
 end
 
 -- TODO(ri): LSP CODE IS NOT INTEGRATED

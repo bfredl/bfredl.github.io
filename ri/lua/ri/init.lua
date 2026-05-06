@@ -218,6 +218,7 @@ end
 vim.cmd'command! Reload luafile $MYVIMRC'
 -- TODO(ri): jump to open window if already exist
 map '<leader>h' ('<cmd>split '..ri.rt('lua/ri/init.lua')..'<cr>')
+map '<leader>r' ('<cmd>update<cr><cmd>Reload<cr>')
 -- TODO(ri): this might break when buffer was loaded via absolute path and not
 -- using the symlink which is part of runtimepath
 aucmd("BufWritePost", { pattern = { ri.rt('lua/ri/init.lua') }, command = "Reload" })
