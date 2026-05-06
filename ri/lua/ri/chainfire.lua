@@ -30,6 +30,9 @@ function h.ft.lua()
   bmap 'v' '<Plug>ch:un' '<Plug>(Luadev-Run)'
   bmap 'i' '<Plug>ch:.u' '<Plug>(Luadev-Complete)'
 end
+function h.ft.zig()
+  vim.treesitter.start()
+end
 
 local chaingroup = a.nvim_create_augroup("RiChainFire", { clear = true })
 a.nvim_create_autocmd('FileType', {
@@ -67,6 +70,17 @@ end
 function h.ft_quickcheck.lua(text, cb)
   status, err = loadstring(text, '@<stdin>')
   cb({status and '' or err})
+end
+
+function h.ft_quickcheck.zig(text, cb)
+  local cmd = vim.system({'zig', 'ast-check'}, {stdin=text}, vim.schedule_wrap(function(res)
+    if res.code == 0 then
+      cb({''})
+    else
+      local lines = vim.split(res.stderr, '\n')
+      cb(lines)
+    end
+  end))
 end
 
 -- TODO(ri): LSP CODE IS NOT INTEGRATED
