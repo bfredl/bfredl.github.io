@@ -82,7 +82,8 @@ if true then
   hi('SpellCap',       { fg=nil,       bg=nil,       sp=p.cyan,   undercurl=true })
   hi('SpellLocal',     { fg=nil,       bg=nil,       sp=p.yellow, undercurl=true })
   hi('SpellRare',      { fg=nil,       bg=nil,       sp=p.blue,   undercurl=true })
-  hi('StatusLine',     { fg=p.fg_mid,  bg=p.accent_bg })
+  local stl_color = vim.env.NVIM_DEV and p.red_bg or p.accent_bg
+  hi('StatusLine',     { fg=p.fg_mid,  bg=stl_color })
   hi('StatusLineNC',   { fg=p.fg_mid,  bg=p.bg_mid2 })
   hi('StderrMsg',      { link='ErrorMsg' })
   hi('StdoutMsg',      { link='MsgArea' })

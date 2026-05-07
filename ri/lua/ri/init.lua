@@ -267,9 +267,9 @@ local function stl_active()
     { hl = mode_hl,                  strings = { mode } },
     { hl = 'MiniStatuslineDevinfo',  strings = { diff, diagnostics, lsp } },
     '%<', -- Mark general truncate point
-    { hl = 'MiniStatuslineFilename', strings = { filename } },
+    { hl = 'StatusLine', strings = { filename } },
     '%=', -- End left alignment
-    { hl = 'MiniStatuslineFilename', strings = { location } },
+    { hl = 'StatusLine', strings = { location } },
     { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
     -- { hl = mode_hl,                  strings = { search, location } },
   })
@@ -327,6 +327,19 @@ require'vim._core.ui2'.enable {
 }
 
 -- }}}
+
+local asan = vim.env.ASAN_OPTIONS
+local always = vim.api.nvim__set_restart_on_crash -- TODO: delet this
+if asan ~= nil and string.match(asan, "log_path=/tmp/nvim_asan") and always then
+  local myname = "/tmp/nvim_asan."..vim.uv.getpid()
+
+  -- always use a safe nvim for debugging
+  local fooeit = "nvim"
+  local args = {"--embed", "-n", "+set efm=%+A%*[^/]%f:%l:%c", "+silent cfile "..myname, "+silent cfirst", "+silent copen"}
+
+  vim.api.nvim__set_restart_on_crash(fooeit, args)
+  _G.didit = true
+end
 -- epilogue {{{
 if first_run then
   aucmd('VimEnter', {command = 'lua _G.ri.on_enter(true)'})

@@ -48,14 +48,23 @@ alias hd='hexdump -C'
 # release version
 alias vi='nvim.py'
 alias v='tnew neovim nvim.py --persist'
-alias pager='nvim - +"set noswapfile nomodifiable nomodified ruler laststatus=1 buftype=nofile" +"color habamax" +"normal L" +"noremap <buffer> u <c-u>" +"noremap <buffer> d <c-d>" +"unmap ds" +"set notitle" +"silent file [PAGER]"'
+alias pager='NVIM_APPNAME=ri nvim -n - +"set nomodifiable nomodified ruler laststatus=1 buftype=nofile" +"color habamax" +"normal L" +"noremap <buffer> u <c-u>" +"noremap <buffer> d <c-d>" +"unmap ds" +"set notitle" +"silent file [PAGER]"'
 
 # dev version
 alias nv='nvim.py --dev --asan'
 alias n='tnew neovim_dev nvim.py --persist --dev --asan'
 
+# MESSY: gib us the right TS parsers from neovim/build/lib??
+dev_nvim_env () {
+  ASAN_OPTIONS="detect_leaks=0,handle_abort=1,handle_sigill=1,log_path=/tmp/nvim_asan" UBSAN_OBTIONS="print_stacktrace=1" VIM=$HOME/dev/neovim NVIM_DEV=1 $*
+}
+alias dev_nvim='dev_nvim_env $HOME/dev/neovim/build/bin/nvim --cmd "set rtp+=~/dev/neovim/build/runtime/"'
+
 alias ri='NVIM_APPNAME=ri nvim'
-alias ari='NVIM_APPNAME=ri nvim.py --dev --asan'
+alias ari='NVIM_APPNAME=ri dev_nvim'
+# TODO: these to v/n:
+alias tri='NVIM_APPNAME=ri tnew neovim nvim'
+alias tari='NVIM_APPNAME=ri dev_nvim_env tnew neovim_dev $HOME/dev/neovim/build/bin/nvim --cmd "set rtp+=~/dev/neovim/build/runtime/"'
 
 sshtmux () {
   tnew sshtmux ssh $1 -t tmux -u a
