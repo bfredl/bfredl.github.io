@@ -34,36 +34,43 @@ function h.ft.zig()
   vim.treesitter.start()
 end
 
-local chaingroup = a.nvim_create_augroup("RiChainFire", { clear = true })
-a.nvim_create_autocmd('FileType', {
-  group = chaingroup;
-  callback = function(ev)
-    local func = h.ft[ev.match]
-    if func then func() end
+h.augroup = vim.api.nvim_create_augroup("RiChainFire", { clear = true })
+local function aucmd(which, opts)
+  opts.group = ri.augroup
+  return vim.api.nvim_create_autocmd(which, opts)
+end
+
+aucmd({'BufRead','BufNewFile'}, { pattern='*.h', callback=function()
+  if string.match(a.nvim_buf_get_name(0), 'DelugeFirmware') then
+    vim.cmd 'setfiletype cpp'
+  else
+    vim.bo.filetype = 'c'
   end
-})
+end})
+
+aucmd('FileType', { callback = function(ev)
+  local func = h.ft[ev.match]
+  if func then func() end
+end})
 do
-    local func = h.ft[vim.bo.filetype]
-    if func then func() end
+  local func = h.ft[vim.bo.filetype]
+  if func then func() end
 end
 
 h.ns_quickcheck = a.nvim_create_namespace'ri.chainfire.ns_quickcheck'
-a.nvim_create_autocmd({'TextChanged','TextChangedI'}, {
-  group = chaingroup;
-  callback = function(ev)
-    local func = h.ft_quickcheck[vim.bo.filetype]
-    if func then h.do_quickcheck(func) end
-  end
-})
+aucmd({'TextChanged','TextChangedI'}, { callback = function(ev)
+  local func = h.ft_quickcheck[vim.bo.filetype]
+  if func then h.do_quickcheck(func) end
+end})
 
 function h.do_quickcheck(cb)
   local lines = a.nvim_buf_get_lines(0, 0, -1, true)
   local data = table.concat(lines, '\n') .. '\n'
   cb(data, function(res)
-      local items = vim.fn.getqflist{lines=res}
-      diags = vim.diagnostic.fromqflist(items.items)
+    local items = vim.fn.getqflist{lines=res}
+    diags = vim.diagnostic.fromqflist(items.items)
 
-      vim.diagnostic.set(h.ns_quickcheck, 0, diags, {})
+    vim.diagnostic.set(h.ns_quickcheck, 0, diags, {})
   end)
 end
 

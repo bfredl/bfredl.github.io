@@ -225,14 +225,6 @@ aucmd("BufWritePost", { pattern = { ri.rt('lua/ri/init.lua') }, command = "Reloa
 
 -- }}}
 
-if false then aucmd({'BufRead','BufNewFile'}, '*.h', function()
-  if string.match(a.buf_get_name(0), 'DelugeFirmware') then
-    vim.cmd 'setfiletype cpp'
-  else
-    vim.bo.filetype = 'c'
-  end
-end) end
-
 require'ri.chainfire'
 -- mini.statusline {{{
 local function stl_active()
@@ -327,7 +319,7 @@ require'vim._core.ui2'.enable {
 }
 
 -- }}}
-
+-- nvim__set_restart_on_crash {{{
 local asan = vim.env.ASAN_OPTIONS
 local always = vim.api.nvim__set_restart_on_crash -- TODO: delet this
 if asan ~= nil and string.match(asan, "log_path=/tmp/nvim_asan") and always then
@@ -338,8 +330,8 @@ if asan ~= nil and string.match(asan, "log_path=/tmp/nvim_asan") and always then
   local args = {"--embed", "-n", "+set efm=%+A%*[^/]%f:%l:%c", "+silent cfile "..myname, "+silent cfirst", "+silent copen"}
 
   vim.api.nvim__set_restart_on_crash(fooeit, args)
-  _G.didit = true
 end
+-- }}}
 -- epilogue {{{
 if first_run then
   aucmd('VimEnter', {command = 'lua _G.ri.on_enter(true)'})
