@@ -36,6 +36,7 @@ vim.pack.add {
   gh 'nvim-lua/plenary.nvim';  -- for neogit
   gh 'sindrets/diffview.nvim';
   gh 'NeogitOrg/neogit';
+  gh 'chomosuke/typst-preview.nvim';
 }
 
 local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
@@ -134,6 +135,9 @@ vim.cmd [[
   augroup END
 ]]
 
+chmap 'ir' ':w<cr>'
+CHmap 'ir' ':w!<cr>'
+
 -- paths files, and stuff
 chmap 'ph' ':cd %:p:h<cr>'
 CHmap 'ph' ':cd ..<cr>'
@@ -174,6 +178,7 @@ map '<Leader>k' '<Plug>(miniyank-tochar)'
 -- errorlist
 
 chmap 'ag' ':silent grep '
+CHmap 'ag' '*:silent grep <c-r><c-r>/' -- does not work yet:p '<cr>'
 aucmd("QuickFixCmdPost", { pattern = { "grep" }, command = "cwindow" })
 
 chmap 'jc' '<cmd>cnext<cr>'
@@ -189,6 +194,11 @@ chmap 'hn' '<cmd>noh<cr>'
 
 -- macro
 map '<leader>c' '@q'
+
+
+emap('', '<Plug>ch:hv', function()
+  return ":setlocal cc="..(vim.o.cc == "80" and 0 or 80).."<cr>"
+end)
 
 -- insert completion
 vim.o.completeopt = "menuone,preview,longest"
@@ -226,6 +236,9 @@ aucmd("BufWritePost", { pattern = { ri.rt('lua/ri/init.lua') }, command = "Reloa
 -- }}}
 
 require'ri.chainfire'
+-- typst {{{
+require 'typst-preview'.setup {}
+-- }}}
 -- mini.statusline {{{
 local function stl_active()
   local MiniStatusline = require'mini.statusline'
