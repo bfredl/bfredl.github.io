@@ -37,14 +37,21 @@ vim.pack.add {
   gh 'sindrets/diffview.nvim';
   gh 'NeogitOrg/neogit';
   gh 'chomosuke/typst-preview.nvim';
+
+  cb 'ziglang/zig.vim';
 }
 
-local rtp_add = function(x) vim.o.rtp = vim.o.rtp ..','.. x end
+local rtp_add = function(x)
+  if string.find(vim.o.rtp, x, 1, true) == nil then -- a bit crude but OK
+    vim.o.rtp = vim.o.rtp ..','.. x
+  end
+end
 -- TODO: rework ibus-chords to use lzmq ffi!
 -- also more like a proper lua plugin..
 rtp_add '~/dev/ibus-chords'
 rtp_add '~/dev/nvim-miniyank/'
 rtp_add '~/dev/nvim-luadev'
+rtp_add '~/dev/vim-argclinic/'
 
 -- TODO: "maybe_local" abstraction. use ~/dev/nvim-luadev if present, otherwise gh'bfredl/nvim-luadev'
 
@@ -178,7 +185,13 @@ map '<Leader>k' '<Plug>(miniyank-tochar)'
 -- errorlist
 
 chmap 'ag' ':silent grep '
-CHmap 'ag' '*:silent grep <c-r><c-r>/' -- does not work yet:p '<cr>'
+CHmap 'ag' '*<cmd>GrepFromSearch<cr>'
+vim.api.nvim_create_user_command('GrepFromSearch', function()
+  local pat = vim.fn.getreg('/')
+  local pcre_pat = string.gsub(pat, "(\\[<>])", "\\\\b") -- waftt
+  _G.hangren = {pat, pcre_pat}
+  vim.cmd('silent grep '..pcre_pat)
+end, {})
 aucmd("QuickFixCmdPost", { pattern = { "grep" }, command = "cwindow" })
 
 chmap 'jc' '<cmd>cnext<cr>'
@@ -191,6 +204,20 @@ chmap 'kn' '<cmd>lprev<cr>'
 chmap 'jt' 'gj'
 chmap 'kt' 'gk'
 chmap 'hn' '<cmd>noh<cr>'
+
+-- argclinic
+
+chmap 'en' '<Plug>(argclinic-deletearg)'
+chmap 'pn' '<Plug>(argclinic-putarg)'
+chmap 'pt' '<Plug>(argclinic-putarg-before)'
+chmap 'an' '<Plug>(argclinic-nextarg)'
+chmap 'av' '<Plug>(argclinic-nextend)'
+chmap 'at' '<Plug>(argclinic-prevarg)'
+chmap 'aw' '<Plug>(argclinic-prevend)'
+
+-- omap ie <Plug>(argclinic-selectarg)
+-- xmap ie <Plug>(argclinic-selectarg)
+
 
 -- macro
 map '<leader>c' '@q'
