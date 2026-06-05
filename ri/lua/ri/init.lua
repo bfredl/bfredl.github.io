@@ -133,6 +133,8 @@ local imap = ri.mapmode 'i'
 local cmap = ri.mapmode 'c'
 local chmap = function(x) return map('<Plug>ch:'..x) end
 local CHmap = function(x) return map('<Plug>CH:'..x) end
+local ichmap = function(x) return imap('<Plug>ch:'..x) end
+local iCHmap = function(x) return imap('<Plug>CH:'..x) end
 
 chmap 'in' '<cmd>Inspect<cr>' -- LORD inspector
 -- TODO(ri): this is handy during construction, but I want ri/filetype.lua thing!
@@ -148,6 +150,9 @@ CHmap 'ir' ':w!<cr>'
 -- paths files, and stuff
 chmap 'ph' ':cd %:p:h<cr>'
 CHmap 'ph' ':cd ..<cr>'
+
+ichmap '.u' '<c-x><c-o>'
+ichmap 'pc' '<c-x><c-f>'
 
 -- window navigation
 map '<Leader>o' '<C-W>o'
@@ -255,6 +260,7 @@ end
 vim.cmd'command! Reload luafile $MYVIMRC'
 -- TODO(ri): jump to open window if already exist
 map '<leader>h' ('<cmd>split '..ri.rt('lua/ri/init.lua')..'<cr>')
+map '<leader>v' ('<cmd>split /home/bfredl/config2/nvim/autoload/bfredl.vim <cr>')
 map '<leader>r' ('<cmd>update<cr><cmd>Reload<cr>')
 -- TODO(ri): this might break when buffer was loaded via absolute path and not
 -- using the symlink which is part of runtimepath

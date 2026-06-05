@@ -44,15 +44,8 @@ else
 fi
 alias hd='hexdump -C'
 
-# TODO: luuuua instead of python
-# release version
-alias vi='nvim.py'
-alias v='tnew neovim nvim.py --persist'
-alias pager='NVIM_APPNAME=ri nvim -n - +"set nomodifiable nomodified ruler laststatus=1 buftype=nofile" +"color habamax" +"normal L" +"noremap <buffer> u <c-u>" +"noremap <buffer> d <c-d>" +"unmap ds" +"set notitle" +"silent file [PAGER]"'
-
-# dev version
-alias nv='nvim.py --dev --asan'
-alias n='tnew neovim_dev nvim.py --persist --dev --asan'
+# it is time to let go
+export NVIM_APPNAME=ri
 
 # MESSY: gib us the right TS parsers from neovim/build/lib??
 dev_nvim_env () {
@@ -60,11 +53,19 @@ dev_nvim_env () {
 }
 alias dev_nvim='dev_nvim_env $HOME/dev/neovim/build/bin/nvim --cmd "set rtp+=~/dev/neovim/build/runtime/"'
 
-alias ri='NVIM_APPNAME=ri nvim'
-alias ari='NVIM_APPNAME=ri dev_nvim'
-# TODO: these to v/n:
-alias tri='NVIM_APPNAME=ri tnew neovim nvim'
-alias tari='NVIM_APPNAME=ri dev_nvim_env tnew neovim_dev $HOME/dev/neovim/build/bin/nvim --cmd "set rtp+=~/dev/neovim/build/runtime/"'
+alias vi='nvim'
+alias nv='dev_nvim'
+alias v='tnew neovim nvim'
+alias n='dev_nvim_env tnew neovim_dev $HOME/dev/neovim/build/bin/nvim --cmd "set rtp+=~/dev/neovim/build/runtime/"'
+
+# TODO add pager mode to ri, we are using ui2 anyway
+alias pager='nvim -n - +"set nomodifiable nomodified ruler laststatus=1 buftype=nofile" +"color habamax" +"normal L" +"noremap <buffer> u <c-u>" +"noremap <buffer> d <c-d>" +"unmap ds" +"set notitle" +"silent file [PAGER]"'
+
+alias oldvi='nvim.py'
+alias oldv='tnew neovim nvim.py --persist'
+# dev version
+alias oldnv='nvim.py --dev --asan'
+alias oldn='tnew neovim_dev nvim.py --persist --dev --asan'
 
 sshtmux () {
   tnew sshtmux ssh $1 -t tmux -u a
