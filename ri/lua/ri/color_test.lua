@@ -60,7 +60,7 @@ if true then
   hi('NonText',        { fg=p.bg_mid2, bg=nil })
   hi('Normal',         { fg=p.fg,      bg=p.bg })
   hi('NormalFloat',    { fg=p.fg,      bg=p.bg_edge })
-  hi('NormalNC',       { link='Normal' })
+  -- hi('NormalNC',       { link='Normal' })
   hi('OkMsg',          { fg=p.green,   bg=nil })
   -- hi('Pmenu',          H.attr_pmenu(p, autoadjust))
   hi('PmenuBorder',    { link='Pmenu' })

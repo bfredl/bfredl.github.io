@@ -220,6 +220,11 @@ chmap 'av' '<Plug>(argclinic-nextend)'
 chmap 'at' '<Plug>(argclinic-prevarg)'
 chmap 'aw' '<Plug>(argclinic-prevend)'
 
+-- le LSP
+-- TODO: more which are conditional
+chmap 'id' '<cmd>lua vim.lsp.buf.definition()<cr>'
+CHmap 'id' '<cmd>lua vim.lsp.buf.declaration()<cr>'
+
 -- omap ie <Plug>(argclinic-selectarg)
 -- xmap ie <Plug>(argclinic-selectarg)
 
