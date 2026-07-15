@@ -14,11 +14,20 @@ function bmap(mode)
   end
 end
 local bimap = bmap'i'
+function h.brackety()
+  bmap'' '[[' "<cmd>call rust#Jump('n', 'Back')<CR>"
+  bmap'' ']]' "<cmd>call rust#Jump('n', 'Forward')<CR>"
+  bmap'' '[[' "<cmd>call rust#Jump('v', 'Back')<CR>"
+  bmap'' ']]' "<cmd>call rust#Jump('v', 'Forward')<CR>"
+  bmap'' '[[' "<cmd>call rust#Jump('o', 'Back')<CR>"
+  bmap'' ']]' "<cmd>call rust#Jump('o', 'Forward')<CR>"
+end
 function h.ft.c()
   bimap '¶)' ')'
   bimap '¶,' ','
   bimap '¶<space>' '<space>'
   bimap '¶' '<space>'
+  h.brackety()
   if h.has_clangd then
     h.clangd()
   end
@@ -32,6 +41,7 @@ function h.ft.lua()
 end
 function h.ft.zig()
   vim.treesitter.start()
+  h.brackety()
 end
 
 h.augroup = vim.api.nvim_create_augroup("RiChainFire", { clear = true })

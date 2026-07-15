@@ -27,6 +27,7 @@ zig-cache
 .zig-cache
 zig-out
 zig-cache-sudo
+zig-pkg
 compile_flags.txt
 .cache/clangd
 
